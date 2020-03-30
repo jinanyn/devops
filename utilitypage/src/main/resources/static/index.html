@@ -1,0 +1,171 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>新型</title>
+    <link rel="stylesheet" href="elementui/index.css"/>
+</head>
+<body>
+<div id="app">
+    <el-container>
+        <el-header>Header</el-header>
+        <el-container>
+            <el-aside width="200px" style="border: 1px solid;">
+                <el-input
+                        placeholder="输入关键字进行过滤"
+                        v-model="filterText">
+                </el-input>
+
+                <el-tree
+                        class="filter-tree"
+                        :data="menuData"
+                        :props="defaultProps"
+                        default-expand-all
+                        :filter-node-method="filterNode"
+                        @node-click="menuClickNode"
+                        ref="tree">
+                </el-tree>
+            </el-aside>
+            <el-main>
+                <el-tabs v-model="editableTabsValue" type="card"  closable @tab-remove="removeTab">
+                    <el-tab-pane
+                            v-for="(item, index) in editableTabs"
+                            :key="item.name"
+                            :label="item.title"
+                            :name="item.name"
+                    >
+                        <component :is=item.content v-if="true"></component>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-main>
+        </el-container>
+        <el-footer>Footer</el-footer>
+    </el-container>
+</div>
+<script src="vue/vue.js"></script>
+<script src="elementui/index.js"></script>
+<script src="axios/axios.js"></script>
+<script src="vue/httpVueLoader.js"></script>
+<style>
+    .el-header {
+        background-color: #B3C0D1;
+        color: #333;
+        text-align: center;
+        height: 110px !important;
+    }
+
+    .el-footer {
+        background-color: #B300D1;
+        color: #333;
+        text-align: center;
+        height: 12px !important;
+    }
+
+    .el-aside {
+        background-color: #D3DCE6;
+        color: #333;
+        text-align: center;
+        /* line-height: 200px;*/
+    }
+
+    .el-main {
+        /*background-color: #E9EEF3;*/
+        color: #333;
+        text-align: center;
+        height: 580px !important;
+        padding: 0px !important;
+    }
+
+    body > .el-container {
+        /*margin-bottom: 40px;*/
+    }
+</style>
+<script>
+    // 使用httpVueLoader
+    Vue.use(httpVueLoader);
+
+    var myVue = new Vue({
+        el: '#app',
+        watch: {
+            filterText(val) {
+                this.$refs.tree.filter(val);
+            }
+        },
+
+        methods: {
+            filterNode(value, data) {
+                if (!value) return true;
+                return data.label.indexOf(value) !== -1;
+            },
+            menuClickNode(data, node, obj){
+                if(node.isLeaf){
+                    //console.log('components个数='+myVue.components.length);
+                    this.addTab(node);
+                }else{
+                    //console.log('不是叶子节点');
+                }
+            },
+            addTab(menuNode) {
+                let newTabName = menuNode.data.id + '';
+                let isExist =false;
+                this.editableTabs.forEach((tab, index) => {
+                    if (tab.name === newTabName){
+                        isExist=true;
+                    }
+                });
+                if(!isExist){
+                    this.editableTabs.push({
+                        title: ''+menuNode.label+'',
+                        name: newTabName,
+                        content: menuNode.data.data
+                    });
+                }
+                this.editableTabsValue = newTabName;
+            },
+            removeTab(targetName) {
+                let tabs = this.editableTabs;
+                let activeName = this.editableTabsValue;
+                if (activeName === targetName) {
+                    tabs.forEach((tab, index) => {
+                        if (tab.name === targetName) {
+                        let nextTab = tabs[index + 1] || tabs[index - 1];
+                        if (nextTab) {
+                            activeName = nextTab.name;
+                        }
+                    }
+                });
+                }
+                this.editableTabsValue = activeName;
+                this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+            }
+        },
+        data: function () {
+            return {
+                filterText: '',
+                menuData: [],
+                defaultProps: {
+                    children: 'children',
+                    label: 'name'
+                },
+                editableTabsValue:'0',
+                tabIndex: 0,
+                editableTabs: []
+            }
+        },
+        mounted () {
+            axios
+                .get('/menuTreeData?parentId=root')
+                .then(response => (this.menuData = response.data))
+                .catch(function (error) { // 请求失败处理
+                console.log(error);
+            });
+        },
+        components: {
+            // 将组件加入组件库
+            'cmyk-to-rgb': 'url:./components/cmyk-to-rgb.vue',
+            'case-state-exception': 'url:./components/case-state-exception.vue',
+            'weblogic-health-state': 'url:./components/weblogic-health-state.vue'
+        }
+    })
+</script>
+</body>
+</html>
