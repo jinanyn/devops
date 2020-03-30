@@ -2,43 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2ed5102-2350-4134-95c9-8a807d1f0ec3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/src/main/java/MyTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/src/main/java/cn/gwssi/TestUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/src/main/java/cn/gwssi/util/TreeNode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/java/com/gwssi/devops/utilitypage/UtilitypageApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/java/com/gwssi/devops/utilitypage/controller/DataMonitorController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/java/com/gwssi/devops/utilitypage/controller/Utilitycontroller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/java/com/gwssi/devops/utilitypage/model/CaseInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/axios/axios.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/components/case-state-exception.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/components/cmyk-to-rgb.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/components/my-component.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/components/weblogic-health-state.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/elementui/fonts/element-icons.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/elementui/fonts/element-icons.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/elementui/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/elementui/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/vue/httpVueLoader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/main/resources/static/vue/vue.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utilitypage/src/test/java/com/gwssi/devops/utilitypage/UtilitypageApplicationTests.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -399,12 +363,20 @@
       <workItem from="1585483580393" duration="4778000" />
       <workItem from="1585488401607" duration="9071000" />
       <workItem from="1585520095006" duration="2303000" />
-      <workItem from="1585522460399" duration="21156000" />
+      <workItem from="1585522460399" duration="21426000" />
     </task>
+    <task id="LOCAL-00001" summary="新型项目运维实现">
+      <created>1585547701389</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1585547701389</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37308000" />
+    <option name="totallyTimeSpent" value="37578000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -428,7 +400,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32956153" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50067025" side_tool="true" weight="0.32956153" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32956153" />
+      <window_info anchor="bottom" id="Messages" order="10" visible="true" weight="0.3286119" />
       <window_info anchor="bottom" id="Java Enterprise" order="11" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
       <window_info anchor="bottom" id="Version Control" order="13" />
@@ -491,6 +463,10 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="新型项目运维实现" />
+    <option name="LAST_COMMIT_MESSAGE" value="新型项目运维实现" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/web/src/main/webapp/index.jsp" />
@@ -715,6 +691,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="488">
           <caret line="28" column="15" lean-forward="true" selection-start-line="23" selection-start-column="12" selection-end-line="28" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utilitypage/.mvn/wrapper/MavenWrapperDownloader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
         </state>
       </provider>
     </entry>
