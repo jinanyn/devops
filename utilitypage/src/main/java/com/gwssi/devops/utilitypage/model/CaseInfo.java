@@ -8,4 +8,5 @@ public class CaseInfo {
     private String patentName;//专利名称
     private String comments;//描述信息
     private String examiner;//审查员
+    private String info;//信息
 }
