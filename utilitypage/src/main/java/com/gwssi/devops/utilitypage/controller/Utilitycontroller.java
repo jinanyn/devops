@@ -1,16 +1,19 @@
 package com.gwssi.devops.utilitypage.controller;
 
 import cn.gwssi.util.TreeNode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestController
+@RequestMapping("utility/")
 public class Utilitycontroller {
 
     @ResponseBody
-    @RequestMapping(value="/menuTreeData",method= RequestMethod.GET)
+    @RequestMapping(value="menuTreeData",method= RequestMethod.GET)
     public List<TreeNode> menuTreeData(@RequestParam("parentId") String parentId){
 
         System.out.println("parentId="+parentId);
@@ -44,6 +47,13 @@ public class Utilitycontroller {
         levelOne21.setName("案件状态异常");
         levelOne21.setData("case-state-exception");
         levelOne2Children.add(levelOne21);
+
+        TreeNode levelOne22 = new TreeNode();
+        levelOne22.setId("0202");
+        levelOne22.setParentId("02");
+        levelOne22.setName("授权案件五书缺失");
+        levelOne22.setData("auth-case-fivebook-miss");
+        levelOne2Children.add(levelOne22);
 
         levelOne2.setChildren(levelOne2Children);
 
