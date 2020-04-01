@@ -153,7 +153,7 @@
         },
         mounted () {
             axios
-                .get('/menuTreeData?parentId=root')
+                .get('/utility/menuTreeData?parentId=root')
                 .then(response => (this.menuData = response.data))
                 .catch(function (error) { // 请求失败处理
                 console.log(error);
@@ -163,6 +163,7 @@
             // 将组件加入组件库
             'cmyk-to-rgb': 'url:./components/cmyk-to-rgb.vue',
             'case-state-exception': 'url:./components/case-state-exception.vue',
+            'auth-case-fivebook-miss': 'url:./components/auth-case-fivebook-miss.vue',
             'weblogic-health-state': 'url:./components/weblogic-health-state.vue'
         }
     })
