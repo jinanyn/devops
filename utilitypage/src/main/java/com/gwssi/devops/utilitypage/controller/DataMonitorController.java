@@ -1,15 +1,19 @@
 package com.gwssi.devops.utilitypage.controller;
 
-import cn.gwssi.http.HttpRequstUtil;
+import cn.gwssi.util.FileHelperUtil;
+import cn.gwssi.xml.XmlHelerBuilder;
 import com.gwssi.devops.utilitypage.model.CaseInfo;
-import com.gwssi.devops.utilitypage.util.BusinessConstant;
+import com.gwssi.devops.utilitypage.model.RtnData;
+import com.gwssi.devops.utilitypage.model.RtnDataList;
 import com.gwssi.devops.utilitypage.util.PathConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -22,7 +26,8 @@ public class DataMonitorController {
 
     @ResponseBody
     @RequestMapping(value = "/caseStateException", method = RequestMethod.GET)
-    public List<CaseInfo> caseStateExceptionData() {
+    public List<CaseInfo> caseStateExceptionData(@RequestParam("parentId") String parentId) {
+        log.info("parentId="+parentId);
         List<CaseInfo> rtnList = new ArrayList<>();
 
         CaseInfo caseInfo = new CaseInfo();
@@ -58,30 +63,27 @@ public class DataMonitorController {
 
     @ResponseBody
     @RequestMapping(value = "/authCaseFivebookMiss", method = RequestMethod.GET)
-    public List<CaseInfo> authCaseFivebookMiss() {
+    public List<CaseInfo> authCaseFivebookMiss(@RequestParam("viewDate") String viewDate) {
         List<CaseInfo> rtnList = new ArrayList<>();
-        Map<String, String> paramMap = new HashMap<String, String>();
-        String login_flowid = "" + UUID.randomUUID();
-        paramMap.put("username", pathConfig.getMainAppLoginUsername());
-        paramMap.put("password", pathConfig.getMainAppLoginPassword());
-        paramMap.put("login_flowid", login_flowid);
-        paramMap.put("success_keyword", "<a href=\"javascript:void(0)\">案件审查</a>");
-        CloseableHttpClient httpClient = null;
-        try {
-            httpClient = HttpRequstUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
-        } catch (IOException e) {
-            log.error("登陆系统异常:"+pathConfig.getMainAppLoginUri());
-            e.printStackTrace();
+        if(StringUtils.isEmpty(viewDate)){
+            viewDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+        }
+        String fullPathName = pathConfig.getShareDisk() + File.separator + viewDate + File.separator + "authCaseFivebookMiss" + File.separator + "authCaseFivebookMiss";
+        String content = FileHelperUtil.readContentFromFile(fullPathName);
+        if(StringUtils.isEmpty(content)){
             return rtnList;
         }
-
-        paramMap = new HashMap<String, String>();
-        paramMap.put("select-key:monitor_key", BusinessConstant.BIZ_AUTH_CASE_FIVEBOOK_MISS);
-        try {
-            String rtnData = HttpRequstUtil.sessionRequest(httpClient,pathConfig.getMainAppMonitorUri(),paramMap);
-            log.info(rtnData);
-        } catch (IOException e) {
-            e.printStackTrace();
+        RtnDataList rtnDataList = (RtnDataList) XmlHelerBuilder.convertXmlToObject(RtnDataList.class, "<context>" + content + "</context>");
+        if (rtnDataList != null) {
+            List<RtnData> bizDataList = rtnDataList.getBizDataList();
+            if (bizDataList != null && bizDataList.size() > 0) {
+                for (RtnData rtnData : bizDataList) {
+                    CaseInfo caseInfo = new CaseInfo();
+                    caseInfo.setShenqingh(rtnData.getShenqingh());
+                    caseInfo.setComments(rtnData.getCnt());
+                    rtnList.add(caseInfo);
+                }
+            }
         }
         return rtnList;
     }

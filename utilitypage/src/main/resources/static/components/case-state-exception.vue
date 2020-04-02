@@ -37,8 +37,9 @@
         },
         mounted(){
             axios
-                .get('/utility/dataMonitor/caseStateException')
-                .then(response => (this.tableData = response.data))
+                .get('/utility/dataMonitor/caseStateException',{
+                    params: { 'parentId': '123456' }
+                }).then(response => (this.tableData = response.data))
                 .catch(function (error) { // 请求失败处理
                     console.log(error);
                 });

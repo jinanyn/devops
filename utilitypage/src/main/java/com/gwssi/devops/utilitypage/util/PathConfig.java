@@ -23,4 +23,6 @@ public class PathConfig
     private String mainAppLoginPassword;
 
     private String mainAppMonitorUri;
+
+    private String shareDisk;
 }

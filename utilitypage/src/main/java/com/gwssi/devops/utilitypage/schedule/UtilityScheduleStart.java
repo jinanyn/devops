@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import org.springframework.boot.ApplicationRunner;
 
-@Component
+//@Component
 public class UtilityScheduleStart implements ApplicationRunner {
 
     @Autowired
