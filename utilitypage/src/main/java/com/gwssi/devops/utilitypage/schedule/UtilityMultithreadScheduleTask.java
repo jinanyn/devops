@@ -4,6 +4,7 @@ import cn.gwssi.http.HttpRequstUtil;
 import cn.gwssi.util.FileHelperUtil;
 import cn.gwssi.util.PathUtil;
 import cn.gwssi.xml.XmlHelerBuilder;
+import com.gwssi.devops.utilitypage.mail.MailHelperBuilder;
 import com.gwssi.devops.utilitypage.model.RtnData;
 import com.gwssi.devops.utilitypage.model.RtnDataList;
 import com.gwssi.devops.utilitypage.util.BusinessConstant;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -31,6 +33,10 @@ import java.util.*;
 public class UtilityMultithreadScheduleTask {
     @Autowired
     private PathConfig pathConfig;
+    @Autowired
+    private JavaMailSender javaMailSender;
+    @Autowired
+    private MailHelperBuilder mailHelperBuilder;
     //@Async
     //@Scheduled(fixedDelay = 1000)  //间隔1秒
     //@Scheduled(cron = "0/15 * * * * ?")
@@ -46,6 +52,13 @@ public class UtilityMultithreadScheduleTask {
     public void second() {
         System.out.println("第二个定时任务开始 : " + LocalDateTime.now().toLocalTime() + "\r\n线程 : " + Thread.currentThread().getName());
         System.out.println();
+    }
+
+    @Async
+    //@Scheduled(fixedDelay = 2000)
+    @Scheduled(cron = "0/30 * * * * ?")
+    public void thrid() {
+        mailHelperBuilder.sendSimpleMessage(javaMailSender, "idea测试邮件","收到内||容没？？？");
     }
 
 

@@ -41,6 +41,7 @@
             <artifactId>imageio-tiff</artifactId>
             <version>3.3</version>
         </dependency>
+
         <!-- Spring Boot Reids 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
