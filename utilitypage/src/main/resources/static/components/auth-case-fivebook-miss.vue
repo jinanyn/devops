@@ -46,7 +46,7 @@
             return {
                 tableData: [],
                 myQueryForm: {
-                    viewDate: new Date()
+                    viewDate: new Date().Format('yyyyMMdd')
                 }
             }
         },
@@ -72,6 +72,7 @@
         mounted() {
             let myParams = {'viewDate': ''};
             this.getDataFromServer(myParams);
+            //console.log(new Date().Format('yyyyMMdd'));
         }
     }
 </script>

@@ -54,9 +54,9 @@ public class UtilityMultithreadScheduleTask {
         System.out.println();
     }
 
-    @Async
+    //@Async
     //@Scheduled(fixedDelay = 2000)
-    @Scheduled(cron = "0/30 * * * * ?")
+    //@Scheduled(cron = "0/30 * * * * ?")
     public void thrid() {
         mailHelperBuilder.sendSimpleMessage(javaMailSender, "idea测试邮件","收到内||容没？？？");
     }
