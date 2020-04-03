@@ -52,28 +52,26 @@
         },
         methods: {
             submitForm(formName) {
+                let myParams = {'viewDate': this.myQueryForm.viewDate};
+                this.getDataFromServer(myParams);
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+            getDataFromServer(myParams){
                 axios
                     .get('/utility/dataMonitor/authCaseFivebookMiss', {
-                        params: {'viewDate': this.myQueryForm.viewDate}
+                        params: myParams
                     })
                     .then(response => (this.tableData = response.data))
                     .catch(function (error) { // 请求失败处理
                         console.log(error);
                     });
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
             }
         },
         mounted() {
-            axios
-                .get('/utility/dataMonitor/authCaseFivebookMiss', {
-                    params: {'viewDate': ''}
-                })
-                .then(response => (this.tableData = response.data))
-                .catch(function (error) { // 请求失败处理
-                    console.log(error);
-                });
+            let myParams = {'viewDate': ''};
+            this.getDataFromServer(myParams);
         }
     }
 </script>
