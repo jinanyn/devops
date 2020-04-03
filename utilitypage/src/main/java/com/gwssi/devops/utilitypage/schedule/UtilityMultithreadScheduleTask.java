@@ -62,17 +62,17 @@ public class UtilityMultithreadScheduleTask {
     }
 
 
-    //@Async
-    //@Scheduled(fixedDelay = 2000)
-    //@Scheduled(cron = "0/30 * * * * ?")
+    @Async
+    @Scheduled(fixedDelay = 2000)
+    @Scheduled(cron = "0 15 2 ? * *")//"0 15 10 ? * *" 每天上午10:15触发
     public void authCaseFivebookMissMonitor() {
-        Map<String, String> paramMap = new HashMap<String, String>();
+        Map<String, String> paramMap = new HashMap<>();
         String login_flowid = "" + UUID.randomUUID();
         paramMap.put("username", pathConfig.getMainAppLoginUsername());
         paramMap.put("password", pathConfig.getMainAppLoginPassword());
         paramMap.put("login_flowid", login_flowid);
         paramMap.put("success_keyword", "<a href=\"javascript:void(0)\">案件审查</a>");
-        CloseableHttpClient httpClient = null;
+        CloseableHttpClient httpClient;
         try {
             httpClient = HttpRequstUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
         } catch (IOException e) {
@@ -82,7 +82,7 @@ public class UtilityMultithreadScheduleTask {
         }
         paramMap = new HashMap<String, String>();
         paramMap.put("select-key:monitor_key", BusinessConstant.BIZ_AUTH_CASE_FIVEBOOK_MISS);
-        String xmlRtnData = "";
+        String xmlRtnData;
         try {
             xmlRtnData = HttpRequstUtil.sessionRequest(httpClient,pathConfig.getMainAppMonitorUri(),paramMap);
             //log.info(xmlRtnData);
