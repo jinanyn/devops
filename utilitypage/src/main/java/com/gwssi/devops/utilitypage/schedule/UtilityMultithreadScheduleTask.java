@@ -63,7 +63,7 @@ public class UtilityMultithreadScheduleTask {
 
 
     @Async
-    @Scheduled(fixedDelay = 2000)
+    //@Scheduled(fixedDelay = 2000)
     @Scheduled(cron = "0 15 2 ? * *")//"0 15 10 ? * *" 每天上午10:15触发
     public void authCaseFivebookMissMonitor() {
         Map<String, String> paramMap = new HashMap<>();
@@ -107,7 +107,15 @@ public class UtilityMultithreadScheduleTask {
         StringBuilder resultBui = new StringBuilder();
         for (RtnData rtnData : bizDataList){
             String bizXmlData = XmlHelerBuilder.convertObjectToXml(rtnData);
+            //log.info("****************bizXmlData="+bizXmlData);
+            if(bizXmlData.indexOf("<rtnData/>") != -1){//空白数据
+                continue;
+            }
             int idx = bizXmlData.indexOf("<rtnData>");
+            //log.info("****************idx="+idx);
+            if(idx ==-1){
+                continue;
+            }
             bizXmlData = bizXmlData.substring(idx);
             resultBui.append(bizXmlData);
         }
