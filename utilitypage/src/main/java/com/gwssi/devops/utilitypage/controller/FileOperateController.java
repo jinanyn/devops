@@ -1,7 +1,8 @@
 package com.gwssi.devops.utilitypage.controller;
 
 import cn.gwssi.util.PathUtil;
-import com.gwssi.devops.utilitypage.util.PathConfig;
+import cn.gwssi.util.ShellExecUtil;
+import com.gwssi.devops.utilitypage.config.PathConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -20,9 +21,9 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -68,6 +69,15 @@ public class FileOperateController {
 
         file.transferTo(new File(serverFilePath));
 
+        if ("template".equals(serverFilePath) && StringUtils.isNotEmpty(pathConfig.getTemplateDistributeCmd())) {
+            try {
+                List rtnList = ShellExecUtil.runShell(pathConfig.getTemplateDistributeCmd());
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.error(e.getMessage());
+                throw new RuntimeException("分发模板文件错误");
+            }
+        }
         map.put("result", "success");
         return map;
     }

@@ -2,13 +2,12 @@ package com.gwssi.devops.utilitypage.schedule;
 
 import cn.gwssi.http.HttpRequstUtil;
 import cn.gwssi.util.FileHelperUtil;
-import cn.gwssi.util.PathUtil;
 import cn.gwssi.xml.XmlHelerBuilder;
 import com.gwssi.devops.utilitypage.mail.MailHelperBuilder;
 import com.gwssi.devops.utilitypage.model.RtnData;
 import com.gwssi.devops.utilitypage.model.RtnDataList;
 import com.gwssi.devops.utilitypage.util.BusinessConstant;
-import com.gwssi.devops.utilitypage.util.PathConfig;
+import com.gwssi.devops.utilitypage.config.PathConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.http.impl.client.CloseableHttpClient;

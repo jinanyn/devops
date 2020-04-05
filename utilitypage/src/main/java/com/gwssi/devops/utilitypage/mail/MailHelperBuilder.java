@@ -1,6 +1,6 @@
 package com.gwssi.devops.utilitypage.mail;
 
-import com.gwssi.devops.utilitypage.util.MailConfig;
+import com.gwssi.devops.utilitypage.config.MailConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
