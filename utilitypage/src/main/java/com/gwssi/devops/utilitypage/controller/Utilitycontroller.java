@@ -57,8 +57,6 @@ public class Utilitycontroller {
 
         levelOne2.setChildren(levelOne2Children);
 
-
-
         TreeNode levelOne3 = new TreeNode();
         List<TreeNode> levelOne3Children = new ArrayList<>();
         levelOne3.setId("03");
@@ -74,9 +72,25 @@ public class Utilitycontroller {
 
         levelOne3.setChildren(levelOne3Children);
 
+        TreeNode levelOne4 = new TreeNode();
+        List<TreeNode> levelOne4Children = new ArrayList<>();
+        levelOne4.setId("04");
+        levelOne4.setParentId("");
+        levelOne4.setName("文件处理");
+
+        TreeNode levelOne41 = new TreeNode();
+        levelOne41.setId("0401");
+        levelOne41.setParentId("04");
+        levelOne41.setName("新型文件操作");
+        levelOne41.setData("utility-file-operate");
+        levelOne4Children.add(levelOne41);
+
+        levelOne4.setChildren(levelOne4Children);
+
         rtnList.add(levelOne1);
         rtnList.add(levelOne2);
         rtnList.add(levelOne3);
+        rtnList.add(levelOne4);
         return rtnList;
     }
 }
