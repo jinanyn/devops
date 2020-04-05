@@ -1,4 +1,4 @@
-package com.gwssi.devops.utilitypage.util;
+package com.gwssi.devops.utilitypage.config;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
