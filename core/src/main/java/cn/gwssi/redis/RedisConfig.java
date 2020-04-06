@@ -2,13 +2,10 @@ package cn.gwssi.redis;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisClusterConfiguration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.RedisNode;
-import org.springframework.data.redis.connection.RedisPassword;
+import org.springframework.data.redis.connection.*;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -18,23 +15,24 @@ import java.util.List;
 
 @Configuration
 //@PropertySource({"classpath:redis.properties"})
-@ConfigurationProperties(prefix = "redis")
+//@ConfigurationProperties(prefix = "spring.redis")
 public class RedisConfig {
 
+    @Value("${spring.redis.type}")
     private String type;
-
+    @Value("${spring.redis.host}")
     private String host;
-
+    @Value("${spring.redis.clusterNodes}")
     private String clusterNodes;
-
+    @Value("${spring.redis.port}")
     private int port;
-
+    @Value("${spring.redis.timeout}")
     private int timeout;
-
+    @Value("${spring.redis.database}")
     private int database;
-
+    @Value("${spring.redis.password}")
     private String password;
-
+    @Value("${spring.redis.maxRedirects}")
     private int maxRedirects;
 
 
@@ -73,7 +71,7 @@ public class RedisConfig {
         {
             RedisClusterConfiguration redisConfig = new RedisClusterConfiguration();
             redisConfig.setPassword(RedisPassword.of(this.password));
-            redisConfig.setMaxRedirects(this.maxRedirects);
+            //redisConfig.setMaxRedirects(this.maxRedirects);
             if (StringUtils.isEmpty(this.clusterNodes)) {
                 throw new RuntimeException("未配置spring.redis.clusterNodes");
             }
@@ -85,6 +83,14 @@ public class RedisConfig {
                 redisNodeList.add(redisNode);
             }
             redisConfig.setClusterNodes(redisNodeList);
+
+            return new LettuceConnectionFactory(redisConfig);
+        }else if("standalone".equalsIgnoreCase(this.type)){
+            RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
+            redisConfig.setHostName(this.host);
+            redisConfig.setPassword(this.password);
+            redisConfig.setPort(this.port);
+            redisConfig.setDatabase(this.database);
 
             return new LettuceConnectionFactory(redisConfig);
         }
