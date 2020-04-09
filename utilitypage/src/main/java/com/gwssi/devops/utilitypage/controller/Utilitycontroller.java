@@ -137,12 +137,11 @@ public class Utilitycontroller {
         levelOne5.setName("案源配送");
 
         TreeNode levelOne51 = new TreeNode();
-        levelOne5.setId("0501");
-        levelOne5.setParentId("05");
-        levelOne5.setName("优先审查数据重复处理");
-        levelOne5.setData("priority_audit_data_repeat");
+        levelOne51.setId("0501");
+        levelOne51.setParentId("05");
+        levelOne51.setName("优先审查数据重复处理");
+        levelOne51.setData("priority_audit_data_repeat");
         levelOne5Children.add(levelOne51);
-
 
         levelOne5.setChildren(levelOne5Children);
 

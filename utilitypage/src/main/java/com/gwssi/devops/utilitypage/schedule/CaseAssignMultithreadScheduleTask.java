@@ -31,9 +31,8 @@ public class CaseAssignMultithreadScheduleTask {
     private JavaMailSender javaMailSender;
     @Async
     @Scheduled(cron = "0 45 20 ? * *")// 每天晚上20:45触发
-    //@Scheduled(cron = "0 45 14 ? * *")// 每天晚上20:45触发
     //@Scheduled(cron = "0 0/2 * * * ?")// 2分钟触发一次
-    public void bizDivisionEventExceptionMonitor() {//优先审查数据重复自动处理(如果有重复数据,会影响案源数据提取存储过程)
+    public void priorityAuditDataRepeatMointer() {//优先审查数据重复自动处理(如果有重复数据,会影响案源数据提取存储过程)
         List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.PRIORITY_AUDIT_DATA_REPEAT, "priorityAuditDataRepeat");
         if(rtnDataList != null && rtnDataList.size() >0){
             StringBuilder sqhBui = new StringBuilder();
