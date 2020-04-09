@@ -29,20 +29,39 @@
 </template>
 
 <script>
-    module.exports ={
+    let initViewData = [new Date().Format('yyyyMMdd'),new Date().Format('yyyyMMdd')];
+    module.exports = {
         data() {
             return {
-                tableData: []
+                tableData: [],
+                myQueryForm: {
+                    viewDate:initViewData
+                }
             }
         },
-        mounted(){
-            axios
-                .get('/utility/dataMonitor/caseStateException',{
-                    params: { 'parentId': '123456' }
-                }).then(response => (this.tableData = response.data))
-                .catch(function (error) { // 请求失败处理
-                    console.log(error);
-                });
+        methods: {
+            submitForm(formName) {
+                let myParams = {'viewDate': this.myQueryForm.viewDate[0]+"-"+this.myQueryForm.viewDate[1]};
+                this.getDataFromServer(myParams);
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+            getDataFromServer(myParams){
+                axios
+                    .get('/utility/dataMonitor/caseStateException', {
+                        params: myParams
+                    })
+                    .then(response => (this.tableData = response.data))
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        },
+        mounted() {
+            let myParams = {'viewDate': ''};
+            this.getDataFromServer(myParams);
+            //console.log(new Date().Format('yyyyMMdd'));
         }
     }
 </script>

@@ -55,6 +55,41 @@ public class Utilitycontroller {
         levelOne22.setData("auth-case-fivebook-miss");
         levelOne2Children.add(levelOne22);
 
+        TreeNode levelOne23 = new TreeNode();
+        levelOne23.setId("0203");
+        levelOne23.setParentId("02");
+        levelOne23.setName("中间文件分配过晚导致回案");
+        levelOne23.setData("midfile_assign_late");
+        levelOne2Children.add(levelOne23);
+
+        TreeNode levelOne24 = new TreeNode();
+        levelOne24.setId("0204");
+        levelOne24.setParentId("02");
+        levelOne24.setName("通知书软扫或回调失败");
+        levelOne24.setData("notice_softscan_fail");
+        levelOne2Children.add(levelOne24);
+
+        TreeNode levelOne25 = new TreeNode();
+        levelOne25.setId("0205");
+        levelOne25.setParentId("02");
+        levelOne25.setName("授权通知书发出事件记录异常");
+        levelOne25.setData("warranty_event_exception");
+        levelOne2Children.add(levelOne25);
+
+        TreeNode levelOne26 = new TreeNode();
+        levelOne26.setId("0206");
+        levelOne26.setParentId("02");
+        levelOne26.setName("分案视未通知书发出事件记录异常");
+        levelOne26.setData("division_event_exception");
+        levelOne2Children.add(levelOne26);
+
+        TreeNode levelOne27 = new TreeNode();
+        levelOne27.setId("0207");
+        levelOne27.setParentId("02");
+        levelOne27.setName("已结案件缺失结案日期");
+        levelOne27.setData("division_event_exception");
+        levelOne2Children.add(levelOne27);
+
         levelOne2.setChildren(levelOne2Children);
 
         TreeNode levelOne3 = new TreeNode();
@@ -94,10 +129,28 @@ public class Utilitycontroller {
 
         levelOne4.setChildren(levelOne4Children);
 
+
+        TreeNode levelOne5 = new TreeNode();
+        List<TreeNode> levelOne5Children = new ArrayList<>();
+        levelOne5.setId("05");
+        levelOne5.setParentId("");
+        levelOne5.setName("案源配送");
+
+        TreeNode levelOne51 = new TreeNode();
+        levelOne5.setId("0501");
+        levelOne5.setParentId("05");
+        levelOne5.setName("优先审查数据重复处理");
+        levelOne5.setData("priority_audit_data_repeat");
+        levelOne5Children.add(levelOne51);
+
+
+        levelOne5.setChildren(levelOne5Children);
+
         rtnList.add(levelOne1);
         rtnList.add(levelOne2);
         rtnList.add(levelOne3);
         rtnList.add(levelOne4);
+        rtnList.add(levelOne5);
         return rtnList;
     }
 }

@@ -8,6 +8,7 @@ import com.gwssi.devops.utilitypage.model.RtnData;
 import com.gwssi.devops.utilitypage.model.RtnDataList;
 import com.gwssi.devops.utilitypage.util.BusinessConstant;
 import com.gwssi.devops.utilitypage.config.PathConfig;
+import com.gwssi.devops.utilitypage.util.UtilityServiceInvoke;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -60,66 +61,45 @@ public class UtilityMultithreadScheduleTask {
         mailHelperBuilder.sendSimpleMessage(javaMailSender, "idea测试邮件","收到内||容没？？？");
     }
 
+    @Async
+    @Scheduled(cron = "0 15 1 ? * *")// 每天上午1:15触发
+    public void bizMidfileAssignLateMonitor() {//中间文件分配过晚导致回案
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig,BusinessConstant.BIZ_MIDFILE_ASSIGN_LATE,"bizMidfileAssignLate");
+    }
 
     @Async
-    //@Scheduled(fixedDelay = 2000)
-    @Scheduled(cron = "0 15 2 ? * *")//"0 15 10 ? * *" 每天上午10:15触发
-    public void authCaseFivebookMissMonitor() {
-        Map<String, String> paramMap = new HashMap<>();
-        String login_flowid = "" + UUID.randomUUID();
-        paramMap.put("username", pathConfig.getMainAppLoginUsername());
-        paramMap.put("password", pathConfig.getMainAppLoginPassword());
-        paramMap.put("login_flowid", login_flowid);
-        paramMap.put("success_keyword", "<a href=\"javascript:void(0)\">案件审查</a>");
-        CloseableHttpClient httpClient;
-        try {
-            httpClient = HttpRequstUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
-        } catch (IOException e) {
-            log.error("登陆系统异常:"+pathConfig.getMainAppLoginUri());
-            e.printStackTrace();
-            return ;
-        }
-        paramMap = new HashMap<String, String>();
-        paramMap.put("select-key:monitor_key", BusinessConstant.BIZ_AUTH_CASE_FIVEBOOK_MISS);
-        String xmlRtnData;
-        try {
-            xmlRtnData = HttpRequstUtil.sessionRequest(httpClient,pathConfig.getMainAppMonitorUri(),paramMap);
-            //log.info(xmlRtnData);
-        } catch (IOException e) {
-            log.error("获取监控数据异常:"+pathConfig.getMainAppMonitorUri()+";参数:"+paramMap.toString());
-            e.printStackTrace();
-            return ;
-        }
-
-        //XML转为JAVA对象
-        RtnDataList rtnDataList = (RtnDataList) XmlHelerBuilder.convertXmlToObject(RtnDataList.class, xmlRtnData);
-        if(rtnDataList == null){
-            log.info("返回的xml解析完毕后结果为空");
-            return ;
-        }
-        List<RtnData> bizDataList = rtnDataList.getBizDataList();
-        if(bizDataList == null){
-            log.info("返回的xml解析完毕后业务数据为空");
-            return ;
-        }
-        //log.info(rtnDataList.toString());
-        StringBuilder resultBui = new StringBuilder();
-        for (RtnData rtnData : bizDataList){
-            String bizXmlData = XmlHelerBuilder.convertObjectToXml(rtnData);
-            //log.info("****************bizXmlData="+bizXmlData);
-            if(bizXmlData.indexOf("<rtnData/>") != -1){//空白数据
-                continue;
-            }
-            int idx = bizXmlData.indexOf("<rtnData>");
-            //log.info("****************idx="+idx);
-            if(idx ==-1){
-                continue;
-            }
-            bizXmlData = bizXmlData.substring(idx);
-            resultBui.append(bizXmlData);
-        }
-        String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
-        String targetPath = pathConfig.getShareDisk()+File.separator+currDate+File.separator+"authCaseFivebookMiss";
-        FileHelperUtil.appendContentToFile(targetPath+ File.separator+"authCaseFivebookMiss",resultBui.toString());
+    @Scheduled(cron = "0 30 1 ? * *")// 每天上午1:30触发
+    public void bizWarrantyEventExceptionMonitor() {//授权通知书发出事件记录异常
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig,BusinessConstant.BIZ_WARRANTY_EVENT_EXCEPTION,"bizWarrantyEventException");
     }
+    @Async
+    @Scheduled(cron = "0 45 1 ? * *")// 每天上午1:45触发
+    public void bizDivisionEventExceptionMonitor() {//分案视未通知书发出事件记录异常
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig,BusinessConstant.BIZ_DIVISION_EVENT_EXCEPTION,"bizDivisionEventException");
+    }
+
+    @Async
+    @Scheduled(cron = "0 0 2 ? * *")// 每天上午2:00触发
+    public void bizOverCaseDateBlackMonitor() {//已结案案件结案日期为空
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig,BusinessConstant.BIZ_OVER_CASE_DATE_BLACK,"bizOverCaseDateBlack");
+    }
+
+    @Async
+    @Scheduled(cron = "0 0/15 * * * ?")// 15分钟触发一次
+    public void bizNoticeSoftscanFailMonitor() {//通知书软扫失败或软扫回调失败
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig,BusinessConstant.BIZ_NOTICE_SOFTSCAN_FAIL,"bizNoticeSoftscanFail");
+    }
+
+    @Async
+    @Scheduled(cron = "0 15 2 ? * *")//"0 15 2 ? * *" 每天上午2:15触发
+    public void authCaseFivebookMissMonitor() {//授权案件五书缺失
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig,BusinessConstant.BIZ_AUTH_CASE_FIVEBOOK_MISS,"authCaseFivebookMiss");
+    }
+
+    @Async
+    @Scheduled(cron = "0 30 2 ? * *")//"0 15 2 ? * *" 每天上午2:30触发
+    public void caseStateExceptionMonitor() {//当前状态表和电子文件夹状态不对应
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig,BusinessConstant.BIZ_CASE_STATE_EXCEPTION,"caseStateException");
+    }
+
 }

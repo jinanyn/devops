@@ -9,10 +9,12 @@ import com.gwssi.devops.utilitypage.config.PathConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.*;
 
 @Slf4j
@@ -24,62 +26,54 @@ public class DataMonitorController {
 
     @ResponseBody
     @RequestMapping(value = "/caseStateException", method = RequestMethod.GET)
-    public List<CaseInfo> caseStateExceptionData(@RequestParam("parentId") String parentId) {
-        log.info("parentId="+parentId);
-        List<CaseInfo> rtnList = new ArrayList<>();
-
-        CaseInfo caseInfo = new CaseInfo();
-        caseInfo.setShenqingh("201920183421");
-        caseInfo.setPatentName("一种名称_111");
-        caseInfo.setExaminer("101341_张三");
-        caseInfo.setComments("这是从后台获取的数据1");
-        rtnList.add(caseInfo);
-
-        caseInfo = new CaseInfo();
-        caseInfo.setShenqingh("201920183422");
-        caseInfo.setPatentName("一种名称_222");
-        caseInfo.setExaminer("101342_李四");
-        caseInfo.setComments("这是从后台获取的数据2");
-        rtnList.add(caseInfo);
-
-        caseInfo = new CaseInfo();
-        caseInfo.setShenqingh("201920183423");
-        caseInfo.setPatentName("一种名称_333");
-        caseInfo.setExaminer("101343_王五");
-        caseInfo.setComments("这是从后台获取的数据3");
-        rtnList.add(caseInfo);
-
-        caseInfo = new CaseInfo();
-        caseInfo.setShenqingh("201920183424");
-        caseInfo.setPatentName("一种名称_444");
-        caseInfo.setExaminer("101344_赵六");
-        caseInfo.setComments("这是从后台获取的数据4");
-        rtnList.add(caseInfo);
-
-        return rtnList;
+    public List<CaseInfo> caseStateExceptionData(@RequestParam("viewDate") String viewDate) {
+        return this.loadFileData(viewDate, "caseStateException");
     }
 
     @ResponseBody
     @RequestMapping(value = "/authCaseFivebookMiss", method = RequestMethod.GET)
     public List<CaseInfo> authCaseFivebookMiss(@RequestParam("viewDate") String viewDate) {
+        return this.loadFileData(viewDate, "authCaseFivebookMiss");
+    }
+
+    private List<CaseInfo> loadFileData(String viewDate, String bizName) {
         List<CaseInfo> rtnList = new ArrayList<>();
-        if(StringUtils.isEmpty(viewDate)){
-            viewDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+        if (StringUtils.isEmpty(viewDate)) {
+            viewDate = DateFormatUtils.format(new Date(), "yyyyMMdd") + "-";
         }
-        String fullPathName = pathConfig.getShareDisk() + File.separator + viewDate + File.separator + "authCaseFivebookMiss" + File.separator + "authCaseFivebookMiss";
-        String content = FileHelperUtil.readContentFromFile(fullPathName);
-        if(StringUtils.isEmpty(content)){
+        Date startDate = null;
+        Date endDate = null;
+        String[] dateArr = viewDate.split("-");
+        try {
+            startDate = DateUtils.parseDate(dateArr[0], new String[]{"yyyyMMdd"});
+            if (dateArr.length > 1) {
+                endDate = DateUtils.parseDate(dateArr[1], new String[]{"yyyyMMdd"});
+            } else {
+                endDate = startDate;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
             return rtnList;
         }
-        RtnDataList rtnDataList = (RtnDataList) XmlHelerBuilder.convertXmlToObject(RtnDataList.class, "<context>" + content + "</context>");
-        if (rtnDataList != null) {
-            List<RtnData> bizDataList = rtnDataList.getBizDataList();
-            if (bizDataList != null && bizDataList.size() > 0) {
-                for (RtnData rtnData : bizDataList) {
-                    CaseInfo caseInfo = new CaseInfo();
-                    caseInfo.setShenqingh(rtnData.getShenqingh());
-                    caseInfo.setComments(rtnData.getCnt());
-                    rtnList.add(caseInfo);
+        while (startDate.getTime() <= endDate.getTime()) {
+            viewDate = DateFormatUtils.format(startDate, "yyyyMMdd");
+            startDate = DateUtils.addDays(startDate, 1);
+            String fullPathName = pathConfig.getShareDisk() + File.separator + viewDate + File.separator + bizName + File.separator + bizName;
+            String content = FileHelperUtil.readContentFromFile(fullPathName);
+            if (StringUtils.isEmpty(content)) {
+                continue;
+            }
+            RtnDataList rtnDataList = (RtnDataList) XmlHelerBuilder.convertXmlToObject(RtnDataList.class, "<context>" + content + "</context>");
+            if (rtnDataList != null) {
+                List<RtnData> bizDataList = rtnDataList.getBizDataList();
+                if (bizDataList != null && bizDataList.size() > 0) {
+                    for (RtnData rtnData : bizDataList) {
+                        CaseInfo caseInfo = new CaseInfo();
+                        caseInfo.setShenqingh(rtnData.getShenqingh());
+                        caseInfo.setComments(rtnData.getCnt());
+                        rtnList.add(caseInfo);
+                    }
                 }
             }
         }

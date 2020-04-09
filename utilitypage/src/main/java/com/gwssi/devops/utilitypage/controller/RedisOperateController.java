@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping({"utility/redisOperate/"})
 public class RedisOperateController {
-   @Autowired
+    @Autowired
     private RedisUtil redisUtil;
 
     @RequestMapping(value = {"getRedisKeyValue"}, method = {RequestMethod.POST})
@@ -26,11 +26,11 @@ public class RedisOperateController {
             log.info("redisKey为空");
             throw new RuntimeException("redisKey为空");
         }
-       Object value = this.redisUtil.get(redisKey);
+        Object value = this.redisUtil.get(redisKey);
 
         Map map = new HashMap();
         map.put("result", "success");
-       // map.put("data", value.toString());
+        map.put("data", value.toString());
         return map;
     }
 }
