@@ -1,6 +1,6 @@
 package com.gwssi.devops.utilitypage.util;
 
-import cn.gwssi.http.HttpRequstUtil;
+import cn.gwssi.http.HttpRequestUtil;
 import cn.gwssi.util.FileHelperUtil;
 import cn.gwssi.xml.XmlHelerBuilder;
 import com.gwssi.devops.utilitypage.config.PathConfig;
@@ -12,8 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +31,7 @@ public class UtilityServiceInvoke {
         paramMap.put("success_keyword", "<a href=\"javascript:void(0)\">案件审查</a>");
         CloseableHttpClient httpClient;
         try {
-            httpClient = HttpRequstUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
+            httpClient = HttpRequestUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
         } catch (IOException e) {
             log.error("登陆系统异常:"+pathConfig.getMainAppLoginUri());
             e.printStackTrace();
@@ -43,7 +41,7 @@ public class UtilityServiceInvoke {
         paramMap.put("select-key:monitor_key", monitorKey);
         String xmlRtnData;
         try {
-            xmlRtnData = HttpRequstUtil.sessionRequest(httpClient,pathConfig.getMainAppMonitorUri(),paramMap);
+            xmlRtnData = HttpRequestUtil.sessionRequest(httpClient,pathConfig.getMainAppMonitorUri(),paramMap);
             //log.info(xmlRtnData);
         } catch (IOException e) {
             log.error("获取监控数据异常:"+pathConfig.getMainAppMonitorUri()+";参数:"+paramMap.toString());
@@ -94,7 +92,7 @@ public class UtilityServiceInvoke {
         paramMap.put("success_keyword", "<a href=\"javascript:void(0)\">案件审查</a>");
         CloseableHttpClient httpClient;
         try {
-            httpClient = HttpRequstUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
+            httpClient = HttpRequestUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
         } catch (IOException e) {
             log.error("登陆系统异常:"+pathConfig.getMainAppLoginUri());
             e.printStackTrace();
@@ -106,7 +104,7 @@ public class UtilityServiceInvoke {
         paramMap.put("select-key:placeholder", placeholder);
         String xmlRtnData;
         try {
-            xmlRtnData = HttpRequstUtil.sessionRequest(httpClient,pathConfig.getMainAppHandleUri(),paramMap);
+            xmlRtnData = HttpRequestUtil.sessionRequest(httpClient,pathConfig.getMainAppHandleUri(),paramMap);
             //log.info(xmlRtnData);
         } catch (IOException e) {
             log.error("获取监控数据异常:"+pathConfig.getMainAppMonitorUri()+";参数:"+paramMap.toString());
