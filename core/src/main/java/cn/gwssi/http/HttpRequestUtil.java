@@ -22,9 +22,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class HttpRequstUtil {
+public class HttpRequestUtil {
 
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(HttpRequstUtil.class);
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(HttpRequestUtil.class);
     /**
      * 登录返回CloseableHttpClient
      *
