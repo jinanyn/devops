@@ -30,7 +30,7 @@ public class RedisOperateController {
 
         Map map = new HashMap();
         map.put("result", "success");
-        map.put("data", value.toString());
+        map.put("data", value==null?"没有此key或此key数据为空":value.toString());
         return map;
     }
 }
