@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>新型</title>
+    <title>运维</title>
     <link rel="stylesheet" href="elementui/index.css"/>
 </head>
 <body>
@@ -14,10 +14,12 @@
                         placeholder="输入关键字进行过滤"
                         v-model="filterText">
                 </el-input>
+
                 <el-tree
                         class="filter-tree"
                         :data="menuData"
                         :props="defaultProps"
+                        default-expand-all
                         :filter-node-method="filterNode"
                         @node-click="menuClickNode"
                         ref="tree">
@@ -128,6 +130,8 @@
                 }else{
                     //console.log('不是叶子节点');
                 }
+            },
+            treeRenderContent(h, { node, data, store }) {
             },
             addTab(menuNode) {
                 let newTabName = menuNode.data.id + '';

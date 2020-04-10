@@ -45,7 +45,7 @@
                 let formData = new FormData();
                 formData.append("redisKey", this.mySumbitForm.redisKey);
                 axios.post('/utility/redisOperate/getRedisKeyValue', formData,).
-                then(response => (console.log(response.data)))
+                then(response => (this.mySumbitForm.redisVal=response.data.data))
                     .catch(function (error) { // 请求失败处理
                         console.log(error);
                     });
