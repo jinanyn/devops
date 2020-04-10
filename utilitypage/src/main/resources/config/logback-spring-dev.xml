@@ -79,7 +79,6 @@
 
     <logger name="druid.sql.Statement" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
-
     </logger>
 
 
