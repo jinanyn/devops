@@ -9,7 +9,7 @@
     <el-container style="height: 100%;" direction="vertical">
         <el-header>Header</el-header>
         <el-container>
-            <el-aside width="200px" style="border: 1px solid;">
+            <el-aside width="230px" style="border: 1px solid;">
                 <el-input
                         placeholder="输入关键字进行过滤"
                         v-model="filterText">
@@ -33,7 +33,7 @@
                             :label="item.title"
                             :name="item.name"
                     >
-                        <component :is=item.content v-if="true"></component>
+                        <component :is=item.content v-if="true" :menuid=item.name></component>
                     </el-tab-pane>
                 </el-tabs>
             </el-main>
@@ -110,7 +110,7 @@
         return str;
     }
 
-    var myVue = new Vue({
+    let myVue = new Vue({
         el: '#app',
         watch: {
             filterText(val) {
@@ -139,8 +139,8 @@
                 this.editableTabs.forEach((tab, index) => {
                     if (tab.name === newTabName){
                     isExist=true;
-                }
-            });
+                    }
+                });
                 if(!isExist){
                     this.editableTabs.push({
                         title: ''+menuNode.label+'',
@@ -190,6 +190,7 @@
         },
         components: {
             // 将组件加入组件库
+            'utility-common': 'url:./components/utility-common.vue',
             'cmyk-to-rgb': 'url:./components/cmyk-to-rgb.vue',
             'case-state-exception': 'url:./components/case-state-exception.vue',
             'auth-case-fivebook-miss': 'url:./components/auth-case-fivebook-miss.vue',
