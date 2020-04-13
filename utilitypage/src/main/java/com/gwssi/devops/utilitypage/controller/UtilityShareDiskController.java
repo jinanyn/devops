@@ -2,6 +2,7 @@ package com.gwssi.devops.utilitypage.controller;
 
 import cn.gwssi.util.FileHelperUtil;
 import cn.gwssi.xml.XmlHelerBuilder;
+import com.gwssi.devops.utilitypage.config.AppConfig;
 import com.gwssi.devops.utilitypage.config.PathConfig;
 import com.gwssi.devops.utilitypage.mail.MailHelperBuilder;
 import com.gwssi.devops.utilitypage.model.*;
@@ -29,15 +30,21 @@ public class UtilityShareDiskController {
     @Autowired
     private PathConfig pathConfig;
     @Autowired
+    private AppConfig appConfig;
+    @Autowired
     private MailHelperBuilder mailHelperBuilder;
 
     @RequestMapping(value = {"checkShareDiskState"}, method = {RequestMethod.GET})
     public List<ServerInfo> checkShareDiskState(@RequestParam("viewDate") String viewDate) throws IOException {
+        if(!"prod".equals(appConfig.getRunMode())){
+            log.info("服务器共享存储检测生产环境才能使用");
+            throw new RuntimeException("生产环境才能使用");
+        }
         List<ServerInfo> serverInfoList = new ArrayList<>();
         if (StringUtils.isEmpty(viewDate)) {
             viewDate = DateFormatUtils.format(new Date(), "yyyyMMdd") + "-";
         }else if("realtimeCheck".equals(viewDate)){
-            UtilityServiceInvoke.checkShareDiskState(pathConfig, mailHelperBuilder);//服务器共享存储访问正常
+            return UtilityServiceInvoke.checkShareDiskState_realtime(pathConfig);//服务器共享存储访问正常
         }
         Date startDate = null;
         Date endDate = null;
