@@ -53,7 +53,7 @@ public class Utilitycontroller {
         levelOne21.setId("0201");
         levelOne21.setParentId("02");
         levelOne21.setName("案件状态异常");
-        levelOne21.setData("case-state-exception");
+        levelOne21.setData("utility-common");
         levelOne2Children.add(levelOne21);
 
         TreeNode levelOne22 = new TreeNode();
