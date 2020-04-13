@@ -75,7 +75,8 @@
                     })
                     .then(response => (this.tableData = response.data))
                     .catch(function (error) { // 请求失败处理
-                        console.log(error);
+                        //console.log(error);
+                        alert(error.response.data.message);
                     });
             }
         },
