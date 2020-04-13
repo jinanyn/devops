@@ -106,7 +106,7 @@ public class Utilitycontroller {
         List<TreeNode> levelOne3Children = new ArrayList<>();
         levelOne3.setId("03");
         levelOne3.setParentId("-1");
-        levelOne3.setName("服务器状态");
+        levelOne3.setName("服务器相关");
 
         TreeNode levelOne31 = new TreeNode();
         levelOne31.setId("0301");
@@ -114,6 +114,20 @@ public class Utilitycontroller {
         levelOne31.setName("weblogic健康状态");
         levelOne31.setData("weblogic-health-state");
         levelOne3Children.add(levelOne31);
+
+        TreeNode levelOne32 = new TreeNode();
+        levelOne32.setId("0302");
+        levelOne32.setParentId("03");
+        levelOne32.setName("共享存储检测");
+        levelOne32.setData("check-share-disk-state");
+        levelOne3Children.add(levelOne32);
+
+        TreeNode levelOne33 = new TreeNode();
+        levelOne33.setId("0303");
+        levelOne33.setParentId("03");
+        levelOne33.setName("软扫日志搜索");
+        levelOne33.setData("softscan-log-search");
+        levelOne3Children.add(levelOne33);
 
         levelOne3.setChildren(levelOne3Children);
 

@@ -2,8 +2,10 @@ package com.gwssi.devops.utilitypage.util;
 
 import cn.gwssi.http.HttpRequestUtil;
 import cn.gwssi.util.FileHelperUtil;
+import cn.gwssi.util.ShellExecUtil;
 import cn.gwssi.xml.XmlHelerBuilder;
 import com.gwssi.devops.utilitypage.config.PathConfig;
+import com.gwssi.devops.utilitypage.mail.MailHelperBuilder;
 import com.gwssi.devops.utilitypage.model.CaseInfo;
 import com.gwssi.devops.utilitypage.model.RtnData;
 import com.gwssi.devops.utilitypage.model.RtnDataList;
@@ -21,8 +23,8 @@ import java.util.*;
 @Slf4j
 public class UtilityServiceInvoke {
 
-    public static List<RtnData> commonBizMonitorProcess(PathConfig pathConfig,String monitorKey,String bizFolder){
-        List<RtnData> rtnList= new ArrayList<>();
+    public static List<RtnData> commonBizMonitorProcess(PathConfig pathConfig, String monitorKey, String bizFolder) {
+        List<RtnData> rtnList = new ArrayList<>();
         Map<String, String> paramMap = new HashMap<>();
         String login_flowid = "" + UUID.randomUUID();
         paramMap.put("username", pathConfig.getMainAppLoginUsername());
@@ -33,7 +35,7 @@ public class UtilityServiceInvoke {
         try {
             httpClient = HttpRequestUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
         } catch (IOException e) {
-            log.error("登陆系统异常:"+pathConfig.getMainAppLoginUri());
+            log.error("登陆系统异常:" + pathConfig.getMainAppLoginUri());
             e.printStackTrace();
             return rtnList;
         }
@@ -41,36 +43,36 @@ public class UtilityServiceInvoke {
         paramMap.put("select-key:monitor_key", monitorKey);
         String xmlRtnData;
         try {
-            xmlRtnData = HttpRequestUtil.sessionRequest(httpClient,pathConfig.getMainAppMonitorUri(),paramMap);
+            xmlRtnData = HttpRequestUtil.sessionRequest(httpClient, pathConfig.getMainAppMonitorUri(), paramMap);
             //log.info(xmlRtnData);
         } catch (IOException e) {
-            log.error("获取监控数据异常:"+pathConfig.getMainAppMonitorUri()+";参数:"+paramMap.toString());
+            log.error("获取监控数据异常:" + pathConfig.getMainAppMonitorUri() + ";参数:" + paramMap.toString());
             e.printStackTrace();
             return rtnList;
         }
 
         //XML转为JAVA对象
         RtnDataList rtnDataList = (RtnDataList) XmlHelerBuilder.convertXmlToObject(RtnDataList.class, xmlRtnData);
-        if(rtnDataList == null){
+        if (rtnDataList == null) {
             log.info("返回的xml解析完毕后结果为空");
             return rtnList;
         }
         List<RtnData> bizDataList = rtnDataList.getBizDataList();
-        if(bizDataList == null){
+        if (bizDataList == null) {
             log.info("返回的xml解析完毕后业务数据为空");
             return rtnList;
         }
         //log.info(rtnDataList.toString());
         StringBuilder resultBui = new StringBuilder();
-        for (RtnData rtnData : bizDataList){
+        for (RtnData rtnData : bizDataList) {
             String bizXmlData = XmlHelerBuilder.convertObjectToXml(rtnData);
             //log.info("****************bizXmlData="+bizXmlData);
-            if(bizXmlData.indexOf("<rtnData/>") != -1){//空白数据
+            if (bizXmlData.indexOf("<rtnData/>") != -1) {//空白数据
                 continue;
             }
             int idx = bizXmlData.indexOf("<rtnData>");
             //log.info("****************idx="+idx);
-            if(idx ==-1){
+            if (idx == -1) {
                 continue;
             }
             rtnList.add(rtnData);
@@ -78,12 +80,12 @@ public class UtilityServiceInvoke {
             resultBui.append(bizXmlData);
         }
         String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
-        String targetPath = pathConfig.getShareDisk()+ File.separator+currDate+File.separator+bizFolder;
-        FileHelperUtil.appendContentToFile(targetPath+ File.separator+bizFolder,resultBui.toString());
+        String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + bizFolder;
+        FileHelperUtil.appendContentToFile(targetPath + File.separator + bizFolder, resultBui.toString());
         return rtnList;
     }
 
-    public static void commonBizHandleProcess(PathConfig pathConfig,String monitorKey,String monitorVal,String placeholder){
+    public static void commonBizHandleProcess(PathConfig pathConfig, String monitorKey, String monitorVal, String placeholder) {
         Map<String, String> paramMap = new HashMap<>();
         String login_flowid = "" + UUID.randomUUID();
         paramMap.put("username", pathConfig.getMainAppLoginUsername());
@@ -94,9 +96,9 @@ public class UtilityServiceInvoke {
         try {
             httpClient = HttpRequestUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
         } catch (IOException e) {
-            log.error("登陆系统异常:"+pathConfig.getMainAppLoginUri());
+            log.error("登陆系统异常:" + pathConfig.getMainAppLoginUri());
             e.printStackTrace();
-            return ;
+            return;
         }
         paramMap = new HashMap<String, String>();
         paramMap.put("select-key:monitor_key", monitorKey);
@@ -104,16 +106,16 @@ public class UtilityServiceInvoke {
         paramMap.put("select-key:placeholder", placeholder);
         String xmlRtnData;
         try {
-            xmlRtnData = HttpRequestUtil.sessionRequest(httpClient,pathConfig.getMainAppHandleUri(),paramMap);
+            xmlRtnData = HttpRequestUtil.sessionRequest(httpClient, pathConfig.getMainAppHandleUri(), paramMap);
             //log.info(xmlRtnData);
         } catch (IOException e) {
-            log.error("获取监控数据异常:"+pathConfig.getMainAppMonitorUri()+";参数:"+paramMap.toString());
+            log.error("获取监控数据异常:" + pathConfig.getMainAppMonitorUri() + ";参数:" + paramMap.toString());
             e.printStackTrace();
-            return ;
+            return;
         }
     }
 
-    public static List<CaseInfo> loadFileData(PathConfig pathConfig,String viewDate, String bizName) {
+    public static List<CaseInfo> loadFileData(PathConfig pathConfig, String viewDate, String bizName) {
         List<CaseInfo> rtnList = new ArrayList<>();
         if (StringUtils.isEmpty(viewDate)) {
             viewDate = DateFormatUtils.format(new Date(), "yyyyMMdd") + "-";
@@ -155,5 +157,51 @@ public class UtilityServiceInvoke {
             }
         }
         return rtnList;
+    }
+
+    public static void checkShareDiskState(PathConfig pathConfig, MailHelperBuilder mailHelperBuilder) {
+        Set<String> shellCmdSet = new HashSet<>();
+        shellCmdSet.add("ssh 10.50.168.1 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.2 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.3 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.4 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.5 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.6 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.7 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.8 -p 12306 df -h /XXZNSC");
+
+        shellCmdSet.add("ssh 10.50.168.23 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.24 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.25 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.26 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.27 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.28 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.29 -p 12306 df -h /XXZNSC");
+        shellCmdSet.add("ssh 10.50.168.30 -p 12306 df -h /XXZNSC");
+        shellCmdSet.parallelStream().forEach(v -> shellCmdMethod(v, pathConfig, mailHelperBuilder));
+    }
+
+    public static void shellCmdMethod(String shellCmd, PathConfig pathConfig, MailHelperBuilder mailHelperBuilder) {
+        try {
+            List<String> rtnStrList = ShellExecUtil.runShell(shellCmd, 3L);
+            //rtnStrList.forEach(v->log.info(v));
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            StringBuilder strBui = new StringBuilder();
+            String ip = shellCmd.substring(4, 16).trim();
+            strBui.append("<server>");
+            strBui.append(FileHelperUtil.LINE_SEPARATOR);
+            strBui.append("<ip>" + ip + "</ip>");
+            strBui.append(FileHelperUtil.LINE_SEPARATOR);
+            strBui.append("<visitTime>" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + "</visitTime>");
+            strBui.append(FileHelperUtil.LINE_SEPARATOR);
+            strBui.append("</server>");
+            strBui.append(FileHelperUtil.LINE_SEPARATOR);
+            String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+            String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "serverShareDiskState";
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + "serverShareDiskState", strBui.toString());
+            mailHelperBuilder.sendSimpleMessage("新型共享存储访问异常", "异常服务器：" + ip);
+        }
     }
 }

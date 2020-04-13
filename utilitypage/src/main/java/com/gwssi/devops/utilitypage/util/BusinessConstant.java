@@ -16,7 +16,7 @@ public class BusinessConstant {
 
     public static final String BIZ_OVER_CASE_DATE_BLACK="100006";//已结案案件结案日期为空
 
-    public static final String BIZ_AUTH_CASE_FIVEBOOK_MISS6="100000";//授权案件五书缺失
+    public static final String SERVER_SHARE_DISK_STATE="100007";//服务器共享存储状态
 
     public static final String BIZ_AUTH_CASE_FIVEBOOK_MISS7="100000";//授权案件五书缺失
 

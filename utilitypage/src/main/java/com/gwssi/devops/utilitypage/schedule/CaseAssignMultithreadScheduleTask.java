@@ -27,8 +27,6 @@ public class CaseAssignMultithreadScheduleTask {
     private PathConfig pathConfig;
     @Autowired
     private MailHelperBuilder mailHelperBuilder;
-    @Autowired
-    private JavaMailSender javaMailSender;
     @Async
     @Scheduled(cron = "0 45 20 ? * *")// 每天晚上20:45触发
     //@Scheduled(cron = "0 0/2 * * * ?")// 2分钟触发一次
@@ -46,7 +44,7 @@ public class CaseAssignMultithreadScheduleTask {
                 sqhBui.append(rtnData.getShenqingh());
             }
             UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.PRIORITY_AUDIT_DATA_REPEAT,sqhBui.toString(),"shenqingh");
-            mailHelperBuilder.sendSimpleMessage(javaMailSender,"发明案源gl_yxsc_ajscb表数据重复处理","本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
+            mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
         }
     }
 }

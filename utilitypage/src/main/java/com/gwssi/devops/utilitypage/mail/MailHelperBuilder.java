@@ -15,9 +15,16 @@ public class MailHelperBuilder {
 
     @Autowired
     private MailConfig mailConfig;
+    @Autowired
+    private JavaMailSender javaMailSender;
 
-    public void sendSimpleMessage(JavaMailSender javaMailSender, String subject, String text) {
-        String reciver = mailConfig.getReciver();
+    public void sendSimpleMessage( String subject, String text,String... recivers) {
+        String reciver = "";
+        if(recivers == null || recivers.length ==0){
+            reciver = mailConfig.getReciver();
+        }else {
+            reciver = recivers[0];
+        }
         if(StringUtils.isEmpty(reciver)){
             return ;
         }
