@@ -1,5 +1,8 @@
 package com.gwssi.devops.utilitypage.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BusinessConstant {
     public static final String BIZ_AUTH_CASE_FIVEBOOK_MISS="100000";//授权案件五书缺失
 
@@ -26,4 +29,10 @@ public class BusinessConstant {
 
 
     public static final String PRIORITY_AUDIT_DATA_REPEAT="200001";//发明案源配送中优先审查数据重复处理
+
+    public static final Map<String,String> MENU_BIZ_MAP = new HashMap<>();
+
+    static {
+        MENU_BIZ_MAP.put("0201", "caseStateException");
+    }
 }
