@@ -75,8 +75,8 @@ public class UtilityMultithreadScheduleTask {
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig,BusinessConstant.BIZ_OVER_CASE_DATE_BLACK,"overCaseDateBlack");
     }
 
-    @Async
-    @Scheduled(cron = "0 0/15 * * * ?")// 15分钟触发一次
+    //@Async
+    //@Scheduled(cron = "0 0/15 * * * ?")// 15分钟触发一次
     public void bizNoticeSoftscanFailMonitor() {//通知书软扫失败或软扫回调失败
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig,BusinessConstant.BIZ_NOTICE_SOFTSCAN_FAIL,"noticeSoftscanFail");
     }
