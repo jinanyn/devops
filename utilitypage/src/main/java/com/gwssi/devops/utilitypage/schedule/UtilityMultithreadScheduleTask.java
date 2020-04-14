@@ -61,43 +61,43 @@ public class UtilityMultithreadScheduleTask {
     @Async
     @Scheduled(cron = "0 15 1 ? * *")// 每天上午1:15触发
     public void bizMidfileAssignLateMonitor() {//中间文件分配过晚导致回案
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_MIDFILE_ASSIGN_LATE, "midfileAssignLate");
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_MIDFILE_ASSIGN_LATE, "midfileAssignLate",mailHelperBuilder);
     }
 
     @Async
     @Scheduled(cron = "0 30 1 ? * *")// 每天上午1:30触发
     public void bizWarrantyEventExceptionMonitor() {//授权通知书发出事件记录异常
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_WARRANTY_EVENT_EXCEPTION, "warrantyEventException");
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_WARRANTY_EVENT_EXCEPTION, "warrantyEventException",mailHelperBuilder);
     }
 
     @Async
     @Scheduled(cron = "0 45 1 ? * *")// 每天上午1:45触发
     public void bizDivisionEventExceptionMonitor() {//分案视未通知书发出事件记录异常
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_DIVISION_EVENT_EXCEPTION, "divisionEventException");
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_DIVISION_EVENT_EXCEPTION, "divisionEventException",mailHelperBuilder);
     }
 
     @Async
     @Scheduled(cron = "0 0 2 ? * *")// 每天上午2:00触发
     public void bizOverCaseDateBlackMonitor() {//已结案案件结案日期为空
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_OVER_CASE_DATE_BLACK, "overCaseDateBlack");
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_OVER_CASE_DATE_BLACK, "overCaseDateBlack",mailHelperBuilder);
     }
 
     //@Async
-    //@Scheduled(cron = "0 0/15 * * * ?")// 15分钟触发一次
+    //@Scheduled(cron = "0 0/ * * * ?")// 15分钟触发一次
     public void bizNoticeSoftscanFailMonitor() {//通知书软扫失败或软扫回调失败
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_NOTICE_SOFTSCAN_FAIL, "noticeSoftscanFail");
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_NOTICE_SOFTSCAN_FAIL, "noticeSoftscanFail",mailHelperBuilder);
     }
 
     @Async
     @Scheduled(cron = "0 15 2 ? * *")//"0 15 2 ? * *" 每天上午2:15触发
     public void authCaseFivebookMissMonitor() {//授权案件五书缺失
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_AUTH_CASE_FIVEBOOK_MISS, "authCaseFivebookMiss");
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_AUTH_CASE_FIVEBOOK_MISS, "authCaseFivebookMiss",mailHelperBuilder);
     }
 
     @Async
     @Scheduled(cron = "0 30 2 ? * *")//"0 15 2 ? * *" 每天上午2:30触发
     public void caseStateExceptionMonitor() {//当前状态表和电子文件夹状态不对应
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_CASE_STATE_EXCEPTION, "caseStateException");
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_CASE_STATE_EXCEPTION, "caseStateException",mailHelperBuilder);
     }
 
     @Async

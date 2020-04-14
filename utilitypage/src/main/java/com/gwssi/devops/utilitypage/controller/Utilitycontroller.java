@@ -67,7 +67,7 @@ public class Utilitycontroller {
         levelOne23.setId("0203");
         levelOne23.setParentId("02");
         levelOne23.setName("中间文件分配过晚导致回案");
-        levelOne23.setData("midfile_assign_late");
+        levelOne23.setData("utility-common");
         levelOne2Children.add(levelOne23);
 
         TreeNode levelOne24 = new TreeNode();
@@ -81,21 +81,21 @@ public class Utilitycontroller {
         levelOne25.setId("0205");
         levelOne25.setParentId("02");
         levelOne25.setName("授权通知书发出事件记录异常");
-        levelOne25.setData("warranty_event_exception");
+        levelOne25.setData("utility-common");
         levelOne2Children.add(levelOne25);
 
         TreeNode levelOne26 = new TreeNode();
         levelOne26.setId("0206");
         levelOne26.setParentId("02");
         levelOne26.setName("分案视未通知书发出事件记录异常");
-        levelOne26.setData("division_event_exception");
+        levelOne26.setData("utility-common");
         levelOne2Children.add(levelOne26);
 
         TreeNode levelOne27 = new TreeNode();
         levelOne27.setId("0207");
         levelOne27.setParentId("02");
         levelOne27.setName("已结案件缺失结案日期");
-        levelOne27.setData("division_event_exception");
+        levelOne27.setData("utility-common");
         levelOne2Children.add(levelOne27);
 
         levelOne2.setChildren(levelOne2Children);
