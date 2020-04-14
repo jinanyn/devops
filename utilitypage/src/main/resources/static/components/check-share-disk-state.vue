@@ -41,6 +41,7 @@
                     label="检测时间">
             </el-table-column>
         </el-table>
+        <el-dialog :visible.sync="tipVisible" title="消息提示"><p>{{tipMessage}}</p></el-dialog>
     </div>
 </template>
 
@@ -52,7 +53,9 @@
                 tableData: [],
                 myQueryForm: {
                     viewDate:initViewData
-                }
+                },
+                tipVisible:false,
+                tipMessage:''
             }
         },
         methods: {
@@ -69,15 +72,17 @@
                 this.$refs[formName].resetFields();
             },
             getDataFromServer(myParams){
+                //this.tipVisible = true;
                 axios
                     .get('/utility/server/checkShareDiskState', {
                         params: myParams
                     })
                     .then(response => (this.tableData = response.data))
-                    .catch(function (error) { // 请求失败处理
-                        //console.log(error);
-                        alert(error.response.data.message);
-                    });
+                    //.catch(error => (this.tipVisible = true,this.tipMessage=error.response.data.message));
+                    .catch(error => (this.$message({
+                        message: error.response.data.message,
+                        type: 'error'
+                    })));
             }
         },
         mounted() {
