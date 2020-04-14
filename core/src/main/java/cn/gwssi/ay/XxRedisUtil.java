@@ -1,21 +1,28 @@
-package cn.gwssi.redis;
+package cn.gwssi.ay;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public final class RedisUtil
+public final class XxRedisUtil
 {
 
     @Autowired
+    @Resource(name = "redisXxTemplate")
+    private StringRedisTemplate template;
+
     private RedisTemplate<String, Object> redisTemplate;
+
+
 
     public boolean expire(String key, long time)
     {

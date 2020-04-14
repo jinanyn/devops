@@ -26,6 +26,12 @@ public class PathConfig
     private String mainAppHandleUri;
 
     private String shareDisk;
-
     private String templateDistributeCmd;
+
+    private String AYAppLoginUsername;
+    private String AYAppLoginUri;
+    private String AYAppLoginPassword;
+    private String AYAppMonitorUri;
+    private String AYAppHandleUri;
+
 }

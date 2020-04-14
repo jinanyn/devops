@@ -1,4 +1,4 @@
-package cn.gwssi.redis;
+package cn.gwssi.ay;
 
 import com.google.gson.Gson;
 import org.springframework.data.redis.serializer.RedisSerializer;
