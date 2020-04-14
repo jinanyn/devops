@@ -29,7 +29,7 @@ public class BusinessConstant {
 
 
     public static final String PRIORITY_AUDIT_DATA_REPEAT="200001";//发明案源配送中优先审查数据重复处理
-    public static final String PRIORITY_UPDATE_YONGHU_CA="200002";
+    public static final String PRIORITY_UPDATE_YONGHU_CA="200002 ";
     public static final Map<String,String> MENU_BIZ_MAP = new HashMap<>();
 
     static {
