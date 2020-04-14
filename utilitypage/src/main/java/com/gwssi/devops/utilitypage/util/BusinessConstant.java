@@ -55,5 +55,9 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100011","当前状态表和电子文件夹状态不对应");
         MONITOR_BIZ_DESC_MAP.put("100099","服务器共享存储状态");
         MONITOR_BIZ_DESC_MAP.put("200001","发明案源配送中优先审查数据重复处理");
+
+        System.out.println("aaaaa");
     }
+
+
 }
