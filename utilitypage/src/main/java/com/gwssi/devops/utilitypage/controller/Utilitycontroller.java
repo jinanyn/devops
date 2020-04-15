@@ -187,7 +187,6 @@ public class Utilitycontroller {
         levelOne52.setData("ay-yonghu-state");
         levelOne5Children.add(levelOne52);
 
-
         TreeNode levelOne53 = new TreeNode();
         levelOne53.setId("0503");
         levelOne53.setParentId("05");
