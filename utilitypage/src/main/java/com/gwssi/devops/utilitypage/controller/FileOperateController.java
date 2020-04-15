@@ -82,7 +82,17 @@ public class FileOperateController {
         return map;
     }
 
-    @RequestMapping(value = {"downloadFile"}, method = {RequestMethod.GET})
+    @RequestMapping(value = {"serverFiledownload"}, method = {RequestMethod.GET})
+    public Map<String, String> serverFiledownload(@RequestParam("serverFilePath") String serverFilePath) throws IOException {
+        if (StringUtils.isEmpty(serverFilePath)) {
+            log.info("服务器文件路径为空");
+            throw new RuntimeException("服务器文件路径为空");
+        }
+        Map<String, String> map = new HashMap();
+        return map;
+    }
+
+    @RequestMapping(value = {"downloadFile"}, method = {RequestMethod.POST})
     public void downloadFile(@RequestParam("serverFilePath") String serverFilePath, HttpServletResponse res) throws IOException {
         if (StringUtils.isEmpty(serverFilePath)) {
             log.info("服务器文件路径为空");

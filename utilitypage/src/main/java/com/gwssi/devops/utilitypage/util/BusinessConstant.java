@@ -26,6 +26,16 @@ public class BusinessConstant {
 
     public static final String BIZ_CASE_STATE_EXCEPTION="100011";//当前状态表和电子文件夹状态不对应
 
+    public static final String BIZ_OVER_CASE_DEPARTMENT_BLACK="100012";//结案案件处室代码为空
+
+    public static final String BIZ_REVIEW_CASE_DEPARTMENT_BLACK="100013";//在审案件处室代码为空
+
+    public static final String BIZ_PRIORITY_FEE_UNPAY="100014";//优先权要求费无原始费用，但界面展示费足
+
+    public static final String BIZ_NOTICE_SEND_NEW_STATE="100015";//发送通知书，但案件仍为新案
+
+    public static final String BIZ_NOTICE_UNSEND_REPLY_STATE="100016";//未发送通知书，但案件状态为初审待答复或者回案审查
+
     public static final String BIZ_UTILITY_SECTION_NOTICE="100098";//查询新型相关通知书
 
     public static final String BIZ_SERVER_SHARE_DISK_STATE="100099";//服务器共享存储状态
@@ -53,6 +63,12 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100009","驳回通知书发出事件记录异常");
         MONITOR_BIZ_DESC_MAP.put("100010","工作流异常办理登记书无法发出");
         MONITOR_BIZ_DESC_MAP.put("100011","当前状态表和电子文件夹状态不对应");
+        MONITOR_BIZ_DESC_MAP.put("100012","结案案件处室代码为空");
+        MONITOR_BIZ_DESC_MAP.put("100013","在审案件处室代码为空");
+        MONITOR_BIZ_DESC_MAP.put("100014","优先权要求费无原始费用，但界面展示费足");
+        MONITOR_BIZ_DESC_MAP.put("100015","发送通知书，但案件仍为新案");
+        MONITOR_BIZ_DESC_MAP.put("100016","未发送通知书，但案件状态为初审待答复或者回案审查");
+
         MONITOR_BIZ_DESC_MAP.put("100099","服务器共享存储状态");
         MONITOR_BIZ_DESC_MAP.put("200001","发明案源配送中优先审查数据重复处理");
 

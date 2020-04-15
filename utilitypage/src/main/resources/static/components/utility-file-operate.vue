@@ -29,6 +29,7 @@
             <el-row>
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('mySumbitForm')">提交</el-button>
+                    <el-button type="primary" @click="downloadFile('mySumbitForm')">文件下载</el-button>
                     <el-button @click="resetForm('mySumbitForm')">重置</el-button>
                 </el-form-item>
             </el-row>
@@ -87,6 +88,13 @@
                         console.log(error);
                     });
 
+            },
+            downloadFile(formName){
+                axios.get('/utility/fileOperate/serverFiledownload?serverFilePath='+this.mySumbitForm.serverFilePath).
+                then(response => (window.open(response.data)))
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error.response.data.message);
+                    });
             }
         },
         mounted() {

@@ -59,25 +59,25 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
-    @Scheduled(cron = "0 15 1 ? * *")// 每天上午1:15触发
+    @Scheduled(cron = "0 5 1 ? * *")// 每天上午1:05触发
     public void bizMidfileAssignLateMonitor() {//中间文件分配过晚导致回案
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_MIDFILE_ASSIGN_LATE, "midfileAssignLate",mailHelperBuilder);
     }
 
     @Async
-    @Scheduled(cron = "0 30 1 ? * *")// 每天上午1:30触发
+    @Scheduled(cron = "0 10 1 ? * *")// 每天上午1:10触发
     public void bizWarrantyEventExceptionMonitor() {//授权通知书发出事件记录异常
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_WARRANTY_EVENT_EXCEPTION, "warrantyEventException",mailHelperBuilder);
     }
 
     @Async
-    @Scheduled(cron = "0 45 1 ? * *")// 每天上午1:45触发
+    @Scheduled(cron = "0 15 1 ? * *")// 每天上午1:15触发
     public void bizDivisionEventExceptionMonitor() {//分案视未通知书发出事件记录异常
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_DIVISION_EVENT_EXCEPTION, "divisionEventException",mailHelperBuilder);
     }
 
     @Async
-    @Scheduled(cron = "0 0 2 ? * *")// 每天上午2:00触发
+    @Scheduled(cron = "0 20 1 ? * *")// 每天上午1:20触发
     public void bizOverCaseDateBlackMonitor() {//已结案案件结案日期为空
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_OVER_CASE_DATE_BLACK, "overCaseDateBlack",mailHelperBuilder);
     }
@@ -89,15 +89,69 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
-    @Scheduled(cron = "0 15 2 ? * *")//"0 15 2 ? * *" 每天上午2:15触发
+    @Scheduled(cron = "0 25 1 ? * *")// 每天上午1:25触发
     public void authCaseFivebookMissMonitor() {//授权案件五书缺失
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_AUTH_CASE_FIVEBOOK_MISS, "authCaseFivebookMiss",mailHelperBuilder);
     }
 
     @Async
-    @Scheduled(cron = "0 30 2 ? * *")//"0 15 2 ? * *" 每天上午2:30触发
+    @Scheduled(cron = "0 30 1 ? * *")// 每天上午1:30触发
+    public void reconfirmFillingDateInconformity() {//重新确定申请日通知书发出申请日未变更
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_RECONFIRM_FILLING_DATE_INCONFORMITY, "reconfirmFillingDateInconformity",mailHelperBuilder);
+    }
+
+    @Async
+    @Scheduled(cron = "0 35 1 ? * *")// 每天上午1:35触发
+    public void bulletinBagFileMiss() {//公报袋数据缺失
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_BULLETIN_BAG_FILE_MISS, "bulletinBagFileMiss",mailHelperBuilder);
+    }
+
+    @Async
+    @Scheduled(cron = "0 40 1 ? * *")// 每天上午1:40触发
+    public void dismissEventException() {//驳回通知书发出事件记录异常
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_DISMISS_EVENT_EXCEPTION, "dismissEventException",mailHelperBuilder);
+    }
+
+    @Async
+    @Scheduled(cron = "0 45 1 ? * *")// 每天上午1:45触发
+    public void workflowExceptionRegisterUnsend() {//工作流异常办理登记书无法发出
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_WORKFLOW_EXCEPTION_REGISTER_UNSEND, "workflowExceptionRegisterUnsend",mailHelperBuilder);
+    }
+
+    @Async
+    @Scheduled(cron = "0 50 1 ? * *")// 每天上午1:50触发
     public void caseStateExceptionMonitor() {//当前状态表和电子文件夹状态不对应
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_CASE_STATE_EXCEPTION, "caseStateException",mailHelperBuilder);
+    }
+
+    @Async
+    @Scheduled(cron = "0 55 1 ? * *")// 每天上午1:55触发
+    public void overCaseDepartmentBlack() {//结案案件处室代码为空
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_OVER_CASE_DEPARTMENT_BLACK, "overCaseDepartmentBlack",mailHelperBuilder);
+    }
+
+    @Async
+    @Scheduled(cron = "0 0 2 ? * *")// 每天上午2:00触发
+    public void reviewCaseDepartmentBlack() {//在审案件处室代码为空
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_REVIEW_CASE_DEPARTMENT_BLACK, "reviewCaseDepartmentBlack",mailHelperBuilder);
+    }
+
+    @Async
+    @Scheduled(cron = "0 5 2 ? * *")// 每天上午2:05触发
+    public void priorityFeeUnpay() {//优先权要求费无原始费用，但界面展示费足
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_FEE_UNPAY, "priorityFeeUnpay",mailHelperBuilder);
+    }
+
+    @Async
+    @Scheduled(cron = "0 10 2 ? * *")// 每天上午2:10触发
+    public void noticeSendNewState() {//发送通知书，但案件仍为新案
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_NOTICE_SEND_NEW_STATE, "noticeSendNewState",mailHelperBuilder);
+    }
+
+    @Async
+    @Scheduled(cron = "0 15 2 ? * *")// 每天上午2:10触发
+    public void noticeUnsendReplyState() {//未发送通知书，但案件状态为初审待答复或者回案审查
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_NOTICE_UNSEND_REPLY_STATE, "noticeUnsendReplyState",mailHelperBuilder);
     }
 
     @Async
@@ -110,4 +164,6 @@ public class UtilityMultithreadScheduleTask {
         }
         UtilityServiceInvoke.checkShareDiskState(pathConfig,mailHelperBuilder);
     }
+
+
 }

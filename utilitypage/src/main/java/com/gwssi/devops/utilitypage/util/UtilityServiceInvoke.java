@@ -194,7 +194,7 @@ public class UtilityServiceInvoke {
             return rtnList;
         }
         NoticeInfoList noticeInfoList = new NoticeInfoList();
-        NoticeInfoList rtnDataList = (NoticeInfoList) XmlHelerBuilder.xmlToBean(xmlRtnData,noticeInfoList, NoticeInfo.class);
+        NoticeInfoList rtnDataList = XmlHelerBuilder.<NoticeInfoList>xmlToBean_generic(xmlRtnData,noticeInfoList, NoticeInfo.class);
 
         if (rtnDataList == null) {
             log.info("返回的xml解析完毕后结果为空");

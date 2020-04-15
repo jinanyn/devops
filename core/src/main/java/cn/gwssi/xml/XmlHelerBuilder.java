@@ -52,7 +52,7 @@ public class XmlHelerBuilder {
      * @param xmlStr xml数据
      * @return
      */
-    public static <T> NoticeInfoList<T> convertXmlToObject_1(NoticeInfoList<T> clazz, String xmlStr) {
+    public static <T> NoticeInfoList<T> xmlToBean_generic(NoticeInfoList<T> clazz, String xmlStr) {
         NoticeInfoList<T> xmlObject = null;
         Reader reader = null;
         //利用JAXBContext将类转为一个实例
@@ -76,6 +76,24 @@ public class XmlHelerBuilder {
 
         }
         return xmlObject;
+    }
+
+    /**
+     * @Description bean转成xml(泛型使用)
+     * @Param [t]
+     * @Return java.lang.String
+     */
+    public static <T> String beanToXml_generic(T t, Class c) throws JAXBException {
+        //获得 JAXBContext 类的新实例。参数为类的地址
+        JAXBContext context = JAXBContext.newInstance(t.getClass(),c);
+        //创建一个可以用来将 java 内容树转换为 XML 数据的 Marshaller 对象。
+        Marshaller m = context.createMarshaller();
+        //创建一个StringWriter流将接收到的对象流写入xml字符串
+        StringWriter sw = new StringWriter();
+        //调用marshal方法进行转换
+        m.marshal(t,sw);
+        //将读取到的StringWriter流转成String返回
+        return sw.toString();
     }
 
     /**
@@ -108,7 +126,7 @@ public class XmlHelerBuilder {
      * @Param [xml, t]
      * @Return T
      */
-    public static <T> T xmlToBean(String xml, T t, Class c) {
+    public static <T> T xmlToBean_generic(String xml, T t, Class c) {
         Reader reader = null;
         try {
             ////获得 JAXBContext 类的新实例。参数为类的地址
