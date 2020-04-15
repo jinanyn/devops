@@ -1,6 +1,6 @@
 package com.gwssi.devops.utilitypage.controller;
 
-import cn.gwssi.http.HttpRequstUtil;
+import cn.gwssi.http.HttpRequestUtil;
 import com.gwssi.devops.utilitypage.config.PathConfig;
 import com.gwssi.devops.utilitypage.util.BusinessConstant;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ public class AyOperateContorller {
         paramMap.put("success_keyword", "<a href=\"javascript:void(0)\">用户ca证书注销</a>");
         CloseableHttpClient httpClient;
         try {
-            httpClient = HttpRequstUtil.loginHttpClient(pathConfig.getAYAppLoginUri(), paramMap);
+            httpClient = HttpRequestUtil.loginHttpClient(pathConfig.getAYAppLoginUri(), paramMap);
         } catch (IOException e) {
             log.error("登陆系统异常:"+pathConfig.getAYAppLoginUri());
             e.printStackTrace();
@@ -57,7 +57,7 @@ public class AyOperateContorller {
         paramMap.put("select-key:placeholder", placeholder);
         String xmlRtnData;
         try {
-            xmlRtnData = HttpRequstUtil.sessionRequest(httpClient,pathConfig.getAYAppLoginUri(),paramMap);
+            xmlRtnData = HttpRequestUtil.sessionRequest(httpClient,pathConfig.getAYAppLoginUri(),paramMap);
             //log.info(xmlRtnData);
         } catch (IOException e) {
             log.error("获取监控数据异常:"+pathConfig.getAYAppLoginUri()+";参数:"+paramMap.toString());
