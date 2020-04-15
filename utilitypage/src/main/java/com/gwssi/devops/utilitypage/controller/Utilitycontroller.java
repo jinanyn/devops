@@ -143,6 +143,22 @@ public class Utilitycontroller {
         levelOne51.setData("priority_audit_data_repeat");
         levelOne5Children.add(levelOne51);
 
+
+        TreeNode levelOne52 = new TreeNode();
+        levelOne52.setId("0502");
+        levelOne52.setParentId("05");
+        levelOne52.setName("案源用户管理");
+        levelOne52.setData("ay-yonghu-state");
+        levelOne5Children.add(levelOne52);
+
+
+        TreeNode levelOne53 = new TreeNode();
+        levelOne53.setId("0503");
+        levelOne53.setParentId("05");
+        levelOne53.setName("案件审序查询");
+        levelOne53.setData("ay-ajshenxu-cx");
+        levelOne5Children.add(levelOne53);
+
         levelOne5.setChildren(levelOne5Children);
 
         rtnList.add(levelOne1);
