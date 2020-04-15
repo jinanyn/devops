@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>运维</title>
+    <title>新型</title>
     <link rel="stylesheet" href="elementui/index.css"/>
 </head>
 <body>
@@ -9,7 +9,7 @@
     <el-container style="height: 100%;" direction="vertical">
         <el-header>Header</el-header>
         <el-container>
-            <el-aside width="230px" style="border: 1px solid;">
+            <el-aside width="200px" style="border: 1px solid;">
                 <el-input
                         placeholder="输入关键字进行过滤"
                         v-model="filterText">
@@ -33,7 +33,7 @@
                             :label="item.title"
                             :name="item.name"
                     >
-                        <component :is=item.content v-if="true" :menuid=item.name></component>
+                        <component :is=item.content v-if="true"></component>
                     </el-tab-pane>
                 </el-tabs>
             </el-main>
@@ -110,7 +110,7 @@
         return str;
     }
 
-    let myVue = new Vue({
+    var myVue = new Vue({
         el: '#app',
         watch: {
             filterText(val) {
@@ -121,7 +121,7 @@
         methods: {
             filterNode(value, data) {
                 if (!value) return true;
-                return data.name.indexOf(value) !== -1;
+                return data.label.indexOf(value) !== -1;
             },
             menuClickNode(data, node, obj){
                 if(node.isLeaf){
@@ -131,16 +131,14 @@
                     //console.log('不是叶子节点');
                 }
             },
-            treeRenderContent(h, { node, data, store }) {
-            },
             addTab(menuNode) {
                 let newTabName = menuNode.data.id + '';
                 let isExist =false;
                 this.editableTabs.forEach((tab, index) => {
                     if (tab.name === newTabName){
                     isExist=true;
-                    }
-                });
+                }
+            });
                 if(!isExist){
                     this.editableTabs.push({
                         title: ''+menuNode.label+'',
@@ -190,15 +188,12 @@
         },
         components: {
             // 将组件加入组件库
-            'utility-common': 'url:./components/utility-common.vue',
             'cmyk-to-rgb': 'url:./components/cmyk-to-rgb.vue',
             'case-state-exception': 'url:./components/case-state-exception.vue',
             'auth-case-fivebook-miss': 'url:./components/auth-case-fivebook-miss.vue',
             'utility-file-operate': 'url:./components/utility-file-operate.vue',
             'utility-redis-operate': 'url:./components/utility-redis-operate.vue',
             'priority_audit_data_repeat': 'url:./components/priority_audit_data_repeat.vue',
-            'softscan-log-search':'url:./components/softscan-log-search.vue',
-            'check-share-disk-state':'url:./components/check-share-disk-state.vue',
             'weblogic-health-state': 'url:./components/weblogic-health-state.vue'
         }
     })
