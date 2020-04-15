@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.Charset;
 
-@Component
+@Component("xxGoogleGsonRedisSerializer")
 public class GoogleGsonRedisSerializer<T>
         implements RedisSerializer<T>
 {

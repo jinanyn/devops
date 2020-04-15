@@ -1,27 +1,28 @@
 package cn.gwssi.ay;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
-@Component
+@Component("ayRedisUtil")
 public final class AyRedisUtil
 {
 
-    @Resource(name = "redisAyTemplate")
-    private StringRedisTemplate redisTemplate;
+    @Autowired
+    private StringRedisTemplate redisAyTemplate;
     //private RedisTemplate<String, Object> redisTemplate;
 
     public Object getall(String key){
 
-        return this.redisTemplate.opsForHash().entries(key);
+        return this.redisAyTemplate.opsForHash().entries(key);
 
     }
 
     public Long  zrankaj(String key,String value){
 
-        return this.redisTemplate.opsForZSet().rank(key, value);
+        return this.redisAyTemplate.opsForZSet().rank(key, value);
 
     }
 }

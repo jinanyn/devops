@@ -19,7 +19,7 @@ public class PathUtil {
         return filePath.toString();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main1(String[] args) throws IOException {
         String rootPath = "C:\\Users\\yangning\\Desktop\\log\\ecode";
         String relativepPath = "/app/11_fmss/scgz/ajlb/dcaj/";
         PathUtil.createFolder(rootPath,relativepPath);
