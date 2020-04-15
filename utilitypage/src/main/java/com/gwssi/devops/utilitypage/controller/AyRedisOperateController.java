@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping({"utility/ayredisOperate/"})
 public class AyRedisOperateController {
     @Autowired
-    private AyRedisUtil redisUtil;
+    private AyRedisUtil ayRedisUtil;
 
     @RequestMapping(value = {"selectajsx"}, method = {RequestMethod.POST})
     public Map<String, String> getKeyValue(@RequestParam("shenqingh") String shenqingh,@RequestParam("shenchadydm") String shenchadydm) throws IOException {
@@ -30,7 +30,7 @@ public class AyRedisOperateController {
             log.info("shenchadydm为空");
             throw new RuntimeException("shenchadydm为空");
         }
-        Object value = this.redisUtil.zrankaj(shenqingh,shenchadydm);
+        Object value = this.ayRedisUtil.zrankaj(shenqingh,shenchadydm);
 
         Map map = new HashMap();
         log.debug("xxxx"+value.toString());
