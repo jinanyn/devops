@@ -16,14 +16,21 @@ public class Utilitycontroller {
     @RequestMapping(value="menuTreeData",method= RequestMethod.GET)
     public List<TreeNode> menuTreeData(@RequestParam("parentId") String parentId){
 
-        System.out.println("parentId="+parentId);
+        //System.out.println("parentId="+parentId);
         List<TreeNode> rtnList = new ArrayList<>();
+
+        TreeNode topOne = new TreeNode();
+        topOne.setId("-1");
+        topOne.setParentId("");
+        topOne.setName("新型审查");
+        List<TreeNode> topOneChildren = new ArrayList<>();
 
         TreeNode levelOne1 = new TreeNode();
         List<TreeNode> levelOne1Children = new ArrayList<>();
         levelOne1.setId("01");
-        levelOne1.setParentId("");
+        levelOne1.setParentId("-1");
         levelOne1.setName("程序处理");
+
 
         TreeNode levelOne11 = new TreeNode<String>();
         levelOne11.setId("0101");
@@ -34,18 +41,19 @@ public class Utilitycontroller {
 
         levelOne1.setChildren(levelOne1Children);
 
+        topOneChildren.add(levelOne1);
 
         TreeNode levelOne2 = new TreeNode();
         List<TreeNode> levelOne2Children = new ArrayList<>();
         levelOne2.setId("02");
-        levelOne2.setParentId("");
+        levelOne2.setParentId("-1");
         levelOne2.setName("数据监控");
 
         TreeNode levelOne21 = new TreeNode();
         levelOne21.setId("0201");
         levelOne21.setParentId("02");
         levelOne21.setName("案件状态异常");
-        levelOne21.setData("case-state-exception");
+        levelOne21.setData("utility-common");
         levelOne2Children.add(levelOne21);
 
         TreeNode levelOne22 = new TreeNode();
@@ -92,11 +100,13 @@ public class Utilitycontroller {
 
         levelOne2.setChildren(levelOne2Children);
 
+        topOneChildren.add(levelOne2);
+
         TreeNode levelOne3 = new TreeNode();
         List<TreeNode> levelOne3Children = new ArrayList<>();
         levelOne3.setId("03");
-        levelOne3.setParentId("");
-        levelOne3.setName("服务器状态");
+        levelOne3.setParentId("-1");
+        levelOne3.setName("服务器相关");
 
         TreeNode levelOne31 = new TreeNode();
         levelOne31.setId("0301");
@@ -105,7 +115,23 @@ public class Utilitycontroller {
         levelOne31.setData("weblogic-health-state");
         levelOne3Children.add(levelOne31);
 
+        TreeNode levelOne32 = new TreeNode();
+        levelOne32.setId("0302");
+        levelOne32.setParentId("03");
+        levelOne32.setName("共享存储检测");
+        levelOne32.setData("check-share-disk-state");
+        levelOne3Children.add(levelOne32);
+
+        TreeNode levelOne33 = new TreeNode();
+        levelOne33.setId("0303");
+        levelOne33.setParentId("03");
+        levelOne33.setName("软扫日志搜索");
+        levelOne33.setData("softscan-log-search");
+        levelOne3Children.add(levelOne33);
+
         levelOne3.setChildren(levelOne3Children);
+
+        topOneChildren.add(levelOne3);
 
         TreeNode levelOne4 = new TreeNode();
         List<TreeNode> levelOne4Children = new ArrayList<>();
@@ -129,12 +155,22 @@ public class Utilitycontroller {
 
         levelOne4.setChildren(levelOne4Children);
 
+        topOneChildren.add(levelOne4);
+
+        topOne.setChildren(topOneChildren);
+
+
+        TreeNode topTwo = new TreeNode();
+        topTwo.setId("-2");
+        topTwo.setParentId("");
+        topTwo.setName("案源配送");
+        List<TreeNode> topTwoChildren = new ArrayList<>();
 
         TreeNode levelOne5 = new TreeNode();
         List<TreeNode> levelOne5Children = new ArrayList<>();
         levelOne5.setId("05");
         levelOne5.setParentId("");
-        levelOne5.setName("案源配送");
+        levelOne5.setName("数据处理");
 
         TreeNode levelOne51 = new TreeNode();
         levelOne51.setId("0501");
@@ -145,11 +181,38 @@ public class Utilitycontroller {
 
         levelOne5.setChildren(levelOne5Children);
 
-        rtnList.add(levelOne1);
-        rtnList.add(levelOne2);
-        rtnList.add(levelOne3);
-        rtnList.add(levelOne4);
-        rtnList.add(levelOne5);
+        topTwoChildren.add(levelOne5);
+
+        topTwo.setChildren(topTwoChildren);
+
+        TreeNode topThree = new TreeNode();
+        topThree.setId("-3");
+        topThree.setParentId("");
+        topThree.setName("在线业务指导");
+        List<TreeNode> topThreeChildren = new ArrayList<>();
+
+        TreeNode levelOne6 = new TreeNode();
+        List<TreeNode> levelOne6Children = new ArrayList<>();
+        levelOne6.setId("06");
+        levelOne6.setParentId("-3");
+        levelOne6.setName("服务监控");
+
+        TreeNode levelOne61 = new TreeNode();
+        levelOne61.setId("0601");
+        levelOne61.setParentId("06");
+        levelOne61.setName("通知书下载测试");
+        levelOne61.setData("instruction_notice_download_test");
+        levelOne6Children.add(levelOne61);
+
+        levelOne6.setChildren(levelOne6Children);
+
+        topThreeChildren.add(levelOne6);
+
+        topThree.setChildren(topThreeChildren);
+
+        rtnList.add(topOne);
+        rtnList.add(topTwo);
+        rtnList.add(topThree);
         return rtnList;
     }
 }
