@@ -142,7 +142,7 @@ public class FileOperateController {
         return map;
     }
 
-    public static void main(String[] args)
+    public static void main1(String[] args)
             throws IOException {
         Path sourceFilePath = Paths.get("F:\\gzyq\\wushu\\2018215526598\\", new String[0]);
         Path targetFilePath = Paths.get("G:/gzyq/wushu/2018215526598/2019070514240735/", new String[0]);
