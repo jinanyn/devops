@@ -75,9 +75,16 @@ public class NoticeOperateController {
             throw new RuntimeException("执行查找结果异常");
         }
 
+        StringBuilder strBui = new StringBuilder();
+        rtnList.stream().forEach(v->{
+            if(strBui.length()>0){
+                strBui.append("\r\n");
+            }
+            strBui.append(v);
+        });
         Map<String,String> map = new HashMap<>();
         map.put("result", "success");
-        map.put("logPath", rtnList.toArray().toString());
+        map.put("logPath", strBui.toString());
         return map;
     }
 }
