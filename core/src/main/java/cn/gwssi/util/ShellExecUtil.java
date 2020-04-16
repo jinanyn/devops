@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class ShellExecUtil {
     public static List<String> runShell(String shStr, Long... timeOut)
             throws Exception {
-        List strList = new ArrayList();
+        List<String> strList = new ArrayList();
 
         Process process = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", shStr}, null, null);
 
