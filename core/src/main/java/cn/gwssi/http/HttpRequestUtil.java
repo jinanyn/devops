@@ -70,9 +70,10 @@ public class HttpRequestUtil {
 
     public static String sessionRequest(CloseableHttpClient closeableHttpClient, String uri, Map<String, String> reqParam) throws IOException {
         HttpPost httpPost = new HttpPost(uri);
-        // 设置请求和传输超时时间
+        // 设置连接超时时间30秒
+        //设置读取超时时间480秒
         RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(30000).setConnectTimeout(30000).build();
+                .setSocketTimeout(480000).setConnectTimeout(30000).build();
         httpPost.setConfig(requestConfig);
         UrlEncodedFormEntity entity = new UrlEncodedFormEntity(getParam(reqParam), "UTF-8");
         httpPost.setEntity(entity);

@@ -36,6 +36,12 @@ public class BusinessConstant {
 
     public static final String BIZ_NOTICE_UNSEND_REPLY_STATE="100016";//未发送通知书，但案件状态为初审待答复或者回案审查
 
+    public static final String BIZ_NOTICE_UPLOAD_NEW_STATE="100017";//通知书已上传，但案件仍为未处理新案
+
+    public static final String BIZ_PRIORITY_APPLY_UNHANGUP="100021";//在先申请该挂起未挂起
+
+    public static final String BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW="100022";//在先申请该国优视撤未国优视撤
+
     public static final String BIZ_UTILITY_SECTION_NOTICE="100098";//查询新型相关通知书
 
     public static final String BIZ_SERVER_SHARE_DISK_STATE="100099";//服务器共享存储状态
@@ -68,6 +74,9 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100014","优先权要求费无原始费用，但界面展示费足");
         MONITOR_BIZ_DESC_MAP.put("100015","发送通知书，但案件仍为新案");
         MONITOR_BIZ_DESC_MAP.put("100016","未发送通知书，但案件状态为初审待答复或者回案审查");
+        MONITOR_BIZ_DESC_MAP.put("100017","通知书已上传，但案件仍为未处理新案");
+        MONITOR_BIZ_DESC_MAP.put("100021","在先申请该挂起未挂起");
+        MONITOR_BIZ_DESC_MAP.put("100022","在先申请该国优视撤未国优视撤");
 
         MONITOR_BIZ_DESC_MAP.put("100099","服务器共享存储状态");
         MONITOR_BIZ_DESC_MAP.put("200001","发明案源配送中优先审查数据重复处理");

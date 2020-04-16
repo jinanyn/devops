@@ -3,6 +3,7 @@ package com.gwssi.devops.utilitypage.util;
 import cn.gwssi.http.HttpRequestUtil;
 import cn.gwssi.model.NoticeInfo;
 import cn.gwssi.model.NoticeInfoList;
+import cn.gwssi.util.ExceptionUtil;
 import cn.gwssi.util.FileHelperUtil;
 import cn.gwssi.util.ShellExecUtil;
 import cn.gwssi.xml.XmlHelerBuilder;
@@ -36,21 +37,22 @@ public class UtilityServiceInvoke {
             httpClient = HttpRequestUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
         } catch (IOException e) {
             log.error("登陆系统异常:" + pathConfig.getMainAppLoginUri());
-            e.printStackTrace();
+            log.error(ExceptionUtil.getMessage(e));
             return rtnList;
         }
         paramMap = new HashMap<String, String>();
         paramMap.put("select-key:monitor_key", monitorKey);
+        log.info("执行监控数据:" + pathConfig.getMainAppMonitorUri() + ";参数:" + paramMap.toString());
         String xmlRtnData;
         try {
             xmlRtnData = HttpRequestUtil.sessionRequest(httpClient, pathConfig.getMainAppMonitorUri(), paramMap);
             //log.info(xmlRtnData);
         } catch (IOException e) {
             log.error("获取监控数据异常:" + pathConfig.getMainAppMonitorUri() + ";参数:" + paramMap.toString());
-            e.printStackTrace();
+            log.error(ExceptionUtil.getMessage(e));
             return rtnList;
         }
-
+        log.info("获取监控结果:"+xmlRtnData);
         //XML转为JAVA对象
         RtnDataList rtnDataList = (RtnDataList) XmlHelerBuilder.convertXmlToObject(RtnDataList.class, xmlRtnData);
         if (rtnDataList == null) {
@@ -102,7 +104,7 @@ public class UtilityServiceInvoke {
             httpClient = HttpRequestUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
         } catch (IOException e) {
             log.error("登陆系统异常:" + pathConfig.getMainAppLoginUri());
-            e.printStackTrace();
+            log.error(ExceptionUtil.getMessage(e));
             return;
         }
         paramMap = new HashMap<String, String>();
@@ -115,7 +117,7 @@ public class UtilityServiceInvoke {
             //log.info(xmlRtnData);
         } catch (IOException e) {
             log.error("获取监控数据异常:" + pathConfig.getMainAppMonitorUri() + ";参数:" + paramMap.toString());
-            e.printStackTrace();
+            log.error(ExceptionUtil.getMessage(e));
             return;
         }
     }
@@ -136,8 +138,7 @@ public class UtilityServiceInvoke {
                 endDate = startDate;
             }
         } catch (ParseException e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
+            log.error(ExceptionUtil.getMessage(e));
             return rtnList;
         }
         while (startDate.getTime() <= endDate.getTime()) {
@@ -177,7 +178,7 @@ public class UtilityServiceInvoke {
             httpClient = HttpRequestUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
         } catch (IOException e) {
             log.error("登陆系统异常:" + pathConfig.getMainAppLoginUri());
-            e.printStackTrace();
+            log.error(ExceptionUtil.getMessage(e));
             return rtnList;
         }
         paramMap = new HashMap<String, String>();
@@ -190,7 +191,7 @@ public class UtilityServiceInvoke {
             //log.info(xmlRtnData);
         } catch (IOException e) {
             log.error("获取监控数据异常:" + pathConfig.getMainAppMonitorUri() + ";参数:" + paramMap.toString());
-            e.printStackTrace();
+            log.error(ExceptionUtil.getMessage(e));
             return rtnList;
         }
         NoticeInfoList noticeInfoList = new NoticeInfoList();
