@@ -90,11 +90,7 @@
 
             },
             downloadFile(formName){
-                axios.get('/utility/fileOperate/serverFiledownload?serverFilePath='+this.mySumbitForm.serverFilePath).
-                then(response => (window.open(response.data)))
-                    .catch(function (error) { // 请求失败处理
-                        console.log(error.response.data.message);
-                    });
+                window.open('/utility/fileOperate/serverFiledownload?serverFilePath='+this.mySumbitForm.serverFilePath);
             }
         },
         mounted() {

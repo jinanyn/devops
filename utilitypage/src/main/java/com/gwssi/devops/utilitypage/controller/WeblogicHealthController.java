@@ -1,6 +1,7 @@
 package com.gwssi.devops.utilitypage.controller;
 
 import cn.gwssi.http.HttpRequestUtil;
+import cn.gwssi.util.ExceptionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -25,8 +26,13 @@ import java.util.Set;
 @RequestMapping({"utility/weblogic/"})
 public class WeblogicHealthController {
 
+    public static void main(String[] args) {
+        WeblogicHealthController controller = new WeblogicHealthController();
+        controller.healthCheck();
+    }
+
     @RequestMapping(value = {"xxHealthCheck"}, method = {RequestMethod.GET})
-    public Map<String, String> healthCheck() throws IOException {
+    public Map<String, String> healthCheck()  {
         StringBuilder responseText = new StringBuilder();
         Set<Map<String, String>> serverInfoSet = this.buildServerInfoSet();
         for (Map<String, String> infoMap : serverInfoSet) {
@@ -42,7 +48,15 @@ public class WeblogicHealthController {
             paramMap.put("j_username", loginUserName);
             paramMap.put("j_password", loginPasswd);
             paramMap.put("success_keyword", "查看健康状况为 OK 的服务器列表");
-            CloseableHttpClient httpClient = HttpRequestUtil.loginHttpClient(loginUrl, paramMap);
+            log.info("loginUrl="+loginUri);
+            CloseableHttpClient httpClient = null;
+            try {
+                httpClient = HttpRequestUtil.loginHttpClient(loginUrl, paramMap);
+            } catch (IOException e) {
+                log.error(ExceptionUtil.getMessage(e));
+                responseText.append(serverAddress+":"+ExceptionUtil.getMessage(e));
+                continue;
+            }
 
             String bizUrl = serverAddress + bizUri;
             paramMap = new HashMap<String, String>();
@@ -51,7 +65,14 @@ public class WeblogicHealthController {
             paramMap.put("handle", "com.bea.console.handles.JMXHandle%28%22com.bea%3AName%3D" + dataSource + "%2CType%3Dweblogic.j2ee.descriptor.wl.JDBCDataSourceBean%2CParent%3D%5BxxznscDomain%5D%2FJDBCSystemResources%5B" + dataSource + "%5D%2CPath%3DJDBCResource%5B" + dataSource + "%5D%22%29");
 
             boolean flag = false;
-            String html = HttpRequestUtil.sessionRequest(httpClient, bizUrl, paramMap);
+            String html = null;
+            try {
+                html = HttpRequestUtil.sessionRequest(httpClient, bizUrl, paramMap);
+            } catch (IOException e) {
+                log.error(ExceptionUtil.getMessage(e));
+                responseText.append(serverAddress+":"+ExceptionUtil.getMessage(e));
+                continue;
+            }
             String resultOne = this.parseResponseResult_datasource(serverAddress, dataSource, html);//解析数据源连接情况
             if (org.apache.commons.lang.StringUtils.isNotBlank(resultOne)) {
                 responseText.append(resultOne);
@@ -62,7 +83,13 @@ public class WeblogicHealthController {
             paramMap.put("_nfpb", "true");
             paramMap.put("_pageLabel", "DomainMonitorHealthPage");
             paramMap.put("handle", "com.bea.console.handles.JMXHandle%28%22com.bea%3AName%3DxxznscDomain%2CType%3DDomain%22%29");
-            html = HttpRequestUtil.sessionRequest(httpClient, bizUrl, paramMap);
+            try {
+                html = HttpRequestUtil.sessionRequest(httpClient, bizUrl, paramMap);
+            } catch (IOException e) {
+                log.error(ExceptionUtil.getMessage(e));
+                responseText.append(serverAddress+":"+ExceptionUtil.getMessage(e));
+                continue;
+            }
             String resultTwo = this.parseResponseResult_healthCheck(serverAddress, html);
             if (StringUtils.isNotBlank(resultTwo)) {
                 responseText.append(resultTwo);
@@ -73,7 +100,13 @@ public class WeblogicHealthController {
                 responseText.append("--------------------------------------------------------------------------------------------------\r\n");
             }
             if (httpClient != null) {
-                httpClient.close();
+                try {
+                    httpClient.close();
+                } catch (IOException e) {
+                    log.error(ExceptionUtil.getMessage(e));
+                    responseText.append(ExceptionUtil.getMessage(e));
+                    continue;
+                }
             }
 
         }
@@ -145,6 +178,22 @@ public class WeblogicHealthController {
     public Set<Map<String, String>> buildServerInfoSet() {
         Set<Map<String, String>> serverInfoSet = new HashSet<Map<String, String>>();
         Map<String, String> infoMap = new HashMap<String, String>();
+        /*
+        String serverAddress = "http://10.50.168.8:7001";
+        infoMap.put("serverAddress", serverAddress);
+        String loginUri = "/console/j_security_check";
+        infoMap.put("loginUri", loginUri);
+        String loginUserName = "weblogic";
+        infoMap.put("loginUserName", loginUserName);
+        String loginPasswd = "G@sip02o18";
+        infoMap.put("loginPasswd", loginPasswd);
+        String bizUri = "/console/console.portal";
+        infoMap.put("bizUri", bizUri);
+        String dataSouce = "GWSSI";
+        infoMap.put("dataSouce", dataSouce);
+        serverInfoSet.add(infoMap);
+        */
+
         String serverAddress = "http://10.50.168.1:7001";
         infoMap.put("serverAddress", serverAddress);
         String loginUri = "/console/j_security_check";
@@ -253,9 +302,11 @@ public class WeblogicHealthController {
         serverAddress = "http://10.50.168.8:7001";
         infoMap.put("serverAddress", serverAddress);
         loginUri = "/console/j_security_check";
+        //loginUri = "/console/login/LoginForm.jsp";
         infoMap.put("loginUri", loginUri);
         loginUserName = "weblogic";
         infoMap.put("loginUserName", loginUserName);
+        //loginPasswd = "G@sip02o18";
         loginPasswd = "G@sip02o18";
         infoMap.put("loginPasswd", loginPasswd);
         bizUri = "/console/console.portal";
@@ -263,6 +314,7 @@ public class WeblogicHealthController {
         dataSouce = "GWSSI";
         infoMap.put("dataSouce", dataSouce);
         serverInfoSet.add(infoMap);
+
         return serverInfoSet;
     }
 }

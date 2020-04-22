@@ -87,6 +87,6 @@ public class Md5Util {
     }
 
 	public static void main1(String[] args) {
-		System.out.println(Md5Util.md5Code("370826"));
+		System.out.println(Md5Util.md5Code("G@sip02o18"));
 	}
 }

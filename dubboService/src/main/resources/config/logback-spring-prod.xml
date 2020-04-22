@@ -6,7 +6,7 @@
               value="[%d{MM/dd HH:mm:ss.SSS}][%thread][%highlight(%level)][%c{1}:%line]:[%method] || %m%n"/>
     <property name="FILE_LOG_PATTERN"
               value="[%d{MM/dd HH:mm:ss.SSS}][%thread][%level][%c{1}:%line]:[%method] || %m%n"/>
-    <property name="FILE" value="utilitypage"/>
+    <property name="FILE" value="dubboservice"/>
 
     <!-- 控制台输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

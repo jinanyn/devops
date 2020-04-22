@@ -43,8 +43,8 @@ public class NoticeOperateController {
     //public Map<String,String> findSoftscanLog(@RequestParam("ruansaopc") String ruansaopc,@RequestParam("minutes") String minutes) {
     public Map<String,String> findSoftscanLog(@RequestBody Map<String,Object> paramsMap) {
         if(!"prod".equals(appConfig.getRunMode())){
-            //log.info("服务器共享存储检测生产环境才能使用");
-            //throw new RuntimeException("生产环境才能使用");
+            log.info("服务器共享存储检测生产环境才能使用");
+            throw new RuntimeException("生产环境才能使用");
         }
         String ruansaopc = (String)paramsMap.get("ruansaopc");
         if(StringUtils.isEmpty(ruansaopc) || ruansaopc.trim().length() < 10){
