@@ -2,6 +2,7 @@ package com.gwssi.devops.utilitypage.controller;
 
 import cn.gwssi.util.PathUtil;
 import cn.gwssi.util.ShellExecUtil;
+import com.gwssi.devops.utilitypage.config.AppConfig;
 import com.gwssi.devops.utilitypage.config.PathConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -32,6 +33,8 @@ import java.util.Map;
 public class FileOperateController {
     @Autowired
     private PathConfig pathConfig;
+    @Autowired
+    private AppConfig appConfig;
 
     @RequestMapping(value = {"serverFileSubstitute"}, method = {RequestMethod.POST})
     @ResponseBody
@@ -83,24 +86,18 @@ public class FileOperateController {
     }
 
     @RequestMapping(value = {"serverFiledownload"}, method = {RequestMethod.GET})
-    public Map<String, String> serverFiledownload(@RequestParam("serverFilePath") String serverFilePath) throws IOException {
-        if (StringUtils.isEmpty(serverFilePath)) {
-            log.info("服务器文件路径为空");
-            throw new RuntimeException("服务器文件路径为空");
-        }
-        Map<String, String> map = new HashMap();
-        return map;
-    }
-
-    @RequestMapping(value = {"downloadFile"}, method = {RequestMethod.POST})
-    public void downloadFile(@RequestParam("serverFilePath") String serverFilePath, HttpServletResponse res) throws IOException {
+    public void serverFiledownload(@RequestParam("serverFilePath") String serverFilePath, HttpServletResponse res) throws IOException {
         if (StringUtils.isEmpty(serverFilePath)) {
             log.info("服务器文件路径为空");
             throw new RuntimeException("服务器文件路径为空");
         }
         res.setHeader("content-type", "application/octet-stream");
         res.setContentType("application/octet-stream");
+        if(serverFilePath.startsWith("/XXZNSC")){//特殊处理,只适应此服务
+            serverFilePath = serverFilePath.substring(7);
+        }
         Path filePath = Paths.get(serverFilePath, new String[0]);
+        log.info("cccc= "+filePath.getFileName().toString());
         res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filePath.getFileName().toString(), "UTF-8"));
         if (!Files.exists(filePath, new LinkOption[0])) {
             log.info("指定服务器文件不存在");
