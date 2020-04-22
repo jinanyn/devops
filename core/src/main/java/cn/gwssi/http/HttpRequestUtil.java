@@ -2,6 +2,7 @@ package cn.gwssi.http;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -17,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -50,12 +52,17 @@ public class HttpRequestUtil {
             }
             requestBuilder.addParameter(key, reqParam.get(key));
         }
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(30000).setConnectTimeout(30000).build();
+        //requestBuilder.addParameter("j_character_encoding", "UTF-8");
+        RequestConfig.Builder custom = RequestConfig.custom();
+        custom.setSocketTimeout(30000);
+        custom.setConnectTimeout(30000);
+        RequestConfig requestConfig = custom.build();
         requestBuilder.setConfig(requestConfig);
         HttpUriRequest login = requestBuilder.build();
         // httpclient访问登录网页,并得到响应对象
         CloseableHttpResponse response = httpClient.execute(login);
+        StatusLine statusLine = response.getStatusLine();
+        log.info("响应状态码:"+statusLine.getStatusCode());
         // 响应文本
         String content = EntityUtils.toString(response.getEntity());
         //log.info(content);
