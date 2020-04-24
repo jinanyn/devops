@@ -234,21 +234,21 @@ public class UtilityServiceInvoke {
     }
 
     public static void shellCmdMethod(String shellCmd, PathConfig pathConfig,StringBuilder strBui, MailHelperBuilder... mailHelperBuilder) {
+        String ip = shellCmd.substring(4, 16).trim();
+        strBui.append("<server>");
+        strBui.append(FileHelperUtil.LINE_SEPARATOR);
+        strBui.append("<ip>" + ip + "</ip>");
+        strBui.append(FileHelperUtil.LINE_SEPARATOR);
+        strBui.append("<visitTime>" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + "</visitTime>");
+        strBui.append(FileHelperUtil.LINE_SEPARATOR);
+
         try {
             List<String> rtnStrList = ShellExecUtil.runShell(shellCmd, 3L);
             //rtnStrList.forEach(v->log.info(v));
+            strBui.append("<state>正常</state>");
         } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
-            String ip = shellCmd.substring(4, 16).trim();
-            strBui.append("<server>");
-            strBui.append(FileHelperUtil.LINE_SEPARATOR);
-            strBui.append("<ip>" + ip + "</ip>");
-            strBui.append(FileHelperUtil.LINE_SEPARATOR);
-            strBui.append("<visitTime>" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + "</visitTime>");
-            strBui.append(FileHelperUtil.LINE_SEPARATOR);
-            strBui.append("</server>");
-            strBui.append(FileHelperUtil.LINE_SEPARATOR);
+            log.error(ExceptionUtil.getMessage(e));
+            strBui.append("<state>异常</state>");
             if(mailHelperBuilder != null && mailHelperBuilder.length > 0){
                 String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
                 String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "serverShareDiskState";
@@ -256,6 +256,9 @@ public class UtilityServiceInvoke {
                 mailHelperBuilder[0].sendSimpleMessage("新型共享存储访问异常", "异常服务器：" + ip);
             }
         }
+        strBui.append(FileHelperUtil.LINE_SEPARATOR);
+        strBui.append("</server>");
+        strBui.append(FileHelperUtil.LINE_SEPARATOR);
     }
 
     public static final  Set<String> UTILITY_SERVER_SET = new HashSet<>();
