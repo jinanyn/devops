@@ -167,8 +167,8 @@ public class UtilityMultithreadScheduleTask {
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW, "priorityApplyNationBestUnwithdraw",mailHelperBuilder);
     }
 
-    @Async
-    @Scheduled(fixedDelay = 60000)
+    //@Async
+    //@Scheduled(fixedDelay = 60000)
     public void serverShareDiskStateMonitor() {//服务器共享存储访问正常
         if(!"prod".equals(appConfig.getRunMode())){
             log.info("服务器共享存储检测生产环境才能使用");
@@ -178,5 +178,9 @@ public class UtilityMultithreadScheduleTask {
         UtilityServiceInvoke.checkShareDiskState(pathConfig,mailHelperBuilder);
     }
 
-
+    @Async
+    @Scheduled(cron = "0 30 6 ? * *")// 每天上午6:30触发
+    public void mvViewPtajcxNewFresh() {//物化视图view_ptajcx_new数据刷新监控
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_VIEW_PTAJCX_NEW_FRESH, "mvViewPtajcxNewFresh",mailHelperBuilder);
+    }
 }
