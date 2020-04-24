@@ -49,7 +49,17 @@ public class BusinessConstant {
     public static final String BIZ_SERVER_SHARE_DISK_STATE="100099";//服务器共享存储状态
 
     public static final String PRIORITY_AUDIT_DATA_REPEAT="200001";//发明案源配送中优先审查数据重复处理
-    public static final String PRIORITY_UPDATE_YONGHU_CA="200002   ";
+    public static final String PRIORITY_UPDATE_YONGHU_CA="200002";
+
+    public static final String BIZ_AJDH_ZAZTDT="100023";  //新型审查表案件状态为待回，但主表案件状态为“等待提案”或者“新案审查”
+    public static final String BIZ_AJDH_ZAHASC_WDF="100024";  //案件状态为待回，但主表案件状态为“回案审查”（无答复文件），需修改主表状态为初审待答复
+    public static final String BIZ_AJDH_ZAHASC_YDF="100025";  //案件状态为待回，但主表案件状态为“回案审查”（有答复文件），需修改新型审查表案件状态为未处理回案。
+    public static final String BIZ_AJDH_TZSCW="100026";  //审查表案件状态为待回，发出通知书非补正和审意，主表案件状态为其他情况
+
+    public static final String BIZ_AJDH_ZBZTBYZ="100027";  //新型审查表案件状态为回案，主表状态与新型状态不一致
+    public static final String BIZ_HASC_ZBZTCSDFXSC="100028";  //案件审查表的案件状态为“回案审查”，主表状态为“初审待答复”或者“新案审查”
+    public static final String BIZ_HASC_ZBZTQT="100029";  //件审查表的案件状态为“回案审查”，主表状态为其他情况
+
     public static final Map<String,String> MENU_BIZ_MAP = new HashMap<>();
     public static final Map<String,String> MONITOR_BIZ_DESC_MAP = new HashMap<>();
 
@@ -78,7 +88,16 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100016","未发送通知书，但案件状态为初审待答复或者回案审查");
         MONITOR_BIZ_DESC_MAP.put("100017","通知书已上传，但案件仍为未处理新案");
         MONITOR_BIZ_DESC_MAP.put("100021","在先申请该挂起未挂起");
-        MONITOR_BIZ_DESC_MAP.put("100022","在先申请该国优视撤未国优视撤");
+
+
+        MONITOR_BIZ_DESC_MAP.put("100023","型审查表案件状态为待回，但主表案件状态为等待提案或者新案审查");
+        MONITOR_BIZ_DESC_MAP.put("100024","案件状态为待回，但主表案件状态为“回案审查”（无答复文件）");
+        MONITOR_BIZ_DESC_MAP.put("100025","案件状态为待回，但主表案件状态为“回案审查”（有答复文件）");
+        MONITOR_BIZ_DESC_MAP.put("100026","审查表案件状态为待回，发出通知书非补正和审意，主表案件状态为其他情况");
+
+        MONITOR_BIZ_DESC_MAP.put("100027","审查表案件状态为回案，主表状态与新型状态不一致");
+        MONITOR_BIZ_DESC_MAP.put("100028","案件审查表的案件状态为“回案审查”，主表状态为“初审待答复”或者“新案审查”");
+        MONITOR_BIZ_DESC_MAP.put("100029","件审查表的案件状态为“回案审查”，主表状态为其他情况");
 
         MONITOR_BIZ_DESC_MAP.put("100097","物化视图view_ptajcx_new刷新数据");
         MONITOR_BIZ_DESC_MAP.put("100098","查询新型相关通知书");

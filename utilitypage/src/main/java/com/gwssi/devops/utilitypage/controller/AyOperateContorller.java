@@ -21,6 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("utility/ayOperate/")
 public class AyOperateContorller {
+    private static HttpRequestUtil HttpRequstUtil;
     @Autowired
     private PathConfig pathConfig;
     @RequestMapping(value = {"updatescyca"}, method = {RequestMethod.POST})
@@ -45,7 +46,7 @@ public class AyOperateContorller {
         paramMap.put("success_keyword", "<a href=\"javascript:void(0)\">用户ca证书注销</a>");
         CloseableHttpClient httpClient;
         try {
-            httpClient = HttpRequestUtil.loginHttpClient(pathConfig.getAYAppLoginUri(), paramMap);
+            httpClient = HttpRequstUtil.loginHttpClient(pathConfig.getAYAppLoginUri(), paramMap);
         } catch (IOException e) {
             log.error("登陆系统异常:"+pathConfig.getAYAppLoginUri());
             e.printStackTrace();
@@ -57,10 +58,10 @@ public class AyOperateContorller {
         paramMap.put("select-key:placeholder", placeholder);
         String xmlRtnData;
         try {
-            xmlRtnData = HttpRequestUtil.sessionRequest(httpClient,pathConfig.getAYAppLoginUri(),paramMap);
+            xmlRtnData = HttpRequstUtil.sessionRequest(httpClient,pathConfig.getAYAppMonitorUri(),paramMap);
             //log.info(xmlRtnData);
         } catch (IOException e) {
-            log.error("获取监控数据异常:"+pathConfig.getAYAppLoginUri()+";参数:"+paramMap.toString());
+            log.error("获取监控数据异常:"+pathConfig.getAYAppMonitorUri()+";参数:"+paramMap.toString());
             e.printStackTrace();
             return ;
         }
