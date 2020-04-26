@@ -54,7 +54,7 @@ public class WeblogicHealthController {
                 httpClient = HttpRequestUtil.loginHttpClient(loginUrl, paramMap);
             } catch (IOException e) {
                 log.error(ExceptionUtil.getMessage(e));
-                responseText.append(serverAddress+":"+ExceptionUtil.getMessage(e));
+                responseText.append(serverAddress+":"+ExceptionUtil.getMessage(e,true));
                 continue;
             }
 
@@ -70,7 +70,7 @@ public class WeblogicHealthController {
                 html = HttpRequestUtil.sessionRequest(httpClient, bizUrl, paramMap);
             } catch (IOException e) {
                 log.error(ExceptionUtil.getMessage(e));
-                responseText.append(serverAddress+":"+ExceptionUtil.getMessage(e));
+                responseText.append(serverAddress+":"+ExceptionUtil.getMessage(e,true));
                 continue;
             }
             String resultOne = this.parseResponseResult_datasource(serverAddress, dataSource, html);//解析数据源连接情况
@@ -87,7 +87,7 @@ public class WeblogicHealthController {
                 html = HttpRequestUtil.sessionRequest(httpClient, bizUrl, paramMap);
             } catch (IOException e) {
                 log.error(ExceptionUtil.getMessage(e));
-                responseText.append(serverAddress+":"+ExceptionUtil.getMessage(e));
+                responseText.append(serverAddress+":"+ExceptionUtil.getMessage(e,true));
                 continue;
             }
             String resultTwo = this.parseResponseResult_healthCheck(serverAddress, html);
@@ -104,7 +104,7 @@ public class WeblogicHealthController {
                     httpClient.close();
                 } catch (IOException e) {
                     log.error(ExceptionUtil.getMessage(e));
-                    responseText.append(ExceptionUtil.getMessage(e));
+                    responseText.append(ExceptionUtil.getMessage(e,true));
                     continue;
                 }
             }

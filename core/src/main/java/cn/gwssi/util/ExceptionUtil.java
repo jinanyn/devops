@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class ExceptionUtil {
-    public static String getMessage(Exception e) {
+    public static String getMessage(Exception e,Boolean... firstLine) {
         StringWriter sw = null;
         PrintWriter pw = null;
         try {
@@ -27,6 +27,11 @@ public class ExceptionUtil {
                 pw.close();
             }
         }
-        return sw.toString();
+        if(firstLine != null && firstLine.length > 0 && firstLine[0]){
+            String excepMsg = sw.toString();
+            return excepMsg.substring(0,excepMsg.indexOf("\r\n"));
+        }else{
+            return sw.toString();
+        }
     }
 }
