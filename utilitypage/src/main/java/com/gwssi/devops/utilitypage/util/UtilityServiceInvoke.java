@@ -165,6 +165,64 @@ public class UtilityServiceInvoke {
         return rtnList;
     }
 
+
+    public static List<CaseztInfo> loadFileData1(PathConfig pathConfig, String viewDate, String bizName) {
+        List<CaseztInfo> rtnList = new ArrayList<>();
+        if (StringUtils.isEmpty(viewDate)) {
+            viewDate = DateFormatUtils.format(new Date(), "yyyyMMdd") + "-";
+        }
+        Date startDate = null;
+        Date endDate = null;
+        String[] dateArr = viewDate.split("-");
+        try {
+            startDate = DateUtils.parseDate(dateArr[0], new String[]{"yyyyMMdd"});
+            if (dateArr.length > 1) {
+                endDate = DateUtils.parseDate(dateArr[1], new String[]{"yyyyMMdd"});
+            } else {
+                endDate = startDate;
+            }
+        } catch (ParseException e) {
+            log.error(ExceptionUtil.getMessage(e));
+            return rtnList;
+        }
+        while (startDate.getTime() <= endDate.getTime()) {
+            viewDate = DateFormatUtils.format(startDate, "yyyyMMdd");
+            startDate = DateUtils.addDays(startDate, 1);
+            String fullPathName = pathConfig.getShareDisk() + File.separator + viewDate + File.separator + bizName + File.separator + bizName;
+            String content = FileHelperUtil.readContentFromFile(fullPathName);
+            if (StringUtils.isEmpty(content)) {
+                continue;
+            }
+            RtnDataList rtnDataList = (RtnDataList) XmlHelerBuilder.convertXmlToObject(RtnDataList.class, "<context>" + content + "</context>");
+            if (rtnDataList != null) {
+                List<RtnData> bizDataList = rtnDataList.getBizDataList();
+                if (bizDataList != null && bizDataList.size() > 0) {
+                    for (RtnData rtnData : bizDataList) {
+                        CaseztInfo caseInfo = new CaseztInfo();
+                        caseInfo.setShenqingh(rtnData.getShenqingh());
+                        caseInfo.setAnjianywzt(rtnData.getAnjianywzt());
+                        caseInfo.setAnjianzt(rtnData.getAnjianzt());
+                        caseInfo.setCodename(rtnData.getCodename());
+                        caseInfo.setFawenr(rtnData.getFawenr());
+                        caseInfo.setGuaqibj(rtnData.getGuaqibj());
+                        caseInfo.setLiuchengzt(rtnData.getLiuchengzt());
+                        caseInfo.setShenchaydm(rtnData.getShenchaydm());
+                        caseInfo.setSuodingbj(rtnData.getSuodingbj());
+                        caseInfo.setXh(rtnData.getXh());
+                        caseInfo.setZantingbj(rtnData.getZantingbj());
+                        caseInfo.setZhongzhibj(rtnData.getZhongzhibj());
+                        caseInfo.setSuodingbj(rtnData.getSuodingbj());
+                        caseInfo.setTongzhislx(rtnData.getTongzhislx());
+                        caseInfo.setTongzhiszt(rtnData.getTongzhiszt());
+                        caseInfo.setRushensj(rtnData.getRushensj());
+                        rtnList.add(caseInfo);
+                    }
+                }
+            }
+        }
+        return rtnList;
+    }
+
     public static <T> List<T> queryDataList(PathConfig pathConfig, String monitorKey, String monitorVal, String placeholder) {
         List<T> rtnList = new ArrayList<>();
         Map<String, String> paramMap = new HashMap<>();

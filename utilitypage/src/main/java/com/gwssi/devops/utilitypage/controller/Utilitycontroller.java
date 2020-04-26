@@ -98,6 +98,79 @@ public class Utilitycontroller {
         levelOne27.setData("utility-common");
         levelOne2Children.add(levelOne27);
 
+        List<TreeNode> levelOne2_1Children = new ArrayList<>();
+        TreeNode levelOne28 = new TreeNode();
+        levelOne28.setId("0208");
+        levelOne28.setParentId("02");
+        levelOne28.setName("新型审查表案件状态为待回，但主表状态非初审待答复");
+        levelOne28.setData("aj-dhzt-yqqk1");
+        levelOne2Children.add(levelOne28);
+
+//        TreeNode levelOne28_1 = new TreeNode();
+//        levelOne28_1.setId("020801");
+//        levelOne28_1.setParentId("0208");
+//        levelOne28_1.setName("表案件状态为等待提案或者新案审查");
+//        levelOne28_1.setData("aj-dhzt-yqqk1");
+//        levelOne2_1Children.add(levelOne28_1);
+        //levelOne28.setChildren(levelOne2_1Children);
+
+//        TreeNode levelOne28_2 = new TreeNode();
+//        levelOne28_2.setId("020802");
+//        levelOne28_2.setParentId("0208");
+//        levelOne28_2.setName("主表案件状态为“回案审查”（无答复文件）,需修改主表状态为初审待答复");
+//        levelOne28_2.setData("aj-dhzt-yqqk2");
+ //       levelOne2_1Children.add(levelOne28_2);
+       // levelOne28.setChildren(levelOne2_1Children);
+
+//        TreeNode levelOne28_3 = new TreeNode();
+//        levelOne28_3.setId("020803");
+//        levelOne28_3.setParentId("0208");
+//        levelOne28_3.setName("主表案件状态为“回案审查”（有答复文件）,需修改新型审查表案件状态为未处理回案");
+//        levelOne28_3.setData("aj-dhzt-yqqk3");
+//        levelOne2_1Children.add(levelOne28_3);
+      //  levelOne28.setChildren(levelOne2_1Children);
+
+        TreeNode levelOne28_4 = new TreeNode();
+        levelOne28_4.setId("020804");
+        levelOne28_4.setParentId("0208");
+        levelOne28_4.setName("发出通知书非补正和审意,主表案件状态为其他情况");
+        levelOne28_4.setData("aj-dhzt-yqqk4");
+        levelOne2_1Children.add(levelOne28_4);
+        levelOne28.setChildren(levelOne2_1Children);
+
+
+        List<TreeNode> levelOne2_2Children = new ArrayList<>();
+        TreeNode levelOne29 = new TreeNode();
+        levelOne29.setId("0209");
+        levelOne29.setParentId("02");
+        levelOne29.setName("新型审查表案件状态为回案，主表状态与新型状态不一致");
+        levelOne29.setData("utility-common");
+        levelOne2Children.add(levelOne29);
+
+//        TreeNode levelOne29_1 = new TreeNode();
+//        levelOne29_1.setId("020901");
+//        levelOne29_1.setParentId("0209");
+//        levelOne29_1.setName("主表状态为“等待提案”或者“新案审查”");
+//        levelOne29_1.setData("aj-dhzt-yqqk1");
+//        levelOne2_2Children.add(levelOne29_1);
+//        levelOne29.setChildren(levelOne2_2Children);
+//
+//        TreeNode levelOne29_2 = new TreeNode();
+//        levelOne29_2.setId("020902");
+//        levelOne29_2.setParentId("0209");
+//        levelOne29_2.setName("主表状态为“初审待答复”或者“新案审查”");
+//        levelOne29_2.setData("aj-dhzt-yqqk2");
+//        levelOne2_2Children.add(levelOne29_2);
+//        levelOne29.setChildren(levelOne2_2Children);
+
+        TreeNode levelOne29_3 = new TreeNode();
+        levelOne29_3.setId("020903");
+        levelOne29_3.setParentId("0209");
+        levelOne29_3.setName("主表状态为其他情况");
+        levelOne29_3.setData("aj-dhzt-yqqk5");
+        levelOne2_2Children.add(levelOne29_3);
+        levelOne29.setChildren(levelOne2_2Children);
+
         levelOne2.setChildren(levelOne2Children);
 
         topOneChildren.add(levelOne2);
@@ -193,6 +266,13 @@ public class Utilitycontroller {
         levelOne53.setName("案件审序查询");
         levelOne53.setData("ay-ajshenxu-cx");
         levelOne5Children.add(levelOne53);
+
+        TreeNode levelOne54 = new TreeNode();
+        levelOne54.setId("0504");
+        levelOne54.setParentId("05");
+        levelOne54.setName("用户提案量上限修改");
+        levelOne54.setData("ay-yonghu-talsx");
+        levelOne5Children.add(levelOne54);
 
         levelOne5.setChildren(levelOne5Children);
 
