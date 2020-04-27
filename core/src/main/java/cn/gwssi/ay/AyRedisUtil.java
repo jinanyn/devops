@@ -12,17 +12,16 @@ public final class AyRedisUtil
 
     @Autowired
     private StringRedisTemplate redisAyTemplate;
-    //private RedisTemplate<String, Object> redisTemplate;
-
     public Object getall(String key){
 
         return this.redisAyTemplate.opsForHash().entries(key);
+    }
+    public Long  zrankaj(String key,String value){
+        return this.redisAyTemplate.opsForZSet().rank(key, value);
 
     }
 
-    public Long  zrankaj(String key,String value){
-
-        return this.redisAyTemplate.opsForZSet().rank(key, value);
-
+    public void setScytasx (String key,String value){
+        this.redisAyTemplate.opsForValue().set("SYS_CONFIG_SCYDCTASX_"+key, value);
     }
 }
