@@ -36,6 +36,7 @@
                 this.$refs[formName].resetFields();
             },
             submitForm(formName) {
+                this.$refs[formName].resetFields();
                 let formData = new FormData();
                 axios.get('/utility/weblogic/xxHealthCheck', formData,).
                 then(response => (this.mySumbitForm.checkResult=response.data.data))
