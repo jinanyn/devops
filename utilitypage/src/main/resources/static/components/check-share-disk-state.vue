@@ -32,8 +32,8 @@
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="name"
-                    label="服务器名称"
+                    prop="state"
+                    label="检测结果"
                     width="180">
             </el-table-column>
             <el-table-column
