@@ -27,6 +27,11 @@
                     width="180">
             </el-table-column>
             <el-table-column
+                    prop="rid"
+                    label="通知书主键"
+                    width="180">
+            </el-table-column>
+            <el-table-column
                     prop="shenqingh"
                     label="申请d号"
                     width="180">
