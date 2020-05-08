@@ -46,7 +46,7 @@ public class CaseAssignMultithreadScheduleTask {
             UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.PRIORITY_AUDIT_DATA_REPEAT,sqhBui.toString(),"shenqingh");
             mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
         }else{
-            mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次未发现需要处理的数据!!!");
+            //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次未发现需要处理的数据!!!");
         }
     }
 }
