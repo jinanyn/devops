@@ -29,7 +29,8 @@ public class ExceptionUtil {
         }
         if(firstLine != null && firstLine.length > 0 && firstLine[0]){
             String excepMsg = sw.toString();
-            return excepMsg.substring(0,excepMsg.indexOf("\r\n"));
+            Integer idx = excepMsg.indexOf(FileHelperUtil.LINE_SEPARATOR);
+            return excepMsg.substring(0,idx);
         }else{
             return sw.toString();
         }
