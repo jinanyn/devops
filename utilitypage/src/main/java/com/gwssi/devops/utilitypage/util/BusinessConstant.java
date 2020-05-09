@@ -42,6 +42,8 @@ public class BusinessConstant {
 
     public static final String BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW="100022";//在先申请该国优视撤未国优视撤
 
+    public static final String BIZ_INNER_FORM_DATA_WHITESPACE="100096";//内部表单存在空格数据
+
     public static final String BIZ_VIEW_PTAJCX_NEW_FRESH="100097";//物化视图view_ptajcx_new刷新数据
 
     public static final String BIZ_UTILITY_SECTION_NOTICE="100098";//查询新型相关通知书
@@ -99,6 +101,7 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100028","案件审查表的案件状态为“回案审查”，主表状态为“初审待答复”或者“新案审查”");
         MONITOR_BIZ_DESC_MAP.put("100029","件审查表的案件状态为“回案审查”，主表状态为其他情况");
 
+        MONITOR_BIZ_DESC_MAP.put("100096","内部表单存在空格数据");
         MONITOR_BIZ_DESC_MAP.put("100097","物化视图view_ptajcx_new刷新数据");
         MONITOR_BIZ_DESC_MAP.put("100098","查询新型相关通知书");
         MONITOR_BIZ_DESC_MAP.put("100099","服务器共享存储状态");

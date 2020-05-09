@@ -301,7 +301,7 @@ public class UtilityServiceInvoke {
         strBui.append(FileHelperUtil.LINE_SEPARATOR);
 
         try {
-            List<String> rtnStrList = ShellExecUtil.runShell(shellCmd, 3L);
+            List<String> rtnStrList = ShellExecUtil.runShell(shellCmd, 1L);
             //rtnStrList.forEach(v->log.info(v));
             strBui.append("<state>正常</state>");
         } catch (Exception e) {
