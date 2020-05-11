@@ -6,23 +6,24 @@
 	 http://www.springframework.org/schema/beans/spring-beans.xsd
      http://code.alibabatech.com/schema/dubbo
 	 http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
-
+    <!-- 关闭所有消费者启动时检查   -->
+    <dubbo:reference interface="***Service" check="false" />
+    <dubbo:consumer check="false" />
+    <!-- dubbo间的直连 -->
+    <dubbo:registry address="N/A" check="false" />
     <!-- 提供方应用信息，用于计算依赖关系 -->
     <dubbo:application name="dubbo-consumer" />
 
-    <!-- dubbo间的直连 -->
-    <dubbo:registry address="N/A" />
 
 
     <!-- 生成远程服务代理 -->
     <dubbo:reference id="iHelloService"
-                     interface="cn.gwssi.api.dubbo.service.IHelloService" url="dubbo://10.75.12.78:33082"
+                     interface="cn.gwssi.api.dubbo.service.IHelloService" url="dubbo://10.50.168.30:33082"
                      timeout="600000" version="1.0.0" />
 
     <dubbo:reference id="iRuleEngineService"
-                     interface="cn.gwssi.api.dubbo.service.IRuleEngineService" url="dubbo://10.75.12.78:33082"
+                     interface="cn.gwssi.api.dubbo.service.IRuleEngineService" url="dubbo://10.50.168.30:33082"
                      timeout="600000" version="1.0.0" />
 
-    <!--关闭所有消费者启动时检查   -->
-    <dubbo:consumer check="false" />
+
 </beans>

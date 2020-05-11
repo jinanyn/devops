@@ -48,4 +48,18 @@ public class RtnData {
     private String fawenr;//
     @XmlElement(name = "RUSHENSJ")
     private String rushensj;//
+    @XmlElement(name = "TNAME")
+    private String tname;
+    @XmlElement(name = "NAME")
+    private String name;
+    @XmlElement(name = "STARTTIME")
+    private String startTime;
+    @XmlElement(name = "ENDTIME")
+    private String endTime;
+    @XmlElement(name = "RID")
+    private String rid;
+    @XmlElement(name = "PPHID")
+    private String pphid;
+    @XmlElement(name = "NOTE")
+    private String note;
 }

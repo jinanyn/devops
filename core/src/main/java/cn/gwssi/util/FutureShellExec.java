@@ -22,11 +22,7 @@ public class FutureShellExec implements Callable<List<String>> {
     public List<String> call() throws Exception {
         List<String> strList = new ArrayList();
 
-        strList.add("aaaaaaaaaaaa");
-        strList.add("bbbbbbbbbbbbbb");
-        strList.add("ccccccccccccccccc");
-        strList.add("dddddddddddddd");
-        /*log.info("shell command = " + this.shStr);
+        log.info("shell command = " + this.shStr);
         Process process = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", this.shStr}, null, null);
         process.waitFor();
         InputStreamReader ir = new InputStreamReader(process
@@ -35,7 +31,7 @@ public class FutureShellExec implements Callable<List<String>> {
         String line;
         while ((line = input.readLine()) != null) {
             strList.add(line);
-        }*/
+        }
         return strList;
     }
 

@@ -5,6 +5,7 @@ import cn.gwssi.model.NoticeInfo;
 import cn.gwssi.model.NoticeInfoList;
 import cn.gwssi.util.ExceptionUtil;
 import cn.gwssi.util.FileHelperUtil;
+import cn.gwssi.util.FutureShellExec;
 import cn.gwssi.util.ShellExecUtil;
 import cn.gwssi.xml.XmlHelerBuilder;
 import com.gwssi.devops.utilitypage.config.PathConfig;
@@ -20,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class UtilityServiceInvoke {
@@ -287,7 +290,7 @@ public class UtilityServiceInvoke {
         return serverInfoList;
     }
 
-    public static void checkShareDiskState(PathConfig pathConfig, MailHelperBuilder mailHelperBuilder) {
+    public static void checkShareDiskState(PathConfig pathConfig,String bizName, MailHelperBuilder mailHelperBuilder) {
         UTILITY_SERVER_SET.parallelStream().forEach(v -> shellCmdMethod(v, pathConfig,new StringBuilder(), mailHelperBuilder));
     }
 
@@ -300,11 +303,17 @@ public class UtilityServiceInvoke {
         strBui.append("<visitTime>" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + "</visitTime>");
         strBui.append(FileHelperUtil.LINE_SEPARATOR);
 
+        FutureShellExec shellExec = new FutureShellExec(shellCmd);
+        FutureTask<List<String>> futureTask = new FutureTask<>(shellExec);
+        Thread thread = new Thread(futureTask);
+        thread.start();
         try {
-            List<String> rtnStrList = ShellExecUtil.runShell(shellCmd, 1L);
+            List<String> rtnStrList = futureTask.get(15L, TimeUnit.SECONDS);
             //rtnStrList.forEach(v->log.info(v));
             strBui.append("<state>正常</state>");
+            log.info("共离存储检测正常ip="+ip);
         } catch (Exception e) {
+            log.error("共离存储检测异常ip="+ip);
             log.error(ExceptionUtil.getMessage(e));
             strBui.append("<state>异常</state>");
             if(mailHelperBuilder != null && mailHelperBuilder.length > 0){

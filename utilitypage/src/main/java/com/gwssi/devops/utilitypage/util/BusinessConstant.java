@@ -50,8 +50,10 @@ public class BusinessConstant {
 
     public static final String BIZ_SERVER_SHARE_DISK_STATE="100099";//服务器共享存储状态
 
-    public static final String PRIORITY_AUDIT_DATA_REPEAT="200001";//发明案源配送中优先审查数据重复处理
-    public static final String PRIORITY_UPDATE_YONGHU_CA="200002";
+    public static final String BIZ_PRIORITY_AUDIT_DATA_REPEAT="200001";//发明案源配送中优先审查数据重复处理
+    public static final String BIZ_PRIORITY_UPDATE_YONGHU_CA="200002";
+
+    public static final String BIZ_PPH_SINK_BOTTOM_CASE="300001";//PPH沉底案件监控
 
     public static final String BIZ_AJDH_ZAZTDT="100023";  //新型审查表案件状态为待回，但主表案件状态为“等待提案”或者“新案审查”
     public static final String BIZ_AJDH_ZAHASC_WDF="100024";  //案件状态为待回，但主表案件状态为“回案审查”（无答复文件），需修改主表状态为初审待答复
@@ -105,8 +107,10 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100097","物化视图view_ptajcx_new刷新数据");
         MONITOR_BIZ_DESC_MAP.put("100098","查询新型相关通知书");
         MONITOR_BIZ_DESC_MAP.put("100099","服务器共享存储状态");
-        MONITOR_BIZ_DESC_MAP.put("200001","发明案源配送中优先审查数据重复处理");
 
+
+        MONITOR_BIZ_DESC_MAP.put("200001","发明案源配送中优先审查数据重复处理");
+        MONITOR_BIZ_DESC_MAP.put("300001","PPH沉底案件监控");
         System.out.println("aaaaa");
     }
 

@@ -84,9 +84,10 @@
                 formData.append("serverFilePath", this.mySumbitForm.serverFilePath);
                 axios.post('/utility/fileOperate/serverFileSubstitute', formData, config).
                 then(response => (console.log(response.data)))
-                    .catch(function (error) { // 请求失败处理
-                        console.log(error);
-                    });
+                    .catch(error => (this.$message({
+                        message: error.response.data.message,
+                        type: 'error'
+                    })));
 
             },
             downloadFile(formName){

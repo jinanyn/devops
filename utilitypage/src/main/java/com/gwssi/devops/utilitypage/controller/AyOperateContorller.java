@@ -30,7 +30,7 @@ public class AyOperateContorller {
             log.info("审查员代码为空");
             throw new RuntimeException("审查员代码为空");
         }
-        updateYhcazs(pathConfig, BusinessConstant.PRIORITY_UPDATE_YONGHU_CA,shenchaydm,"shenchaydm");
+        updateYhcazs(pathConfig, BusinessConstant.BIZ_PRIORITY_UPDATE_YONGHU_CA,shenchaydm,"shenchaydm");
         Map map = new HashMap();
         map.put("result", "success");
       //  map.put("data", value.toString());
