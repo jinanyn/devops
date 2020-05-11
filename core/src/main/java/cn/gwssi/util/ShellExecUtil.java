@@ -15,14 +15,14 @@ public class ShellExecUtil {
 
         Process process = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", shStr}, null, null);
 
-        InputStreamReader ir = new InputStreamReader(process
-                .getInputStream());
-        LineNumberReader input = new LineNumberReader(ir);
         if (timeOut != null && timeOut.length > 0) {
             process.waitFor(timeOut[0], TimeUnit.SECONDS);
         } else {
             process.waitFor();
         }
+        InputStreamReader ir = new InputStreamReader(process
+                .getInputStream());
+        LineNumberReader input = new LineNumberReader(ir);
         String line;
         while ((line = input.readLine()) != null) {
             strList.add(line);
