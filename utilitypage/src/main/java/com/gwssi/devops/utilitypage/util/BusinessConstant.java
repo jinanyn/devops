@@ -92,6 +92,7 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100016","未发送通知书，但案件状态为初审待答复或者回案审查");
         MONITOR_BIZ_DESC_MAP.put("100017","通知书已上传，但案件仍为未处理新案");
         MONITOR_BIZ_DESC_MAP.put("100021","在先申请该挂起未挂起");
+        MONITOR_BIZ_DESC_MAP.put("100022","在先申请该国优视撤未国优视撤");
 
 
         MONITOR_BIZ_DESC_MAP.put("100023","型审查表案件状态为待回，但主表案件状态为等待提案或者新案审查");
@@ -101,7 +102,7 @@ public class BusinessConstant {
 
         MONITOR_BIZ_DESC_MAP.put("100027","审查表案件状态为回案，主表状态与新型状态不一致");
         MONITOR_BIZ_DESC_MAP.put("100028","案件审查表的案件状态为“回案审查”，主表状态为“初审待答复”或者“新案审查”");
-        MONITOR_BIZ_DESC_MAP.put("100029","件审查表的案件状态为“回案审查”，主表状态为其他情况");
+        MONITOR_BIZ_DESC_MAP.put("100029","案件审查表的案件状态为“回案审查”，主表状态为其他情况");
 
         MONITOR_BIZ_DESC_MAP.put("100096","内部表单存在空格数据");
         MONITOR_BIZ_DESC_MAP.put("100097","物化视图view_ptajcx_new刷新数据");
@@ -110,8 +111,9 @@ public class BusinessConstant {
 
 
         MONITOR_BIZ_DESC_MAP.put("200001","发明案源配送中优先审查数据重复处理");
+
+
         MONITOR_BIZ_DESC_MAP.put("300001","PPH沉底案件监控");
-        System.out.println("aaaaa");
     }
 
 
