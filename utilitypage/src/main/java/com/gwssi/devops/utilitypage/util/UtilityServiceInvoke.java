@@ -95,7 +95,8 @@ public class UtilityServiceInvoke {
         return rtnList;
     }
 
-    public static void commonBizHandleProcess(PathConfig pathConfig, String monitorKey, String monitorVal, String placeholder) {
+    public static List<RtnData> commonBizHandleProcess(PathConfig pathConfig, String monitorKey, String monitorVal, String placeholder) {
+        List<RtnData> rtnList = new ArrayList<>();
         Map<String, String> paramMap = new HashMap<>();
         String login_flowid = "" + UUID.randomUUID();
         paramMap.put("username", pathConfig.getMainAppLoginUsername());
@@ -108,7 +109,7 @@ public class UtilityServiceInvoke {
         } catch (IOException e) {
             log.error("登陆系统异常:" + pathConfig.getMainAppLoginUri());
             log.error(ExceptionUtil.getMessage(e));
-            return;
+            return rtnList;
         }
         paramMap = new HashMap<String, String>();
         paramMap.put("select-key:monitor_key", monitorKey);
@@ -118,10 +119,23 @@ public class UtilityServiceInvoke {
         try {
             xmlRtnData = HttpRequestUtil.sessionRequest(httpClient, pathConfig.getMainAppHandleUri(), paramMap);
             //log.info(xmlRtnData);
+            xmlRtnData = xmlRtnData.replaceAll("&#39;", "'");
+            //XML转为JAVA对象
+            RtnDataList rtnDataList = (RtnDataList) XmlHelerBuilder.convertXmlToObject(RtnDataList.class, xmlRtnData);
+            if (rtnDataList == null) {
+                log.info("返回的xml解析完毕后结果为空");
+                return rtnList;
+            }
+            List<RtnData> bizDataList = rtnDataList.getBizDataList();
+            if (bizDataList == null) {
+                log.info("返回的xml解析完毕后业务数据为空");
+                return rtnList;
+            }
+            return bizDataList;
         } catch (IOException e) {
             log.error("获取监控数据异常:" + pathConfig.getMainAppMonitorUri() + ";参数:" + paramMap.toString());
             log.error(ExceptionUtil.getMessage(e));
-            return;
+            return rtnList;
         }
     }
 

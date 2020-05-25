@@ -54,6 +54,7 @@ public class BusinessConstant {
     public static final String BIZ_PRIORITY_UPDATE_YONGHU_CA="200002";
 
     public static final String BIZ_PPH_SINK_BOTTOM_CASE="300001";//PPH沉底案件监控
+    public static final String BIZ_PPH_SUPPLEMENT_DEADLINE_OVERDUE="300002";//PPH补正期限逾期监控
 
     public static final String BIZ_AJDH_ZAZTDT="100023";  //新型审查表案件状态为待回，但主表案件状态为“等待提案”或者“新案审查”
     public static final String BIZ_AJDH_ZAHASC_WDF="100024";  //案件状态为待回，但主表案件状态为“回案审查”（无答复文件），需修改主表状态为初审待答复
