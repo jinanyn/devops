@@ -1,17 +1,26 @@
 package com.gwssi.devops.utilitypage.schedule;
 
+import cn.gwssi.http.HttpRequestUtil;
+import cn.gwssi.util.ExceptionUtil;
 import com.gwssi.devops.utilitypage.config.AppConfig;
 import com.gwssi.devops.utilitypage.mail.MailHelperBuilder;
+import com.gwssi.devops.utilitypage.model.RtnData;
 import com.gwssi.devops.utilitypage.util.BusinessConstant;
 import com.gwssi.devops.utilitypage.config.PathConfig;
 import com.gwssi.devops.utilitypage.util.UtilityServiceInvoke;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 //@Component注解用于对那些比较中立的类进行注释；
@@ -103,9 +112,29 @@ public class UtilityMultithreadScheduleTask {
     }
     @Async
     @Scheduled(cron = "0 45 1 * * ?")// 每天上午1:45触发
-    //@Scheduled(cron = "0 20 10 * * ?")// 每天上午1:05触发
+    //@Scheduled(cron = "0 32 14 * * ?")// 每天上午1:05触发
     public void workflowExceptionRegisterUnsend() {//工作流异常办理登记书无法发出
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_WORKFLOW_EXCEPTION_REGISTER_UNSEND, "workflowExceptionRegisterUnsend",mailHelperBuilder);
+        try(CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)){
+            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_WORKFLOW_EXCEPTION_REGISTER_UNSEND, "workflowExceptionRegisterUnsend",httpClient);
+            rtnDataList.parallelStream().forEach(rtnData -> {
+                String uri =pathConfig.getMainAppMonitorUri().replaceAll("txnDevopsMonitor01", "txn09Sqgzltz");
+                Map<String, String> reqParam = new ConcurrentHashMap<>();
+                reqParam.put("shenqingh", rtnData.getShenqingh());
+                reqParam.put("rid", rtnData.getRid());
+                reqParam.put("actionId", "1101A10");
+                reqParam.put("instanceId", rtnData.getEntryId());
+                log.info(uri+reqParam.toString());
+                try {
+                    HttpRequestUtil.sessionRequest(httpClient,uri,reqParam);
+                } catch (IOException e) {
+                    log.error("执行工作流修正异常:" + uri);
+                    log.error(ExceptionUtil.getMessage(e));
+                }
+            });
+            mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_WORKFLOW_EXCEPTION_REGISTER_UNSEND),rtnDataList.toString());
+        }catch (IOException e){
+            log.error(ExceptionUtil.getMessage(e));
+        }
     }
 
     @Async

@@ -36,8 +36,8 @@ public class PPHMultithreadScheduleTask {
     }
 
     @Async
-    //@Scheduled(cron = "0 40 23 * * ?")// 每天晚上23:40触发
-    @Scheduled(cron = "0 52 14 * * ?")// 每天晚上23:45触发
+    @Scheduled(cron = "0 40 23 * * ?")// 每天晚上23:40触发
+    //@Scheduled(cron = "0 52 14 * * ?")// 每天晚上23:45触发
     public void pphSupplementDeadlineOverdue() {//补正期限逾期监控
         List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PPH_SUPPLEMENT_DEADLINE_OVERDUE, "pphSupplementDeadlineOverdue");
         if(rtnDataList != null && rtnDataList.size() >0){
