@@ -84,9 +84,10 @@ public class HttpRequestUtil {
         httpPost.setConfig(requestConfig);
         UrlEncodedFormEntity entity = new UrlEncodedFormEntity(getParam(reqParam), "UTF-8");
         httpPost.setEntity(entity);
-        CloseableHttpResponse response = closeableHttpClient.execute(httpPost);
-        HttpEntity httpEntity = response.getEntity();
-        return EntityUtils.toString(httpEntity, "UTF-8");
+        try(CloseableHttpResponse response = closeableHttpClient.execute(httpPost)){
+            HttpEntity httpEntity = response.getEntity();
+            return EntityUtils.toString(httpEntity, "UTF-8");
+        }
     }
 
     public static List<NameValuePair> getParam(Map parameterMap) {
