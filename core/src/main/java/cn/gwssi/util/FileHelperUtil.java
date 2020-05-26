@@ -50,19 +50,10 @@ public class FileHelperUtil {
     }
 
     // 清空已有的文件内容，以便下次重新写入新的内容
-    public static void clearInfoForFile(String fileName) {
-        File file =new File(fileName);
-        try {
-            if(!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter fileWriter =new FileWriter(file);
-            fileWriter.write("");
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void clearInfoForFile(String fullPathFile) throws IOException {
+        Path filePath   = Paths.get(fullPathFile);
+        Files.deleteIfExists(filePath);
+        Files.createFile(filePath);
     }
     public static void appendContentToFile(String fullPathFile,String content){
         FileOutputStream fos = null;
