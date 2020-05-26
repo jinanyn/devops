@@ -24,6 +24,8 @@ public class RtnData {
     private String shenchaydm;//审查员代码
     @XmlElement(name = "ANJIANZT")
     private String anjianzt;//
+    @XmlElement(name = "ENTRYID")
+    private String entryId;//
     @XmlElement(name = "LIUCHENGZT")
     private String liuchengzt;//
     @XmlElement(name = "ANJIANYWZT")
@@ -60,6 +62,10 @@ public class RtnData {
     private String rid;
     @XmlElement(name = "PPHID")
     private String pphid;
+    @XmlElement(name = "QIXIANSLH")
+    private String qixianslh;
     @XmlElement(name = "NOTE")
     private String note;
+    @XmlElement(name = "TEXT")
+    private String text;
 }

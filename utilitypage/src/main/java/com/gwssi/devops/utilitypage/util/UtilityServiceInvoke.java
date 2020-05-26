@@ -27,6 +27,24 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class UtilityServiceInvoke {
 
+    public static CloseableHttpClient loginUtilityApplication(PathConfig pathConfig){
+        Map<String, String> paramMap = new HashMap<>();
+        String login_flowid = "" + UUID.randomUUID();
+        paramMap.put("username", pathConfig.getMainAppLoginUsername());
+        paramMap.put("password", pathConfig.getMainAppLoginPassword());
+        paramMap.put("login_flowid", login_flowid);
+        paramMap.put("success_keyword", "<a href=\"javascript:void(0)\">案件审查</a>");
+        CloseableHttpClient httpClient;
+        try {
+            httpClient = HttpRequestUtil.loginHttpClient(pathConfig.getMainAppLoginUri(), paramMap);
+        } catch (IOException e) {
+            log.error("登陆系统异常:" + pathConfig.getMainAppLoginUri());
+            log.error(ExceptionUtil.getMessage(e));
+            return null;
+        }
+        return httpClient;
+    }
+
     public static List<RtnData> commonBizMonitorProcess(PathConfig pathConfig, String monitorKey, String bizFolder,MailHelperBuilder... mailHelperBuilder) {
         List<RtnData> rtnList = new ArrayList<>();
         Map<String, String> paramMap = new HashMap<>();
@@ -82,7 +100,9 @@ public class UtilityServiceInvoke {
             }
             rtnList.add(rtnData);
             bizXmlData = bizXmlData.substring(idx);
-            resultBui.append(bizXmlData);
+            if(mailHelperBuilder != null && mailHelperBuilder.length > 0) {
+                resultBui.append(bizXmlData);
+            }
         }
         if(resultBui.length() > 0){
             String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
@@ -91,6 +111,58 @@ public class UtilityServiceInvoke {
             if(mailHelperBuilder != null && mailHelperBuilder.length > 0){
                 mailHelperBuilder[0].sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(monitorKey),resultBui.toString());
             }
+        }
+        return rtnList;
+    }
+
+    public static List<RtnData> commonBizMonitorProcess(PathConfig pathConfig, String monitorKey, String bizFolder,CloseableHttpClient httpClient) {
+        List<RtnData> rtnList = new ArrayList<>();
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap = new HashMap<String, String>();
+        paramMap.put("select-key:monitor_key", monitorKey);
+        log.info("执行监控数据:" + pathConfig.getMainAppMonitorUri() + ";参数:" + paramMap.toString());
+        String xmlRtnData;
+        try {
+            xmlRtnData = HttpRequestUtil.sessionRequest(httpClient, pathConfig.getMainAppMonitorUri(), paramMap);
+            //log.info(xmlRtnData);
+        } catch (IOException e) {
+            log.error("获取监控数据异常:" + pathConfig.getMainAppMonitorUri() + ";参数:" + paramMap.toString());
+            log.error(ExceptionUtil.getMessage(e));
+            return rtnList;
+        }
+        log.info("获取监控结果:"+xmlRtnData);
+        //XML转为JAVA对象
+        RtnDataList rtnDataList = (RtnDataList) XmlHelerBuilder.convertXmlToObject(RtnDataList.class, xmlRtnData);
+        if (rtnDataList == null) {
+            log.info("返回的xml解析完毕后结果为空");
+            return rtnList;
+        }
+        List<RtnData> bizDataList = rtnDataList.getBizDataList();
+        if (bizDataList == null) {
+            log.info("返回的xml解析完毕后业务数据为空");
+            return rtnList;
+        }
+        //log.info(rtnDataList.toString());
+        StringBuilder resultBui = new StringBuilder();
+        for (RtnData rtnData : bizDataList) {
+            String bizXmlData = XmlHelerBuilder.convertObjectToXml(rtnData);
+            //log.info("****************bizXmlData="+bizXmlData);
+            if (bizXmlData.indexOf("<rtnData/>") != -1) {//空白数据
+                continue;
+            }
+            int idx = bizXmlData.indexOf("<rtnData>");
+            //log.info("****************idx="+idx);
+            if (idx == -1) {
+                continue;
+            }
+            rtnList.add(rtnData);
+            bizXmlData = bizXmlData.substring(idx);
+            resultBui.append(bizXmlData);
+        }
+        if(resultBui.length() > 0){
+            String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+            String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + bizFolder;
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + bizFolder, resultBui.toString());
         }
         return rtnList;
     }
