@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 //@Component注解用于对那些比较中立的类进行注释；
 //相对与在持久层、业务层和控制层分别采用 @Repository、@Service 和 @Controller 对分层中的类进行注释
@@ -36,8 +37,8 @@ public class PPHMultithreadScheduleTask {
     }
 
     @Async
-    @Scheduled(cron = "0 40 23 * * ?")// 每天晚上23:40触发
-    //@Scheduled(cron = "0 52 14 * * ?")// 每天晚上23:45触发
+    //@Scheduled(cron = "0 40 23 * * ?")// 每天晚上23:40触发
+    @Scheduled(cron = "0 07 11 * * ?")// 每天晚上23:45触发
     public void pphSupplementDeadlineOverdue() {//补正期限逾期监控
         List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PPH_SUPPLEMENT_DEADLINE_OVERDUE, "pphSupplementDeadlineOverdue");
         if(rtnDataList != null && rtnDataList.size() >0){
@@ -45,16 +46,14 @@ public class PPHMultithreadScheduleTask {
             StringBuilder pphidBui = new StringBuilder();
             boolean firstFlag = true;
             for(RtnData rtnData : rtnDataList){
-                if(firstFlag){
-                    firstFlag = false;
-                }else{
-                    slhBui.append(",");
-                    pphidBui.append(",");
-                }
+                slhBui.append(",");
                 slhBui.append(rtnData.getQixianslh());
-                pphidBui.append(rtnData.getPphid());
+                if("S05".equals(rtnData.getAnjianzt())){//待回再修改案件状态
+                    pphidBui.append(",");
+                    pphidBui.append(rtnData.getPphid());
+                }
             }
-            String jsonObj="{qixianslh:\""+slhBui.toString()+"\",pphid:\""+pphidBui.toString()+"\"}";
+            String jsonObj="{qixianslh:\""+slhBui.toString().replaceFirst(",", "")+"\",pphid:\""+pphidBui.toString().replaceFirst(",", "")+"\"}";
             List<RtnData> bizDataList = UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.BIZ_PPH_SUPPLEMENT_DEADLINE_OVERDUE,jsonObj,"jsonObj");
             bizDataList.parallelStream().forEach(rtnData->{
                 String bizXmlData = XmlHelerBuilder.convertObjectToXml(rtnData);
