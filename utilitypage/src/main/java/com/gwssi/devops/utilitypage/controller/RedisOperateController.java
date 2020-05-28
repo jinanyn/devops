@@ -20,17 +20,32 @@ public class RedisOperateController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @RequestMapping(value = {"getRedisKeyValue"}, method = {RequestMethod.POST})
-    public Map<String, String> getKeyValue(@RequestParam("redisKey") String redisKey) throws IOException {
+    @RequestMapping(value = {"operRedisKeyValue"}, method = {RequestMethod.POST})
+    public Map<String, String> operRedisKeyValue(@RequestParam("operWay") String operWay,@RequestParam("redisKey") String redisKey,@RequestParam("redisVal") String redisVal) throws IOException {
+        if (StringUtils.isEmpty(operWay)) {
+            log.info("operWay");
+            throw new RuntimeException("operWay为空");
+        }
         if (StringUtils.isEmpty(redisKey)) {
             log.info("redisKey为空");
             throw new RuntimeException("redisKey为空");
         }
-        Object value = this.redisUtil.get(redisKey);
-
+        if (StringUtils.isEmpty(redisVal)) {
+            log.info("redisKey为空");
+            //throw new RuntimeException("redisKey为空");
+        }
         Map map = new HashMap();
+        if("get".equals(operWay)){
+            Object value = this.redisUtil.get(redisKey);
+            map.put("data", value == null ? "无此key["+redisKey+"]数据" : value.toString());
+        }else if("set".equals(operWay)){
+            Object value = this.redisUtil.set(redisKey,redisVal);
+            map.put("data", "设置成功");
+        }else{
+            map.put("data", "不支持此操作");
+        }
+
         map.put("result", "success");
-        map.put("data", value.toString());
         return map;
     }
 

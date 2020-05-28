@@ -2,6 +2,7 @@ package com.gwssi.devops.utilitypage.schedule;
 
 import cn.gwssi.http.HttpRequestUtil;
 import cn.gwssi.util.ExceptionUtil;
+import cn.gwssi.xml.XmlHelerBuilder;
 import com.gwssi.devops.utilitypage.config.AppConfig;
 import com.gwssi.devops.utilitypage.mail.MailHelperBuilder;
 import com.gwssi.devops.utilitypage.model.RtnData;
@@ -112,10 +113,11 @@ public class UtilityMultithreadScheduleTask {
     }
     @Async
     @Scheduled(cron = "0 45 1 * * ?")// 每天上午1:45触发
-    //@Scheduled(cron = "0 32 14 * * ?")// 每天上午1:05触发
+    //@Scheduled(cron = "0 45 10 * * ?")// 每天上午1:05触发
     public void workflowExceptionRegisterUnsend() {//工作流异常办理登记书无法发出
         try(CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)){
             List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_WORKFLOW_EXCEPTION_REGISTER_UNSEND, "workflowExceptionRegisterUnsend",httpClient);
+            StringBuilder strBui = new StringBuilder();
             rtnDataList.parallelStream().forEach(rtnData -> {
                 String uri =pathConfig.getMainAppMonitorUri().replaceAll("txnDevopsMonitor01", "txn09Sqgzltz");
                 Map<String, String> reqParam = new ConcurrentHashMap<>();
@@ -130,8 +132,13 @@ public class UtilityMultithreadScheduleTask {
                     log.error("执行工作流修正异常:" + uri);
                     log.error(ExceptionUtil.getMessage(e));
                 }
+                String bizXmlData = XmlHelerBuilder.convertObjectToXml(rtnData);
+                int idx = bizXmlData.indexOf("<rtnData>");
+                strBui.append(bizXmlData.substring(idx));
             });
-            mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_WORKFLOW_EXCEPTION_REGISTER_UNSEND),rtnDataList.toString());
+            if(strBui.length() > 0){
+                mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_WORKFLOW_EXCEPTION_REGISTER_UNSEND), strBui.toString());
+            }
         }catch (IOException e){
             log.error(ExceptionUtil.getMessage(e));
         }

@@ -10,7 +10,8 @@
                 </el-col>
                 <el-col :span="8">
                     <el-form-item>
-                        <el-button type="primary" @click="submitForm('mySumbitForm')">查询</el-button>
+                        <el-button type="primary" @click="submitForm('mySumbitForm','get')">查询</el-button>
+                        <el-button type="primary" @click="submitForm('mySumbitForm','set')">设置</el-button>
                         <el-button @click="resetForm('mySumbitForm')">重置</el-button>
                     </el-form-item>
                 </el-col>
@@ -41,10 +42,12 @@
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
-            submitForm(formName) {
+            submitForm(formName,operWay) {
                 let formData = new FormData();
                 formData.append("redisKey", this.mySumbitForm.redisKey);
-                axios.post('/utility/redisOperate/getRedisKeyValue', formData,).
+                formData.append("redisVal", this.mySumbitForm.redisVal);
+                formData.append("operWay", operWay);
+                axios.post('/utility/redisOperate/operRedisKeyValue', formData,).
                 then(response => (this.mySumbitForm.redisVal=response.data.data))
                     .catch(function (error) { // 请求失败处理
                         console.log(error);
