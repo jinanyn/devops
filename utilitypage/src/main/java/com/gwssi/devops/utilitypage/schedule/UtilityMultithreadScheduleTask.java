@@ -2,6 +2,7 @@ package com.gwssi.devops.utilitypage.schedule;
 
 import cn.gwssi.http.HttpRequestUtil;
 import cn.gwssi.util.ExceptionUtil;
+import cn.gwssi.util.FileHelperUtil;
 import cn.gwssi.xml.XmlHelerBuilder;
 import com.gwssi.devops.utilitypage.config.AppConfig;
 import com.gwssi.devops.utilitypage.mail.MailHelperBuilder;
@@ -19,6 +20,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -117,8 +119,8 @@ public class UtilityMultithreadScheduleTask {
     public void workflowExceptionRegisterUnsend() {//工作流异常办理登记书无法发出
         try(CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)){
             List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_WORKFLOW_EXCEPTION_REGISTER_UNSEND, "workflowExceptionRegisterUnsend",httpClient);
-            StringBuilder strBui = new StringBuilder();
-            rtnDataList.parallelStream().forEach(rtnData -> {
+            StringBuffer strBui = new StringBuffer();
+            rtnDataList.stream().forEach(rtnData -> {
                 String uri =pathConfig.getMainAppMonitorUri().replaceAll("txnDevopsMonitor01", "txn09Sqgzltz");
                 Map<String, String> reqParam = new ConcurrentHashMap<>();
                 reqParam.put("shenqingh", rtnData.getShenqingh());
@@ -145,10 +147,42 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
-    @Scheduled(cron = "0 50 1 * * ?")// 每天上午1:45触发
-    //@Scheduled(cron = "0 20 10 * * ?")// 每天上午1:05触发
+    //@Scheduled(cron = "0 50 1 * * ?")// 每天上午1:45触发
+    @Scheduled(cron = "0 39 16 * * ?")// 每天上午1:05触发
     public void caseStateExceptionMonitor() {//当前状态表和电子文件夹状态不对应
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_CASE_STATE_EXCEPTION, "caseStateException",mailHelperBuilder);
+        try(CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)){
+            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_CASE_STATE_EXCEPTION, "caseStateException",httpClient);
+            StringBuffer strBui = new StringBuffer();
+            Map<String,String> ztMap = new HashMap<>();
+            ztMap.put("1","S050302");
+            ztMap.put("2","S050302");
+            ztMap.put("3","S050303");
+            ztMap.put("4","S050304");
+            ztMap.put("5","S050305");
+            rtnDataList.stream().forEach(rtnData -> {
+                //目前以xx_ajscb表状态为基准
+                String shenqingh = rtnData.getShenqingh();
+                String anjianzt = rtnData.getAnjianzt();
+                String anjinaywzt = rtnData.getAnjianywzt();
+                String dangqianztbh = rtnData.getDangqianztbh();
+                String targetZt = ztMap.get(anjianzt);
+               if(!anjinaywzt.equals(targetZt)){
+                   //strBui.append("insert into backup_data_user.GG_ZLX_ZHU (SHENQINGH, ZHUANLIMC, ZHUANLIYWMC, ZHUANLILX, PCTBJ, SHENQINFSBJ, DAIYIBJ, SHENQINGR, FENANTJR, GUOBIE, SHENQINGRSL, FAMINGRENSL, LIANXIRBJ, WAIGUANCPLB, FENLEIHBBH, ZHUFENLH, DAILIBJ, FENANBJ, WEISHENGWBCBJ, XULIEBBJ, TIQIANGKBJ, SHISHENQQBJ, YOUXIANQQTS, ZUIXIAOYXQR, BUSANGSXYXKXQSMBJ, BAOMIQQBJ, QIANZHANGHGBJ, TUPIANHGBJ, FEIYONGJHBJ, PCTFJBJ, MUANBJ, ZAIXIANSQBJ, QUANLIYQXS, BAOMITXBJ, GUAQIBJ, ZANTINGBJ, ZHONGZHIBJ, SUODINGBJ, JIAKUAIBJ, SHISHENQQHGR, SHISHENSXR, TIQIANGKR, FAMINGGBR, GONGKAIGGR, ZHUANLIH, ANJIANYWZT, CHONGFUSQHBZ, CHONGFUSQQBZ, YOUXIAOBJ, REGNAME, REGTIME, MODNAME, MODTIME, SHOULIZKR, TONGYDFMCZBJ, XIANGSSJBJ, CHENGTCPBJ, XIANGSSJXS, CHENGTCPXS, YICZYBJ, XIANGWSQBJ, XIANGWSQSPBJ, FEIZHENGCSQYSBJ, YXSCFS, ZJZDZSQSXR, SHENQINGRENFQZDXGQL, CAFBJ, YINANAJHSBJ, DIANZISQLX, DLJGNBBH, SHENGMINGWTSYZBJ, ZHAIYFTH, ZHAIYAOFTZD, DZZZJSQSXR, QIANZHANGNR, BUG_ID) select SHENQINGH, ZHUANLIMC, ZHUANLIYWMC, ZHUANLILX, PCTBJ, SHENQINFSBJ, DAIYIBJ, SHENQINGR, FENANTJR, GUOBIE, SHENQINGRSL, FAMINGRENSL, LIANXIRBJ, WAIGUANCPLB, FENLEIHBBH, ZHUFENLH, DAILIBJ, FENANBJ, WEISHENGWBCBJ, XULIEBBJ, TIQIANGKBJ, SHISHENQQBJ, YOUXIANQQTS, ZUIXIAOYXQR, BUSANGSXYXKXQSMBJ, BAOMIQQBJ, QIANZHANGHGBJ, TUPIANHGBJ, FEIYONGJHBJ, PCTFJBJ, MUANBJ, ZAIXIANSQBJ, QUANLIYQXS, BAOMITXBJ, GUAQIBJ, ZANTINGBJ, ZHONGZHIBJ, SUODINGBJ, JIAKUAIBJ, SHISHENQQHGR, SHISHENSXR, TIQIANGKR, FAMINGGBR, GONGKAIGGR, ZHUANLIH, ANJIANYWZT, CHONGFUSQHBZ, CHONGFUSQQBZ, YOUXIAOBJ, REGNAME, REGTIME, MODNAME, MODTIME, SHOULIZKR, TONGYDFMCZBJ, XIANGSSJBJ, CHENGTCPBJ, XIANGSSJXS, CHENGTCPXS, YICZYBJ, XIANGWSQBJ, XIANGWSQSPBJ, FEIZHENGCSQYSBJ, YXSCFS, ZJZDZSQSXR, SHENQINGRENFQZDXGQL, CAFBJ, YINANAJHSBJ, DIANZISQLX, DLJGNBBH, SHENGMINGWTSYZBJ, ZHAIYFTH, ZHAIYAOFTZD, DZZZJSQSXR, QIANZHANGNR, sysdate||'案件状态不一致' from GG_ZLX_ZHU t where t.shenqingh = '");
+                   //strBui.append(shenqingh).append("';").append(FileHelperUtil.LINE_SEPARATOR);
+                   strBui.append("update gg_zlx_zhu t set t.anjianywzt = '").append(targetZt).append("' where t.shenqingh = '").append(shenqingh).append("';").append(FileHelperUtil.LINE_SEPARATOR);
+               }
+               if(!dangqianztbh.equals(ztMap.get(anjianzt))){
+                   //strBui.append("insert into backup_data_user.GG_SCZT_DQZT (MODTIME, BUG_ID, GG_SCZT_DQZT_ID, SHENQINGH, WEINEIBH, DANGQIANZTBH, CHUANGJIANRDM, CHUANGJIANSJ, XIUGAIRDM, XIUGAISJ, REGNAME, REGTIME, MODNAME) select MODTIME, sysdate||'案件状态不一致', GG_SCZT_DQZT_ID, SHENQINGH, WEINEIBH, DANGQIANZTBH, CHUANGJIANRDM, CHUANGJIANSJ, XIUGAIRDM, XIUGAISJ, REGNAME, REGTIME, MODNAME from GG_SCZT_DQZT t where t.shenqingh = '");
+                   //strBui.append(shenqingh).append("';").append(FileHelperUtil.LINE_SEPARATOR);
+                   strBui.append("update gg_sczt_dqzt t set t.dangqianztbh = '").append(targetZt).append("' where t.shenqingh = '").append(shenqingh).append("';").append(FileHelperUtil.LINE_SEPARATOR);
+               }
+            });
+            if(strBui.length() > 0){
+                mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_CASE_STATE_EXCEPTION), strBui.toString());
+            }
+        }catch (IOException e){
+            log.error(ExceptionUtil.getMessage(e));
+        }
     }
 
     @Async
