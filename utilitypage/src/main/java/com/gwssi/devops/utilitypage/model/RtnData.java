@@ -18,6 +18,8 @@ public class RtnData {
 
     @XmlElement(name = "SHENQINGH")
     private String shenqingh;
+    @XmlElement(name = "ZAIXIANSQH")
+    private String zaixiansqh;
     @XmlElement(name = "CNT")
     private String cnt;
     @XmlElement(name = "SHENCHAYDM")
@@ -30,6 +32,8 @@ public class RtnData {
     private String liuchengzt;//
     @XmlElement(name = "ANJIANYWZT")
     private String anjianywzt;//
+    @XmlElement(name = "DANGQIANZTBH")
+    private String dangqianztbh;
     @XmlElement(name = "CODENAME")
     private String codename;//
     @XmlElement(name = "ZANTINGBJ")
