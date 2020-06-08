@@ -52,6 +52,8 @@ public class RtnData {
     private String tongzhiszt;//
     @XmlElement(name = "FAWENR")
     private String fawenr;//
+    @XmlElement(name = "FAWENXLH")
+    private String fawenxlh;//
     @XmlElement(name = "RUSHENSJ")
     private String rushensj;//
     @XmlElement(name = "TNAME")
