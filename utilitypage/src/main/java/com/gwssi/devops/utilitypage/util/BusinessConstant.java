@@ -42,6 +42,8 @@ public class BusinessConstant {
 
     public static final String BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW="100022";//在先申请该国优视撤未国优视撤
 
+    public static final String BIZ_NOTICE_REGISTRATION_UNSEND_LONG_TIME="100023";//授权发出后长时间未发办登(14天)
+
     public static final String BIZ_INNER_FORM_DATA_WHITESPACE="100096";//内部表单存在空格数据
 
     public static final String BIZ_VIEW_PTAJCX_NEW_FRESH="100097";//物化视图view_ptajcx_new刷新数据
