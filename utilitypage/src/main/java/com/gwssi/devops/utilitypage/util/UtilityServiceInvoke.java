@@ -187,6 +187,7 @@ public class UtilityServiceInvoke {
         paramMap.put("select-key:monitor_key", monitorKey);
         paramMap.put("select-key:monitor_val", monitorVal);
         paramMap.put("select-key:placeholder", placeholder);
+        paramMap.put("select-key:is_exec", "true");
         String xmlRtnData;
         try {
             xmlRtnData = HttpRequestUtil.sessionRequest(httpClient, pathConfig.getMainAppHandleUri(), paramMap);

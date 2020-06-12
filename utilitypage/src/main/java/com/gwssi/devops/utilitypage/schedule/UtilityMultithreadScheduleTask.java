@@ -138,8 +138,8 @@ public class UtilityMultithreadScheduleTask {
                 int idx = bizXmlData.indexOf("<rtnData>");
                 strBui.append(bizXmlData.substring(idx));
             });
-            if(strBui.length() > 0){
-                mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_WORKFLOW_EXCEPTION_REGISTER_UNSEND), strBui.toString());
+            if(strBui.length() > 0){//工作流修改完成后,会有14天授权后办登未发出监控来完成此项功能
+                //mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_WORKFLOW_EXCEPTION_REGISTER_UNSEND), strBui.toString());
             }
         }catch (IOException e){
             log.error(ExceptionUtil.getMessage(e));
@@ -208,7 +208,7 @@ public class UtilityMultithreadScheduleTask {
     @Scheduled(cron = "0 15 2 * * ?")// 每天上午2:15触发
     //@Scheduled(cron = "0 30 12 * * ?")// 每天上午1:05触发
     public void noticeUnsendReplyState() {//未发送通知书，但案件状态为初审待答复或者回案审查
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_NOTICE_UNSEND_REPLY_STATE, "noticeUnsendReplyState",mailHelperBuilder);
+        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_NOTICE_UNSEND_REPLY_STATE, "noticeUnsendReplyState",mailHelperBuilder);
     }
 
     @Async
@@ -229,7 +229,30 @@ public class UtilityMultithreadScheduleTask {
     @Scheduled(cron = "0 25 2 * * ?")// 每天上午2:20触发
     //@Scheduled(cron = "0 45 12 * * ?")// 每天上午1:05触发
     public void priorityApplyNationBestUnwithdraw() {//在先申请该国优视撤未国优视撤
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW, "priorityApplyNationBestUnwithdraw",mailHelperBuilder);
+        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW, "priorityApplyNationBestUnwithdraw",mailHelperBuilder);
+        if(rtnDataList != null && rtnDataList.size() >0){
+            StringBuilder sqhBui = new StringBuilder();
+            boolean firstFlag = true;
+            for(RtnData rtnData : rtnDataList){
+                if(firstFlag){
+                    firstFlag = false;
+                }else{
+                    sqhBui.append(",");
+                }
+                sqhBui.append(rtnData.getZaixiansqh());
+            }
+            //UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.BIZ_NOTICE_SEND_DATE_IS_NULL,sqhBui.toString(),"shenqingh");
+            //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
+        }else{
+            //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次未发现需要处理的数据!!!");
+        }
+    }
+
+    @Async
+    @Scheduled(cron = "0 30 2 * * ?")// 每天上午2:30触发
+    //@Scheduled(cron = "0 45 12 * * ?")// 每天上午1:05触发
+    public void noticeRegistrationUnsendLongTime() {//授权发出后长时间未发办登(14天)
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_NOTICE_REGISTRATION_UNSEND_LONG_TIME, "noticeRegistrationUnsendLongTime",mailHelperBuilder);
     }
 
     @Async
@@ -246,8 +269,35 @@ public class UtilityMultithreadScheduleTask {
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_FEE_UNPAY, "priorityFeeUnpay",mailHelperBuilder);
     }
 
+    @Async
+    //@Scheduled(cron = "0 15 0 * * ?")// 每天上午2:05触发
+    @Scheduled(cron = "0 31 16 * * ?")// 每天上午1:05触发
+    public void historyDataHandle() {//历史数据处理
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_HISTORY_DATA_HANDLE, "historyDataHandle",mailHelperBuilder);
+    }
 
-
+    @Async
+    @Scheduled(cron = "0 5 0 * * ?")// 每天上午0:05触发
+    //@Scheduled(cron = "0 25 14 * * ?")// 每天上午1:05触发
+    public void noticeSendDateIsNull() {//通知书发出后发送日为空
+        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_NOTICE_SEND_DATE_IS_NULL, "noticeSendDateIsNull");
+        if(rtnDataList != null && rtnDataList.size() >0){
+            StringBuilder sqhBui = new StringBuilder();
+            boolean firstFlag = true;
+            for(RtnData rtnData : rtnDataList){
+                if(firstFlag){
+                    firstFlag = false;
+                }else{
+                    sqhBui.append(",");
+                }
+                sqhBui.append(rtnData.getRid());
+            }
+            UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.BIZ_NOTICE_SEND_DATE_IS_NULL,sqhBui.toString(),"rid");
+            //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
+        }else{
+            //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次未发现需要处理的数据!!!");
+        }
+    }
 
 
 
