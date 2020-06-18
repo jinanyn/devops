@@ -147,8 +147,8 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
-    //@Scheduled(cron = "0 50 1 * * ?")// 每天上午1:45触发
-    @Scheduled(cron = "0 39 16 * * ?")// 每天上午1:05触发
+    @Scheduled(cron = "0 50 1 * * ?")// 每天上午1:45触发
+    //@Scheduled(cron = "0 39 16 * * ?")// 每天上午1:05触发
     public void caseStateExceptionMonitor() {//当前状态表和电子文件夹状态不对应
         try(CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)){
             List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_CASE_STATE_EXCEPTION, "caseStateException",httpClient);
@@ -227,7 +227,7 @@ public class UtilityMultithreadScheduleTask {
 
     @Async
     @Scheduled(cron = "0 25 2 * * ?")// 每天上午2:20触发
-    //@Scheduled(cron = "0 45 12 * * ?")// 每天上午1:05触发
+    //@Scheduled(cron = "0 08 15 * * ?")// 每天上午1:05触发
     public void priorityApplyNationBestUnwithdraw() {//在先申请该国优视撤未国优视撤
         List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW, "priorityApplyNationBestUnwithdraw",mailHelperBuilder);
         if(rtnDataList != null && rtnDataList.size() >0){
@@ -241,7 +241,7 @@ public class UtilityMultithreadScheduleTask {
                 }
                 sqhBui.append(rtnData.getZaixiansqh());
             }
-            //UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.BIZ_NOTICE_SEND_DATE_IS_NULL,sqhBui.toString(),"shenqingh");
+            UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW,sqhBui.toString(),"shenqingh");
             //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
         }else{
             //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次未发现需要处理的数据!!!");
@@ -270,8 +270,8 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
-    //@Scheduled(cron = "0 15 0 * * ?")// 每天上午2:05触发
-    @Scheduled(cron = "0 31 16 * * ?")// 每天上午1:05触发
+    @Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
+    //@Scheduled(cron = "0 31 16 * * ?")// 每天上午1:05触发
     public void historyDataHandle() {//历史数据处理
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_HISTORY_DATA_HANDLE, "historyDataHandle",mailHelperBuilder);
     }
