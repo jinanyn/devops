@@ -32,6 +32,14 @@ public class RtnData {
     private String liuchengzt;//
     @XmlElement(name = "ANJIANYWZT")
     private String anjianywzt;//
+    @XmlElement(name = "ZHUANGTAIMC")
+    private String zhuangtaimc;
+    @XmlElement(name = "ZAIXIANAJZTMC")
+    private String zaixianajztmc;
+    @XmlElement(name = "ZAIXIANAJYWZT")
+    private String zaixianajywzt;//
+    @XmlElement(name = "YOUXIANQZT")
+    private String youxianqzt;//
     @XmlElement(name = "DANGQIANZTBH")
     private String dangqianztbh;
     @XmlElement(name = "CODENAME")
