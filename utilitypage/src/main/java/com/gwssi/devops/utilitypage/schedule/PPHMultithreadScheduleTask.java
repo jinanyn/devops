@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -39,15 +38,9 @@ public class PPHMultithreadScheduleTask {
 
     @Async
     @Scheduled(cron = "0 40 23 * * ?")// 每天晚上23:40触发
-    //@Scheduled(cron = "0 35 11 * * ?")// 每天晚上23:45触发
+    //@Scheduled(cron = "0 07 11 * * ?")// 每天晚上23:45触发
     public void pphSupplementDeadlineOverdue() {//补正期限逾期监控
-        List<RtnData> rtnDataList = new ArrayList<>();
-        RtnData rtnData1 = new RtnData();
-        rtnData1.setPphid("100120216013");
-        rtnData1.setQixianslh("101874185629");
-        rtnData1.setAnjianzt("S06");
-        rtnDataList.add(rtnData1);
-        //List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PPH_SUPPLEMENT_DEADLINE_OVERDUE, "pphSupplementDeadlineOverdue");
+        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PPH_SUPPLEMENT_DEADLINE_OVERDUE, "pphSupplementDeadlineOverdue");
         if(rtnDataList != null && rtnDataList.size() >0){
             StringBuilder slhBui = new StringBuilder();
             StringBuilder pphidBui = new StringBuilder();
