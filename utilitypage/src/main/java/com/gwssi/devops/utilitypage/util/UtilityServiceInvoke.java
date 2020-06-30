@@ -398,7 +398,7 @@ public class UtilityServiceInvoke {
             List<String> rtnStrList = futureTask.get(15L, TimeUnit.SECONDS);
             //rtnStrList.forEach(v->log.info(v));
             strBui.append("<state>正常</state>");
-            log.info("共离存储检测正常ip="+ip);
+            //log.info("共离存储检测正常ip="+ip);
         } catch (Exception e) {
             log.error("共离存储检测异常ip="+ip);
             log.error(ExceptionUtil.getMessage(e));
