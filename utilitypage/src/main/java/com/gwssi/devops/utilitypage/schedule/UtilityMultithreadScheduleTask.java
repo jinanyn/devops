@@ -299,6 +299,27 @@ public class UtilityMultithreadScheduleTask {
         }
     }
 
+    @Async
+    //@Scheduled(cron = "0 35 01 24 * ?")// 每月25日上午1:15触发
+    @Scheduled(cron = "0 35 01 24 * ?")// "0 15 10 15 * ?"
+    public void sinkCaseMonthStatisticData() {//沉底案件每月统计数据
+        log.info("开始执行!!!!沉底案件每月统计数据");
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_SINK_CASE_MONTH_STATISTIC_DATA, "sinkCaseMonthStatisticData");
+        mailHelperBuilder.sendSimpleMessage("沉底案件每月统计数据","沉底案件每月统计数据已生成，请尽快进行下一步处理。!!!");
+    }
+
+    @Async
+    @Scheduled(cron = "0 55 0 * * ?")// 每天上午0:55触发
+    //@Scheduled(cron = "0 48 11 * * ?")// 每天上午1:05触发
+    public void comparareNoticeYesterdayCount() {//管理查询库和电子审批库昨天发出通知书数据量比对
+        List<RtnData> rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, "100090_1", "comparareNoticeYesterdayCount");
+        String dzsqkCnt = rtnDataList.get(0).getCnt();
+        rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, "100090_2", "comparareNoticeYesterdayCount");
+        String glcxkCnt = rtnDataList.get(0).getCnt();
+        if(!dzsqkCnt.equals(glcxkCnt)){
+            mailHelperBuilder.sendSimpleMessage(BusinessConstant.BIZ_COMPARARE_NOTICE_YESTERDAY_COUNT,"昨日新型通知书发出数量：管理查询库="+glcxkCnt+";电子审批库="+dzsqkCnt);
+        }
+    }
 
 
 
@@ -308,8 +329,12 @@ public class UtilityMultithreadScheduleTask {
 
 
 
-
-
+    //@Async
+    //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
+    //@Scheduled(cron = "0 31 16 * * ?")// 每天上午1:05触发
+    public void exceptionNoticeOfWithdrawal() {//异常视撤通知书
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_EXCEPTION_NOTICE_OF_WITHDRAWAL, "exceptionNoticeOfWithdrawal",mailHelperBuilder);
+    }
 
     //@Async
     //@Scheduled(cron = "0 20 2 * * ?")// 每天上午2:20触发
