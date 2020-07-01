@@ -186,7 +186,7 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
-    @Scheduled(cron = "0 55 1 * * ?")// 每天上午1:55触发
+    @Scheduled(cron = "0 05 0 * * ?")// 每天上午1:55触发BIZ_NOTICE_SEND_DATE_IS_NULL
     //@Scheduled(cron = "0 34 10 * * ?")// 每天上午1:05触发
     public void overCaseDepartmentBlack() {//结案案件处室代码为空
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_OVER_CASE_DEPARTMENT_BLACK, "overCaseDepartmentBlack",mailHelperBuilder);
