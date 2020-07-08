@@ -317,12 +317,33 @@ public class UtilityMultithreadScheduleTask {
         rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, "100090_2", "comparareNoticeYesterdayCount");
         String glcxkCnt = rtnDataList.get(0).getCnt();
         if(!dzsqkCnt.equals(glcxkCnt)){
-            mailHelperBuilder.sendSimpleMessage(BusinessConstant.BIZ_COMPARARE_NOTICE_YESTERDAY_COUNT,"昨日新型通知书发出数量：管理查询库="+glcxkCnt+";电子审批库="+dzsqkCnt);
+            mailHelperBuilder.sendSimpleMessage("管理查询库和电子审批库昨天发出通知书数据量比对","昨日新型通知书发出数量：管理查询库="+glcxkCnt+";电子审批库="+dzsqkCnt);
         }
     }
 
 
-
+    @Async
+    @Scheduled(cron = "0 15 06 * * ?")// 每天上午6:15触发
+    //@Scheduled(cron = "0 25 14 * * ?")// 每天上午1:05触发
+    public void unhangupCaseAuthInvalidPriority() {//在后授权在先优先权不成立未解挂
+        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.UNHANGUP_CASE_AUTH_INVALID_PRIORITY, "unhangupCaseAuthInvalidPriority");
+        if(rtnDataList != null && rtnDataList.size() >0){
+            StringBuilder sqhBui = new StringBuilder();
+            boolean firstFlag = true;
+            for(RtnData rtnData : rtnDataList){
+                if(firstFlag){
+                    firstFlag = false;
+                }else{
+                    sqhBui.append(",");
+                }
+                sqhBui.append(rtnData.getZaixiansqh());
+            }
+            UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.UNHANGUP_CASE_AUTH_INVALID_PRIORITY,sqhBui.toString(),"shenqingh");
+            //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
+        }else{
+            //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次未发现需要处理的数据!!!");
+        }
+    }
 
 
 

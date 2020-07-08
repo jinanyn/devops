@@ -42,6 +42,8 @@ public class BusinessConstant {
 
     public static final String BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW="100022";//在先申请该国优视撤未国优视撤
 
+    public static final String UNHANGUP_CASE_AUTH_INVALID_PRIORITY="100089";//在后授权在先优先权不成立未解挂
+
     public static final String BIZ_COMPARARE_NOTICE_YESTERDAY_COUNT="100090";//管理查询库和电子审批库数据量比对
 
     public static final String BIZ_EXCEPTION_NOTICE_OF_WITHDRAWAL="100091";//发出视撤通知书异常
@@ -133,6 +135,7 @@ public class BusinessConstant {
 
 
         MONITOR_BIZ_DESC_MAP.put("300001","PPH沉底案件监控");
+        MONITOR_BIZ_DESC_MAP.put("300002","PPH补正期限逾期监控");
     }
 
 

@@ -1,7 +1,12 @@
 package com.gwssi.devops.utilitypage.controller;
 
 import cn.gwssi.util.TreeNode;
+import com.gwssi.devops.utilitypage.schedule.PPHMultithreadScheduleTask;
+import com.gwssi.devops.utilitypage.schedule.UtilityMultithreadScheduleTask;
+import com.gwssi.devops.utilitypage.util.BusinessConstant;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,6 +16,11 @@ import java.util.List;
 @RestController
 @RequestMapping("utility/")
 public class Utilitycontroller {
+
+    @Autowired
+    private PPHMultithreadScheduleTask pphTask;
+    @Autowired
+    private UtilityMultithreadScheduleTask utilityTask;
 
     @ResponseBody
     @RequestMapping(value="menuTreeData",method= RequestMethod.GET)
@@ -309,5 +319,106 @@ public class Utilitycontroller {
         rtnList.add(topTwo);
         rtnList.add(topThree);
         return rtnList;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="taskExecute/{taskId}",method= RequestMethod.GET)
+    public String taskExecute(@PathVariable("taskId") String taskId){
+        switch(taskId) {
+            case "300001":
+                pphTask.pphSinkBottomCase();
+                break;
+            case "300002":
+                pphTask.pphSupplementDeadlineOverdue();
+                break;
+            case "100099":
+                utilityTask.serverShareDiskStateMonitor();
+                break;
+            case "100000":
+                utilityTask.bizAuthCaseFivebookMissMonitor();
+                break;
+            case "100096":
+                utilityTask.bizInnerFormDataWhitespace();
+                break;
+            case "100002":
+                utilityTask.bizMidfileAssignLateMonitor();
+                break;
+            case "100004":
+                utilityTask.bizWarrantyEventExceptionMonitor();
+                break;
+            case "100005":
+                utilityTask.bizDivisionEventExceptionMonitor();
+                break;
+            case "100006":
+                utilityTask.bizOverCaseDateBlackMonitor();
+                break;
+            case "100007":
+                utilityTask.reconfirmFillingDateInconformity();
+                break;
+            case "100008":
+                utilityTask.bulletinBagFileMiss();
+                break;
+            case "100009":
+                utilityTask.dismissEventException();
+                break;
+            case "100010":
+                utilityTask.workflowExceptionRegisterUnsend();
+                break;
+            case "100011":
+                utilityTask.caseStateExceptionMonitor();
+                break;
+            case "100012":
+                utilityTask.overCaseDepartmentBlack();
+                break;
+            case "100013":
+                utilityTask.reviewCaseDepartmentBlack();
+                break;
+            case "100015":
+                utilityTask.noticeSendNewState();
+                break;
+            case "100016":
+                utilityTask.noticeUnsendReplyState();
+                break;
+            case "100017":
+                utilityTask.noticeUploadNewState();
+                break;
+            case "100021":
+                utilityTask.priorityApplyUnhangup();
+                break;
+            case "100022":
+                utilityTask.priorityApplyNationBestUnwithdraw();
+                break;
+            case "100095":
+                utilityTask.noticeRegistrationUnsendLongTime();
+                break;
+            case "100097":
+                utilityTask.viewPtajcxnewFresh();
+                break;
+            case "100014":
+                utilityTask.priorityFeeUnpay();
+                break;
+            case "100094":
+                utilityTask.historyDataHandle();
+                break;
+            case "100093":
+                utilityTask.noticeSendDateIsNull();
+                break;
+            case "100092":
+                utilityTask.sinkCaseMonthStatisticData();
+                break;
+            case "100090":
+                utilityTask.comparareNoticeYesterdayCount();
+                break;
+            case "100089":
+                utilityTask.unhangupCaseAuthInvalidPriority();
+                break;
+            default:
+                break;
+        }
+        String taskDesc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(taskId);
+        if(StringUtils.isBlank(taskDesc)){
+            taskDesc = "未找到匹配的任务";
+        }
+        return taskDesc;
     }
 }
