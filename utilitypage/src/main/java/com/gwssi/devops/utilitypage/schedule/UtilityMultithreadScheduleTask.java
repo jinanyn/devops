@@ -206,7 +206,7 @@ public class UtilityMultithreadScheduleTask {
 
     @Async
     @Scheduled(cron = "0 15 2 * * ?")// 每天上午2:15触发
-    //@Scheduled(cron = "0 30 12 * * ?")// 每天上午1:05触发
+    //@Scheduled(cron = "0 30 12 * * ?")// 每天上午12:30触发
     public void noticeUnsendReplyState() {//未发送通知书，但案件状态为初审待答复或者回案审查
         List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_NOTICE_UNSEND_REPLY_STATE, "noticeUnsendReplyState");
         if(rtnDataList != null && rtnDataList.size() >0){
