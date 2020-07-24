@@ -236,7 +236,23 @@ public class UtilityMultithreadScheduleTask {
     @Scheduled(cron = "0 20 2 * * ?")// 每天上午2:20触发
     //@Scheduled(cron = "0 40 12 * * ?")// 每天上午1:05触发
     public void priorityApplyUnhangup() {//在先申请该挂起未挂起
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP, "priorityApplyUnhangup",mailHelperBuilder);
+        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP, "priorityApplyUnhangup");
+        if(rtnDataList != null && rtnDataList.size() >0){
+            StringBuilder sqhBui = new StringBuilder();
+            boolean firstFlag = true;
+            for(RtnData rtnData : rtnDataList){
+                if(firstFlag){
+                    firstFlag = false;
+                }else{
+                    sqhBui.append(",");
+                }
+                sqhBui.append(rtnData.getShenqingh());
+            }
+            UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP,sqhBui.toString(),"shenqingh");
+            String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP);
+            mailHelperBuilder.sendSimpleMessage(desc,"本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
+        }else{
+        }
     }
 
     @Async
@@ -323,15 +339,23 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
+    //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
+    @Scheduled(cron = "0 53 0 * * ?")// 每天上午0:53触发
+    public void noticeSoftscanFinishStateDraft() {//通知书发出软扫结束通知书状态仍为草稿
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.NOTICE_SOFTSCAN_FINISH_STATE_DRAFT, "noticeSoftscanFinishStateDraft",mailHelperBuilder);
+    }
+
+    @Async
     @Scheduled(cron = "0 55 0 * * ?")// 每天上午0:55触发
     //@Scheduled(cron = "0 48 11 * * ?")// 每天上午1:05触发
     public void comparareNoticeYesterdayCount() {//管理查询库和电子审批库昨天发出通知书数据量比对
-        List<RtnData> rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, "100090_1", "comparareNoticeYesterdayCount");
+        List<RtnData> rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_COMPARARE_NOTICE_YESTERDAY_COUNT+"_1", "comparareNoticeYesterdayCount");
         String dzsqkCnt = rtnDataList.get(0).getCnt();
-        rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, "100090_2", "comparareNoticeYesterdayCount");
+        rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_COMPARARE_NOTICE_YESTERDAY_COUNT+"_2", "comparareNoticeYesterdayCount");
         String glcxkCnt = rtnDataList.get(0).getCnt();
         if(!dzsqkCnt.equals(glcxkCnt)){
-            mailHelperBuilder.sendSimpleMessage("管理查询库和电子审批库昨天发出通知书数据量比对","昨日新型通知书发出数量：管理查询库="+glcxkCnt+";电子审批库="+dzsqkCnt);
+            String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_COMPARARE_NOTICE_YESTERDAY_COUNT);
+            mailHelperBuilder.sendSimpleMessage(desc,"昨日新型通知书发出数量：管理查询库="+glcxkCnt+";电子审批库="+dzsqkCnt);
         }
     }
 

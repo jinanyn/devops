@@ -42,6 +42,8 @@ public class BusinessConstant {
 
     public static final String BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW="100022";//在先申请该国优视撤未国优视撤
 
+    public static final String NOTICE_SOFTSCAN_FINISH_STATE_DRAFT="100088";//通知书发出软扫结束通知书状态仍为草稿
+
     public static final String UNHANGUP_CASE_AUTH_INVALID_PRIORITY="100089";//在后授权在先优先权不成立未解挂
 
     public static final String BIZ_COMPARARE_NOTICE_YESTERDAY_COUNT="100090";//管理查询库和电子审批库数据量比对
@@ -119,6 +121,8 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100028","案件审查表的案件状态为“回案审查”，主表状态为“初审待答复”或者“新案审查”");
         MONITOR_BIZ_DESC_MAP.put("100029","案件审查表的案件状态为“回案审查”，主表状态为其他情况");
 
+        MONITOR_BIZ_DESC_MAP.put("100088","通知书发出软扫结束通知书状态仍为草稿");
+        MONITOR_BIZ_DESC_MAP.put("100089","在后授权在先优先权不成立未解挂");
         MONITOR_BIZ_DESC_MAP.put("100090","管理查询库和电子审批库昨天发出通知书数据量比对");
         MONITOR_BIZ_DESC_MAP.put("100091","异常视撤通知书");
         MONITOR_BIZ_DESC_MAP.put("100092","沉底案件每月统计数据");
