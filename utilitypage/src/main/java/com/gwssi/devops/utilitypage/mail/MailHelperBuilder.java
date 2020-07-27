@@ -42,4 +42,8 @@ public class MailHelperBuilder {
             }
         }
     }
+
+    public void sendSimpleMessagesAll( String subject, String text) {
+        this.sendSimpleMessage(subject, text,mailConfig.getRecivers());
+    }
 }
