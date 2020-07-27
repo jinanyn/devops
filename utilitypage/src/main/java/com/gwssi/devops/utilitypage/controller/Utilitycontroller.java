@@ -388,6 +388,9 @@ public class Utilitycontroller {
             case "100022":
                 utilityTask.priorityApplyNationBestUnwithdraw();
                 break;
+            case "100087":
+                utilityTask.priorityWaitResumeTermError();
+                break;
             case "100088":
                 utilityTask.noticeSoftscanFinishStateDraft();
                 break;

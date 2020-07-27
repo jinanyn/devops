@@ -340,6 +340,13 @@ public class UtilityMultithreadScheduleTask {
 
     @Async
     //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
+    @Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
+    public void priorityWaitResumeTermError() {//视为未要求,优先权等恢复期限建立错误
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.PRIORITY_WAIT_RESUME_TERM_ERROR, "priorityWaitResumeTermError",mailHelperBuilder);
+    }
+
+    @Async
+    //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
     @Scheduled(cron = "0 53 0 * * ?")// 每天上午0:53触发
     public void noticeSoftscanFinishStateDraft() {//通知书发出软扫结束通知书状态仍为草稿
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.NOTICE_SOFTSCAN_FINISH_STATE_DRAFT, "noticeSoftscanFinishStateDraft",mailHelperBuilder);
