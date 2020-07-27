@@ -13,6 +13,7 @@ public class MailConfig {
 
     private String from;
     private String reciver;
+    private String recivers;
     private String host;
     private String username;
     private String password;
