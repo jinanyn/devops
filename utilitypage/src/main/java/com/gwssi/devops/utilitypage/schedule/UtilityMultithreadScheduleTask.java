@@ -158,7 +158,7 @@ public class UtilityMultithreadScheduleTask {
             ztMap.put("2","S050302");
             ztMap.put("3","S050303");
             ztMap.put("4","S050304");
-            ztMap.put("5","S050305");
+            ztMap.put("5","S050304");
             rtnDataList.stream().forEach(rtnData -> {
                 //目前以xx_ajscb表状态为基准
                 String shenqingh = rtnData.getShenqingh();
@@ -340,16 +340,68 @@ public class UtilityMultithreadScheduleTask {
 
     @Async
     //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
-    @Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
-    public void priorityWaitResumeTermError() {//视为未要求,优先权等恢复期限建立错误
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.PRIORITY_WAIT_RESUME_TERM_ERROR, "priorityWaitResumeTermError",mailHelperBuilder);
+    @Scheduled(cron = "2 53 0 * * ?")// 每天上午2:53触发
+    public void preconditionReviewErrorDataDelete() {//前置复核结论错误数据删除
+        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.PRECONDITION_REVIEW_ERROR_DATA_DELETE, "preconditionReviewErrorDataDelete",mailHelperBuilder);
+        if(rtnDataList != null && rtnDataList.size() >0){
+            StringBuilder sqhBui = new StringBuilder();
+            boolean firstFlag = true;
+            for(RtnData rtnData : rtnDataList){
+                if(firstFlag){
+                    firstFlag = false;
+                }else{
+                    sqhBui.append(",");
+                }
+                sqhBui.append(rtnData.getRid());
+            }
+            UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.PRECONDITION_REVIEW_ERROR_DATA_DELETE,sqhBui.toString(),"rid");
+        }else{
+        }
     }
 
     @Async
     //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
-    @Scheduled(cron = "0 53 0 * * ?")// 每天上午0:53触发
+    @Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
+    public void priorityWaitResumeTermError() {//视为未要求,优先权等恢复期限建立错误
+        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.PRIORITY_WAIT_RESUME_TERM_ERROR, "priorityWaitResumeTermError",mailHelperBuilder);
+        if(rtnDataList != null && rtnDataList.size() >0){
+            StringBuilder sqhBui = new StringBuilder();
+            boolean firstFlag = true;
+            for(RtnData rtnData : rtnDataList){
+                if(firstFlag){
+                    firstFlag = false;
+                }else{
+                    sqhBui.append(",");
+                }
+                sqhBui.append(rtnData.getQixianslh());
+            }
+            UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.PRIORITY_WAIT_RESUME_TERM_ERROR,sqhBui.toString(),"qixianslh");
+        }else{
+        }
+    }
+
+    @Async
+    //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
+    //@Scheduled(cron = "0 53 0 * * ?")// 每天上午0:53触发
+    @Scheduled(fixedDelay = 5*60000)
     public void noticeSoftscanFinishStateDraft() {//通知书发出软扫结束通知书状态仍为草稿
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.NOTICE_SOFTSCAN_FINISH_STATE_DRAFT, "noticeSoftscanFinishStateDraft",mailHelperBuilder);
+        List<RtnData> rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.NOTICE_SOFTSCAN_FINISH_STATE_DRAFT, "noticeSoftscanFinishStateDraft");
+        if(rtnDataList != null && rtnDataList.size() >0){
+            StringBuilder sqhBui = new StringBuilder();
+            boolean firstFlag = true;
+            for(RtnData rtnData : rtnDataList){
+                if(firstFlag){
+                    firstFlag = false;
+                }else{
+                    sqhBui.append(",");
+                }
+                sqhBui.append(rtnData.getRid());
+            }
+            UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.NOTICE_SOFTSCAN_FINISH_STATE_DRAFT, sqhBui.toString(), "rid");
+            String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.NOTICE_SOFTSCAN_FINISH_STATE_DRAFT);
+            mailHelperBuilder.sendSimpleMessage(desc,"修改通知书状态到05的通知书描述表主键："+sqhBui.toString());
+        }else{
+        }
     }
 
     @Async

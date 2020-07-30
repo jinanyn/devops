@@ -322,6 +322,12 @@ public class Utilitycontroller {
     }
 
     @ResponseBody
+    @RequestMapping(value="taskDesc",method= RequestMethod.GET)
+    public String taskDesc(){
+        String rtnStr = BusinessConstant.MONITOR_BIZ_DESC_MAP.toString().replaceAll(", ", "<br/>");
+        return rtnStr.substring(1, rtnStr.length() -1);
+    }
+    @ResponseBody
     @RequestMapping(value="taskExecute/{taskId}",method= RequestMethod.GET)
     public String taskExecute(@PathVariable("taskId") String taskId){
         switch(taskId) {
@@ -387,6 +393,9 @@ public class Utilitycontroller {
                 break;
             case "100022":
                 utilityTask.priorityApplyNationBestUnwithdraw();
+                break;
+            case "100086":
+                utilityTask.preconditionReviewErrorDataDelete();
                 break;
             case "100087":
                 utilityTask.priorityWaitResumeTermError();
