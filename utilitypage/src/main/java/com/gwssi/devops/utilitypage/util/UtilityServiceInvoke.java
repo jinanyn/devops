@@ -407,7 +407,7 @@ public class UtilityServiceInvoke {
                 String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
                 String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "serverShareDiskState";
                 FileHelperUtil.appendContentToFile(targetPath + File.separator + "serverShareDiskState", strBui.toString());
-                mailHelperBuilder[0].sendSimpleMessage("新型共享存储访问异常", "异常服务器：" + ip);
+                mailHelperBuilder[0].sendSimpleMessagesAll("新型共享存储访问异常", "异常服务器：" + ip);
             }
         }
         strBui.append(FileHelperUtil.LINE_SEPARATOR);

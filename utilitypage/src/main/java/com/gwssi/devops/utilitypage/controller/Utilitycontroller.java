@@ -23,8 +23,8 @@ public class Utilitycontroller {
     private UtilityMultithreadScheduleTask utilityTask;
 
     @ResponseBody
-    @RequestMapping(value="menuTreeData",method= RequestMethod.GET)
-    public List<TreeNode> menuTreeData(@RequestParam("parentId") String parentId){
+    @RequestMapping(value = "menuTreeData", method = RequestMethod.GET)
+    public List<TreeNode> menuTreeData(@RequestParam("parentId") String parentId) {
 
         //System.out.println("parentId="+parentId);
         List<TreeNode> rtnList = new ArrayList<>();
@@ -129,8 +129,8 @@ public class Utilitycontroller {
 //        levelOne28_2.setParentId("0208");
 //        levelOne28_2.setName("主表案件状态为“回案审查”（无答复文件）,需修改主表状态为初审待答复");
 //        levelOne28_2.setData("aj-dhzt-yqqk2");
- //       levelOne2_1Children.add(levelOne28_2);
-       // levelOne28.setChildren(levelOne2_1Children);
+        //       levelOne2_1Children.add(levelOne28_2);
+        // levelOne28.setChildren(levelOne2_1Children);
 
 //        TreeNode levelOne28_3 = new TreeNode();
 //        levelOne28_3.setId("020803");
@@ -138,7 +138,7 @@ public class Utilitycontroller {
 //        levelOne28_3.setName("主表案件状态为“回案审查”（有答复文件）,需修改新型审查表案件状态为未处理回案");
 //        levelOne28_3.setData("aj-dhzt-yqqk3");
 //        levelOne2_1Children.add(levelOne28_3);
-      //  levelOne28.setChildren(levelOne2_1Children);
+        //  levelOne28.setChildren(levelOne2_1Children);
 
         TreeNode levelOne28_4 = new TreeNode();
         levelOne28_4.setId("020804");
@@ -322,15 +322,22 @@ public class Utilitycontroller {
     }
 
     @ResponseBody
-    @RequestMapping(value="taskDesc",method= RequestMethod.GET)
-    public String taskDesc(){
+    @RequestMapping(value = "taskDesc", method = RequestMethod.GET)
+    public String taskDesc() {
         String rtnStr = BusinessConstant.MONITOR_BIZ_DESC_MAP.toString().replaceAll(", ", "<br/>");
-        return rtnStr.substring(1, rtnStr.length() -1);
+        return rtnStr.substring(1, rtnStr.length() - 1);
     }
+
     @ResponseBody
-    @RequestMapping(value="taskExecute/{taskId}",method= RequestMethod.GET)
-    public String taskExecute(@PathVariable("taskId") String taskId){
-        switch(taskId) {
+    @RequestMapping(value = "variable/{paramName}/{paramValue}", method = RequestMethod.GET)
+    public void variableModify(@PathVariable("paramName") String paramName, @PathVariable("paramValue") String paramValue) {
+        BusinessConstant.SYSTEM_VARIABLE_MAP.put(paramName, paramValue);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "taskExecute/{taskId}", method = RequestMethod.GET)
+    public String taskExecute(@PathVariable("taskId") String taskId) {
+        switch (taskId) {
             case "300001":
                 pphTask.pphSinkBottomCase();
                 break;
@@ -394,6 +401,9 @@ public class Utilitycontroller {
             case "100022":
                 utilityTask.priorityApplyNationBestUnwithdraw();
                 break;
+            case "100085":
+                utilityTask.examinerWorkloadCountMonitor();
+                break;
             case "100086":
                 utilityTask.preconditionReviewErrorDataDelete();
                 break;
@@ -431,7 +441,7 @@ public class Utilitycontroller {
                 break;
         }
         String taskDesc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(taskId);
-        if(StringUtils.isBlank(taskDesc)){
+        if (StringUtils.isBlank(taskDesc)) {
             taskDesc = "未找到匹配的任务";
         }
         return taskDesc;

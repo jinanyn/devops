@@ -11,6 +11,7 @@ import com.gwssi.devops.utilitypage.util.BusinessConstant;
 import com.gwssi.devops.utilitypage.config.PathConfig;
 import com.gwssi.devops.utilitypage.util.UtilityServiceInvoke;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -383,6 +384,31 @@ public class UtilityMultithreadScheduleTask {
     @Async
     //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
     //@Scheduled(cron = "0 53 0 * * ?")// 每天上午0:53触发
+    @Scheduled(initialDelay=5000L, fixedDelay = 5 * 60000)
+    public void examinerWorkloadCountMonitor() {//审查员工作量分配表数据量监控
+        List<RtnData> rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.EXAMINER_WORKLOAD_COUNT_MONITOR, "examinerWorkloadCountMonitor");
+        String expectValue = BusinessConstant.SYSTEM_VARIABLE_MAP.get(BusinessConstant.EXAMINER_WORKLOAD_COUNT_MONITOR);
+        if(StringUtils.isBlank(expectValue)){
+            expectValue = BusinessConstant.SYSTEM_VARIABLE_MAP.put(BusinessConstant.EXAMINER_WORKLOAD_COUNT_MONITOR, "8970");
+            expectValue = "8970";
+        }
+        log.info("expectValue="+expectValue);
+        if(rtnDataList != null && rtnDataList.size() >0){
+            String cnt = "0";
+            for(RtnData rtnData : rtnDataList){
+                cnt = rtnData.getCnt();
+            }
+            if(!cnt.equals(expectValue)){
+                String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.EXAMINER_WORKLOAD_COUNT_MONITOR);
+                mailHelperBuilder.sendSimpleMessagesWaring(desc,"审查员工作量分配表数据量出现变动,请马上处理!");
+            }
+        }else{
+        }
+    }
+
+    @Async
+    //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
+    //@Scheduled(cron = "0 53 0 * * ?")// 每天上午0:53触发
     @Scheduled(fixedDelay = 5*60000)
     public void noticeSoftscanFinishStateDraft() {//通知书发出软扫结束通知书状态仍为草稿
         List<RtnData> rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.NOTICE_SOFTSCAN_FINISH_STATE_DRAFT, "noticeSoftscanFinishStateDraft");
@@ -398,8 +424,8 @@ public class UtilityMultithreadScheduleTask {
                 sqhBui.append(rtnData.getRid());
             }
             UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.NOTICE_SOFTSCAN_FINISH_STATE_DRAFT, sqhBui.toString(), "rid");
-            String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.NOTICE_SOFTSCAN_FINISH_STATE_DRAFT);
-            mailHelperBuilder.sendSimpleMessage(desc,"修改通知书状态到05的通知书描述表主键："+sqhBui.toString());
+            //String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.NOTICE_SOFTSCAN_FINISH_STATE_DRAFT);
+            //mailHelperBuilder.sendSimpleMessage(desc,"修改通知书状态到05的通知书描述表主键："+sqhBui.toString());
         }else{
         }
     }

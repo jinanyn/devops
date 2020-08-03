@@ -2,6 +2,8 @@ package com.gwssi.devops.utilitypage.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class BusinessConstant {
     public static final String BIZ_AUTH_CASE_FIVEBOOK_MISS="100000";//授权案件五书缺失
@@ -41,6 +43,12 @@ public class BusinessConstant {
     public static final String BIZ_PRIORITY_APPLY_UNHANGUP="100021";//在先申请该挂起未挂起
 
     public static final String BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW="100022";//在先申请该国优视撤未国优视撤
+
+    public static final String EXAMINER_WORKLOAD_COUNT_MONITOR="100085";//审查员工作量分配表数据量监控
+
+    public static final String PRECONDITION_REVIEW_ERROR_DATA_DELETE="100086";//前置复核结论错误数据删除
+
+    public static final String PRIORITY_WAIT_RESUME_TERM_ERROR="100087";//视为未要求,优先权等恢复期限建立错误
 
     public static final String NOTICE_SOFTSCAN_FINISH_STATE_DRAFT="100088";//通知书发出软扫结束通知书状态仍为草稿
 
@@ -82,7 +90,8 @@ public class BusinessConstant {
     public static final String BIZ_HASC_ZBZTQT="100029";  //件审查表的案件状态为“回案审查”，主表状态为其他情况
 
     public static final Map<String,String> MENU_BIZ_MAP = new HashMap<>();
-    public static final Map<String,String> MONITOR_BIZ_DESC_MAP = new HashMap<>();
+    public static final Map<String,String> SYSTEM_VARIABLE_MAP = new HashMap<>();
+    public static final SortedMap<String,String> MONITOR_BIZ_DESC_MAP = new TreeMap<String,String>();
 
     static {
         MENU_BIZ_MAP.put("0201", "caseStateException");
@@ -121,6 +130,9 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100028","案件审查表的案件状态为“回案审查”，主表状态为“初审待答复”或者“新案审查”");
         MONITOR_BIZ_DESC_MAP.put("100029","案件审查表的案件状态为“回案审查”，主表状态为其他情况");
 
+        MONITOR_BIZ_DESC_MAP.put("100085","审查员工作量分配表数据量监控");
+        MONITOR_BIZ_DESC_MAP.put("100086","前置复核结论错误数据删除");
+        MONITOR_BIZ_DESC_MAP.put("100087","视为未要求,优先权等恢复期限建立错误");
         MONITOR_BIZ_DESC_MAP.put("100088","通知书发出软扫结束通知书状态仍为草稿");
         MONITOR_BIZ_DESC_MAP.put("100089","在后授权在先优先权不成立未解挂");
         MONITOR_BIZ_DESC_MAP.put("100090","管理查询库和电子审批库昨天发出通知书数据量比对");
