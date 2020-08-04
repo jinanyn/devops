@@ -7,7 +7,6 @@ import com.gwssi.devops.utilitypage.util.BusinessConstant;
 import com.gwssi.devops.utilitypage.util.UtilityServiceInvoke;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -28,7 +27,7 @@ public class CaseAssignMultithreadScheduleTask {
     @Autowired
     private MailHelperBuilder mailHelperBuilder;
     @Async
-    @Scheduled(cron = "0 45 20 ? * *")// 每天晚上20:45触发
+    @Scheduled(cron = "12 42 20 ? * *")// 每天晚上20:42:12触发
     //@Scheduled(cron = "0 0/2 * * * ?")// 2分钟触发一次
     public void priorityAuditDataRepeatMointer() {//优先审查数据重复自动处理(如果有重复数据,会影响案源数据提取存储过程)
         List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_AUDIT_DATA_REPEAT, "priorityAuditDataRepeat");
