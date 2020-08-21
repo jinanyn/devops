@@ -23,7 +23,23 @@ public class MailHelperBuilder {
     public void sendSimpleMessage(String subject, String text, String... recivers) {
         String reciver = "";
         if (recivers == null || recivers.length == 0) {
-            reciver = mailConfig.getReciver();
+            StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+            for (int i = 0; i < elements.length; i++) {
+                String clazzName = elements[i].getClassName();
+                if("com.gwssi.devops.utilitypage.schedule.PPHMultithreadScheduleTask".equals(clazzName)){
+                    reciver = mailConfig.getReciverPph();
+                    break;
+                }else if("com.gwssi.devops.utilitypage.schedule.CaseAssignMultithreadScheduleTask".equals(clazzName)){
+                    reciver = mailConfig.getReciverCaseAssign();
+                    break;
+                }else if("com.gwssi.devops.utilitypage.schedule.UtilityMultithreadScheduleTask".equals(clazzName)){
+                    reciver = mailConfig.getReciverUtility();
+                    break;
+                }
+            }
+            if(StringUtils.isBlank(reciver)){
+                reciver = mailConfig.getDefaultReciver();
+            }
         } else {
             reciver = recivers[0];
         }
@@ -44,10 +60,6 @@ public class MailHelperBuilder {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void sendSimpleMessagesAll(String subject, String text) {
-        this.sendSimpleMessage(subject, text, mailConfig.getRecivers());
     }
 
     public void sendSimpleMessagesWaring(String subject, String text) {

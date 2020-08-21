@@ -297,7 +297,23 @@ public class UtilityMultithreadScheduleTask {
     @Scheduled(cron = "0 5 2 * * ?")// 每天上午2:05触发
     //@Scheduled(cron = "0 44 10 * * ?")// 每天上午1:05触发
     public void priorityFeeUnpay() {//优先权要求费无原始费用，但界面展示费足
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_FEE_UNPAY, "priorityFeeUnpay",mailHelperBuilder);
+        List<RtnData> rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_FEE_UNPAY, "priorityFeeUnpay",mailHelperBuilder);
+        if(rtnDataList != null && rtnDataList.size() >0){
+            StringBuilder sqhBui = new StringBuilder();
+            boolean firstFlag = true;
+            for(RtnData rtnData : rtnDataList){
+                if(firstFlag){
+                    firstFlag = false;
+                }else{
+                    sqhBui.append(",");
+                }
+                sqhBui.append(rtnData.getRid());
+            }
+            UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.BIZ_PRIORITY_FEE_UNPAY,sqhBui.toString(),"guidingfyxh");
+            //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
+        }else{
+            //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次未发现需要处理的数据!!!");
+        }
     }
 
     @Async
@@ -383,8 +399,30 @@ public class UtilityMultithreadScheduleTask {
 
     @Async
     //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
+    @Scheduled(cron = "3 53 0 * * ?")// 每天上午3:53触发
+    public void noticeDeleteTermExists() {//通知书删除等答复期限未删除
+        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.NOTICE_DELETE_TERM_EXISTS, "noticeDeleteTermExists");
+        if(rtnDataList != null && rtnDataList.size() >0){
+            StringBuilder sqhBui = new StringBuilder();
+            boolean firstFlag = true;
+            for(RtnData rtnData : rtnDataList){
+                if(firstFlag){
+                    firstFlag = false;
+                }else{
+                    sqhBui.append(",");
+                }
+                sqhBui.append("Qixianslh="+rtnData.getQixianslh()+";shenqingh="+rtnData.getShenqingh()+";tzsrid="+rtnData.getRid()+";starttime="+rtnData.getStartTime()+"\n");
+            }
+            String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.NOTICE_DELETE_TERM_EXISTS);
+            mailHelperBuilder.sendSimpleMessage(desc, sqhBui.toString());
+        }else{
+        }
+    }
+
+    //@Async
+    //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
     //@Scheduled(cron = "0 53 0 * * ?")// 每天上午0:53触发
-    @Scheduled(initialDelay=5000L, fixedDelay = 5 * 60000)
+    //@Scheduled(initialDelay=5000L, fixedDelay = 5 * 60000)
     public void examinerWorkloadCountMonitor() {//审查员工作量分配表数据量监控
         List<RtnData> rtnDataList =UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.EXAMINER_WORKLOAD_COUNT_MONITOR, "examinerWorkloadCountMonitor");
         String expectValue = BusinessConstant.SYSTEM_VARIABLE_MAP.get(BusinessConstant.EXAMINER_WORKLOAD_COUNT_MONITOR);
