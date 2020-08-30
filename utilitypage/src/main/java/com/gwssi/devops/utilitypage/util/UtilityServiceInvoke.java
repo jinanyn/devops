@@ -407,7 +407,7 @@ public class UtilityServiceInvoke {
                 String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
                 String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "serverShareDiskState";
                 FileHelperUtil.appendContentToFile(targetPath + File.separator + "serverShareDiskState", strBui.toString());
-                mailHelperBuilder[0].sendSimpleMessagesAll("新型共享存储访问异常", "异常服务器：" + ip);
+                mailHelperBuilder[0].sendSimpleMessagesWaring("新型共享存储访问异常", "异常服务器：" + ip);
             }
         }
         strBui.append(FileHelperUtil.LINE_SEPARATOR);
@@ -434,5 +434,12 @@ public class UtilityServiceInvoke {
         UTILITY_SERVER_SET.add("ssh 10.50.168.28 -p 12306 df -h /XXZNSC");
         UTILITY_SERVER_SET.add("ssh 10.50.168.29 -p 12306 df -h /XXZNSC");
         UTILITY_SERVER_SET.add("ssh 10.50.168.30 -p 12306 df -h /XXZNSC");
+
+        UTILITY_SERVER_SET.add("ssh 10.50.168.51 -p 12306 df -h /XXZNSC");
+        UTILITY_SERVER_SET.add("ssh 10.50.168.52 -p 12306 df -h /XXZNSC");
+        UTILITY_SERVER_SET.add("ssh 10.50.168.53 -p 12306 df -h /XXZNSC");
+        UTILITY_SERVER_SET.add("ssh 10.50.168.54 -p 12306 df -h /XXZNSC");
+        UTILITY_SERVER_SET.add("ssh 10.50.168.55 -p 12306 df -h /XXZNSC");
+        UTILITY_SERVER_SET.add("ssh 10.50.168.56 -p 12306 df -h /XXZNSC");
     }
 }

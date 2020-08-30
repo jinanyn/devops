@@ -44,6 +44,8 @@ public class BusinessConstant {
 
     public static final String BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW="100022";//在先申请该国优视撤未国优视撤
 
+    public static final String NOTICE_DELETE_TERM_EXISTS="100084";//通知书删除等答复期限未删除
+
     public static final String EXAMINER_WORKLOAD_COUNT_MONITOR="100085";//审查员工作量分配表数据量监控
 
     public static final String PRECONDITION_REVIEW_ERROR_DATA_DELETE="100086";//前置复核结论错误数据删除
@@ -130,6 +132,7 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100028","案件审查表的案件状态为“回案审查”，主表状态为“初审待答复”或者“新案审查”");
         MONITOR_BIZ_DESC_MAP.put("100029","案件审查表的案件状态为“回案审查”，主表状态为其他情况");
 
+        MONITOR_BIZ_DESC_MAP.put("100084","通知书删除等答复期限未删除");
         MONITOR_BIZ_DESC_MAP.put("100085","审查员工作量分配表数据量监控");
         MONITOR_BIZ_DESC_MAP.put("100086","前置复核结论错误数据删除");
         MONITOR_BIZ_DESC_MAP.put("100087","视为未要求,优先权等恢复期限建立错误");
