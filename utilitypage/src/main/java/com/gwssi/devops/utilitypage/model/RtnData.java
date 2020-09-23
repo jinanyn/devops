@@ -82,4 +82,6 @@ public class RtnData {
     private String note;
     @XmlElement(name = "TEXT")
     private String text;
+    @XmlElement(name = "RUANSAOPC")
+    private String ruansaopc;
 }

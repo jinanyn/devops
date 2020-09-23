@@ -12,8 +12,10 @@ import org.springframework.stereotype.Component;
 public class MailConfig {
 
     private String from;
-    private String reciver;
-    private String recivers;
+    private String defaultReciver;
+    private String reciverPph;
+    private String reciverCaseAssign;
+    private String reciverUtility;
     private String host;
     private String username;
     private String password;
