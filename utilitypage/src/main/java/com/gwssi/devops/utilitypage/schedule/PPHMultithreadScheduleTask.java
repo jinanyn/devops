@@ -1,5 +1,6 @@
 package com.gwssi.devops.utilitypage.schedule;
 
+import cn.gwssi.util.FileHelperUtil;
 import cn.gwssi.xml.XmlHelerBuilder;
 import com.gwssi.devops.utilitypage.config.PathConfig;
 import com.gwssi.devops.utilitypage.mail.MailHelperBuilder;
@@ -7,6 +8,7 @@ import com.gwssi.devops.utilitypage.model.RtnData;
 import com.gwssi.devops.utilitypage.util.BusinessConstant;
 import com.gwssi.devops.utilitypage.util.UtilityServiceInvoke;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -14,6 +16,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -67,7 +71,11 @@ public class PPHMultithreadScheduleTask {
                     flag = false;
                 }
                 if(flag){
-                    mailHelperBuilder.sendSimpleMessage("PPH补正期限逾期数据需要处理","待处理数据生成语句："+rtnData.getText());
+                    String bizDesc = "PPH补正期限逾期数据需要处理";
+                    mailHelperBuilder.sendSimpleMessage(bizDesc,"待处理数据生成语句："+rtnData.getText());
+                    String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+                    String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "pphSupplementDeadlineOverdue";
+                    FileHelperUtil.appendContentToFile(targetPath + File.separator + "pphSupplementDeadlineOverdue", rtnData.getText(),bizDesc);
                 }
             });
         }else{

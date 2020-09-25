@@ -12,6 +12,7 @@ import com.gwssi.devops.utilitypage.config.PathConfig;
 import com.gwssi.devops.utilitypage.util.UtilityServiceInvoke;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -20,7 +21,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -180,6 +183,9 @@ public class UtilityMultithreadScheduleTask {
             });
             if(strBui.length() > 0){
                 mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_CASE_STATE_EXCEPTION), strBui.toString());
+                String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+                String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "caseStateExceptionMonitor";
+                FileHelperUtil.appendContentToFile(targetPath + File.separator + "caseStateExceptionMonitor", strBui.toString(),"当前状态表和电子文件夹状态不对应");
             }
         }catch (IOException e){
             log.error(ExceptionUtil.getMessage(e));
@@ -250,8 +256,8 @@ public class UtilityMultithreadScheduleTask {
                 sqhBui.append(rtnData.getShenqingh());
             }
             UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP,sqhBui.toString(),"shenqingh");
-            String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP);
-            mailHelperBuilder.sendSimpleMessage(desc,"本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
+            //String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP);
+            //mailHelperBuilder.sendSimpleMessage(desc,"本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
         }else{
         }
     }
@@ -338,9 +344,7 @@ public class UtilityMultithreadScheduleTask {
                 sqhBui.append(rtnData.getRid());
             }
             UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.BIZ_NOTICE_SEND_DATE_IS_NULL,sqhBui.toString(),"rid");
-            //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
         }else{
-            //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次未发现需要处理的数据!!!");
         }
     }
 
@@ -350,7 +354,12 @@ public class UtilityMultithreadScheduleTask {
     public void sinkCaseMonthStatisticData() {//沉底案件每月统计数据
         log.info("开始执行!!!!沉底案件每月统计数据");
         UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_SINK_CASE_MONTH_STATISTIC_DATA, "sinkCaseMonthStatisticData");
-        mailHelperBuilder.sendSimpleMessage("沉底案件每月统计数据","沉底案件每月统计数据已生成，请尽快进行下一步处理。!!!");
+        StringBuilder resultBui = new StringBuilder();
+        resultBui.append("沉底案件每月统计数据已生成，请尽快进行下一步处理。!!!");
+        mailHelperBuilder.sendSimpleMessage("沉底案件每月统计数据",resultBui.toString());
+        String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+        String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "checkShareDiskState";
+        FileHelperUtil.appendContentToFile(targetPath + File.separator + "checkShareDiskState", resultBui.toString(),"沉底案件每月统计数据");
     }
 
     @Async
@@ -413,6 +422,11 @@ public class UtilityMultithreadScheduleTask {
             }
             String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.NOTICE_DELETE_TERM_EXISTS);
             mailHelperBuilder.sendSimpleMessage(desc, sqhBui.toString());
+
+            String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+            String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "checkShareDiskState";
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + "checkShareDiskState", sqhBui.toString(),desc);
+
         }else{
         }
     }
@@ -476,7 +490,13 @@ public class UtilityMultithreadScheduleTask {
         String glcxkCnt = rtnDataList.get(0).getCnt();
         if(!dzsqkCnt.equals(glcxkCnt)){
             String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_COMPARARE_NOTICE_YESTERDAY_COUNT);
-            mailHelperBuilder.sendSimpleMessage(desc,"昨日新型通知书发出数量：管理查询库="+glcxkCnt+";电子审批库="+dzsqkCnt);
+            StringBuilder resultBui = new StringBuilder();
+            resultBui.append("昨日新型通知书发出数量：管理查询库="+glcxkCnt+";电子审批库="+dzsqkCnt);
+            mailHelperBuilder.sendSimpleMessage(desc,resultBui.toString());
+            String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+            String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "checkShareDiskState";
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + "checkShareDiskState", resultBui.toString(),"管理查询库和电子审批库昨天发出通知书数据量比对");
+
         }
     }
 

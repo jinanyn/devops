@@ -1,6 +1,7 @@
 package cn.gwssi.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -55,7 +56,7 @@ public class FileHelperUtil {
         Files.deleteIfExists(filePath);
         Files.createFile(filePath);
     }
-    public static void appendContentToFile(String fullPathFile,String content){
+    public static void appendContentToFile(String fullPathFile,String content,String... bizDesc){
         FileOutputStream fos = null;
         OutputStreamWriter osw = null;
         try {
@@ -65,6 +66,9 @@ public class FileHelperUtil {
             }
             if(!Files.exists(filePath)){
                 Files.createFile(filePath);
+                if(bizDesc != null && bizDesc.length >0 && StringUtils.isNotBlank(bizDesc[0])){
+                    content = "<bizDesc>"+bizDesc[0]+"<bizDesc>"+FileHelperUtil.LINE_SEPARATOR+content;
+                }
             }
             fos= new FileOutputStream(fullPathFile,true);
             osw= new OutputStreamWriter(fos, StandardCharsets.UTF_8);//指定以UTF-8格式写入文件
@@ -78,7 +82,6 @@ public class FileHelperUtil {
                     osw.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-
                 }
             }
             if(fos!= null){

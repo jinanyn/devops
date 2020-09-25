@@ -10,6 +10,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+/***
+ * 需要写的任务定时检测邮箱服务器是否正常
+ */
 @Slf4j
 @Component
 public class MailHelperBuilder {

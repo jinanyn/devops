@@ -378,17 +378,18 @@ public class UtilityServiceInvoke {
     }
 
     public static void checkShareDiskState(PathConfig pathConfig,String bizName, MailHelperBuilder mailHelperBuilder) {
-        UTILITY_SERVER_SET.parallelStream().forEach(v -> shellCmdMethod(v, pathConfig,new StringBuilder(), mailHelperBuilder));
+        StringBuilder resultBui = new StringBuilder();
+        UTILITY_SERVER_SET.parallelStream().forEach(v -> shellCmdMethod(v, pathConfig,resultBui, mailHelperBuilder));
+
+        if(resultBui.length() >0){
+            String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+            String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "checkShareDiskState";
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + "checkShareDiskState", resultBui.toString(),"新型共享存储访问异常");
+        }
     }
 
     public static void shellCmdMethod(String shellCmd, PathConfig pathConfig,StringBuilder strBui, MailHelperBuilder... mailHelperBuilder) {
         String ip = shellCmd.substring(4, 16).trim();
-        strBui.append("<server>");
-        strBui.append(FileHelperUtil.LINE_SEPARATOR);
-        strBui.append("<ip>" + ip + "</ip>");
-        strBui.append(FileHelperUtil.LINE_SEPARATOR);
-        strBui.append("<visitTime>" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + "</visitTime>");
-        strBui.append(FileHelperUtil.LINE_SEPARATOR);
 
         FutureShellExec shellExec = new FutureShellExec(shellCmd);
         FutureTask<List<String>> futureTask = new FutureTask<>(shellExec);
@@ -402,6 +403,12 @@ public class UtilityServiceInvoke {
         } catch (Exception e) {
             log.error("共离存储检测异常ip="+ip);
             log.error(ExceptionUtil.getMessage(e));
+            strBui.append("<server>");
+            strBui.append(FileHelperUtil.LINE_SEPARATOR);
+            strBui.append("<ip>" + ip + "</ip>");
+            strBui.append(FileHelperUtil.LINE_SEPARATOR);
+            strBui.append("<visitTime>" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + "</visitTime>");
+            strBui.append(FileHelperUtil.LINE_SEPARATOR);
             strBui.append("<state>异常</state>");
             if(mailHelperBuilder != null && mailHelperBuilder.length > 0){
                 String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
@@ -409,10 +416,10 @@ public class UtilityServiceInvoke {
                 FileHelperUtil.appendContentToFile(targetPath + File.separator + "serverShareDiskState", strBui.toString());
                 mailHelperBuilder[0].sendSimpleMessagesWaring("新型共享存储访问异常", "异常服务器：" + ip);
             }
+            strBui.append(FileHelperUtil.LINE_SEPARATOR);
+            strBui.append("</server>");
+            strBui.append(FileHelperUtil.LINE_SEPARATOR);
         }
-        strBui.append(FileHelperUtil.LINE_SEPARATOR);
-        strBui.append("</server>");
-        strBui.append(FileHelperUtil.LINE_SEPARATOR);
     }
 
     public static final  Set<String> UTILITY_SERVER_SET = new HashSet<>();
