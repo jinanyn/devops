@@ -107,7 +107,7 @@ public class UtilityServiceInvoke {
         if(resultBui.length() > 0){
             String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
             String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + bizFolder;
-            FileHelperUtil.appendContentToFile(targetPath + File.separator + bizFolder, resultBui.toString());
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + bizFolder+".txt", resultBui.toString());
             if(mailHelperBuilder != null && mailHelperBuilder.length > 0){
                 mailHelperBuilder[0].sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(monitorKey),resultBui.toString());
             }
@@ -162,7 +162,7 @@ public class UtilityServiceInvoke {
         if(resultBui.length() > 0){
             String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
             String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + bizFolder;
-            FileHelperUtil.appendContentToFile(targetPath + File.separator + bizFolder, resultBui.toString());
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + bizFolder+".txt", resultBui.toString());
         }
         return rtnList;
     }
