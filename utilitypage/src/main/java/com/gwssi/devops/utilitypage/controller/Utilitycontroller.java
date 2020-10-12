@@ -401,6 +401,9 @@ public class Utilitycontroller {
             case "100022":
                 utilityTask.priorityApplyNationBestUnwithdraw();
                 break;
+            case "100083":
+                utilityTask.noticeWithdrawMsbStateUnconsistent();
+                break;
             case "100084":
                 utilityTask.noticeDeleteTermExists();
                 break;

@@ -64,7 +64,7 @@ public class UtilityShareDiskController {
         while (startDate.getTime() <= endDate.getTime()) {
             viewDate = DateFormatUtils.format(startDate, "yyyyMMdd");
             startDate = DateUtils.addDays(startDate, 1);
-            String fullPathName = pathConfig.getShareDisk() + File.separator + viewDate + File.separator + "serverShareDiskState" + File.separator + "serverShareDiskState";
+            String fullPathName = pathConfig.getShareDisk() + File.separator + viewDate + File.separator + "serverShareDiskState" + File.separator + "serverShareDiskState.txt";
             String content = FileHelperUtil.readContentFromFile(fullPathName);
             if (StringUtils.isEmpty(content)) {
                 continue;
