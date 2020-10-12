@@ -75,7 +75,7 @@ public class PPHMultithreadScheduleTask {
                     mailHelperBuilder.sendSimpleMessage(bizDesc,"待处理数据生成语句："+rtnData.getText());
                     String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
                     String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "pphSupplementDeadlineOverdue";
-                    FileHelperUtil.appendContentToFile(targetPath + File.separator + "pphSupplementDeadlineOverdue", rtnData.getText(),bizDesc);
+                    FileHelperUtil.appendContentToFile(targetPath + File.separator + "pphSupplementDeadlineOverdue.txt", rtnData.getText(),bizDesc);
                 }
             });
         }else{

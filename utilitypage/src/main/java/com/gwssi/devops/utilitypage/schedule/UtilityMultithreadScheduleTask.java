@@ -185,7 +185,7 @@ public class UtilityMultithreadScheduleTask {
                 mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_CASE_STATE_EXCEPTION), strBui.toString());
                 String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
                 String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "caseStateExceptionMonitor";
-                FileHelperUtil.appendContentToFile(targetPath + File.separator + "caseStateExceptionMonitor", strBui.toString(),"当前状态表和电子文件夹状态不对应");
+                FileHelperUtil.appendContentToFile(targetPath + File.separator + "caseStateExceptionMonitor.txt", strBui.toString(),"当前状态表和电子文件夹状态不对应");
             }
         }catch (IOException e){
             log.error(ExceptionUtil.getMessage(e));
@@ -358,8 +358,8 @@ public class UtilityMultithreadScheduleTask {
         resultBui.append("沉底案件每月统计数据已生成，请尽快进行下一步处理。!!!");
         mailHelperBuilder.sendSimpleMessage("沉底案件每月统计数据",resultBui.toString());
         String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
-        String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "checkShareDiskState";
-        FileHelperUtil.appendContentToFile(targetPath + File.separator + "checkShareDiskState", resultBui.toString(),"沉底案件每月统计数据");
+        String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "sinkCaseMonthStatisticData";
+        FileHelperUtil.appendContentToFile(targetPath + File.separator + "sinkCaseMonthStatisticData.txt", resultBui.toString(),"沉底案件每月统计数据");
     }
 
     @Async
@@ -405,6 +405,13 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
+    @Scheduled(cron = "0 38 3 * * ?")// 每天上午3:38触发
+    //@Scheduled(cron = "0 45 12 * * ?")// 每天上午1:05触发
+    public void noticeWithdrawMsbStateUnconsistent() {//通知书撤件后描述表状态不一致
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.NOTICE_WITHDRAW_MSB_STATE_UNCONSISTENT, "noticeWithdrawMsbStateUnconsistent",mailHelperBuilder);
+    }
+
+    @Async
     //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
     @Scheduled(cron = "3 53 0 * * ?")// 每天上午3:53触发
     public void noticeDeleteTermExists() {//通知书删除等答复期限未删除
@@ -424,8 +431,8 @@ public class UtilityMultithreadScheduleTask {
             mailHelperBuilder.sendSimpleMessage(desc, sqhBui.toString());
 
             String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
-            String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "checkShareDiskState";
-            FileHelperUtil.appendContentToFile(targetPath + File.separator + "checkShareDiskState", sqhBui.toString(),desc);
+            String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "noticeDeleteTermExists";
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + "noticeDeleteTermExists.txt", sqhBui.toString(),desc);
 
         }else{
         }
@@ -494,8 +501,8 @@ public class UtilityMultithreadScheduleTask {
             resultBui.append("昨日新型通知书发出数量：管理查询库="+glcxkCnt+";电子审批库="+dzsqkCnt);
             mailHelperBuilder.sendSimpleMessage(desc,resultBui.toString());
             String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
-            String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "checkShareDiskState";
-            FileHelperUtil.appendContentToFile(targetPath + File.separator + "checkShareDiskState", resultBui.toString(),"管理查询库和电子审批库昨天发出通知书数据量比对");
+            String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "comparareNoticeYesterdayCount";
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + "comparareNoticeYesterdayCount.txt", resultBui.toString(),"管理查询库和电子审批库昨天发出通知书数据量比对");
 
         }
     }

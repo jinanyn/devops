@@ -55,7 +55,7 @@ public class CaseAssignMultithreadScheduleTask {
 
             String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
             String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "priorityAuditDataRepeatMointer";
-            FileHelperUtil.appendContentToFile(targetPath + File.separator + "priorityAuditDataRepeatMointer", resultBui.toString(),bizDesc);
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + "priorityAuditDataRepeatMointer.txt", resultBui.toString(),bizDesc);
         }else{
             //mailHelperBuilder.sendSimpleMessage("发明案源gl_yxsc_ajscb表数据重复处理","本次未发现需要处理的数据!!!");
         }
