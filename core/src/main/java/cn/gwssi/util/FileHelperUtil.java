@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,7 +23,7 @@ public class FileHelperUtil {
         }
         List<String> lines = null;
         try {
-            lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
+            lines = Files.readAllLines(filePath, Charset.forName("GBK"));
         } catch (IOException e) {
             log.error("读取文件失败:"+fullPathFile);
             e.printStackTrace();
@@ -41,7 +42,7 @@ public class FileHelperUtil {
             if(!Files.exists(filePath)){
                 Files.createDirectories(filePath);
             }
-            BufferedWriter bfw= Files.newBufferedWriter(filePath,StandardCharsets.UTF_8);
+            BufferedWriter bfw= Files.newBufferedWriter(filePath, Charset.forName("GBK"));
             bfw.write(content);
             bfw.flush();
             bfw.close();
@@ -71,7 +72,7 @@ public class FileHelperUtil {
                 }
             }
             fos= new FileOutputStream(fullPathFile,true);
-            osw= new OutputStreamWriter(fos, StandardCharsets.UTF_8);//指定以UTF-8格式写入文件
+            osw= new OutputStreamWriter(fos,  Charset.forName("GBK"));//指定以UTF-8格式写入文件
             osw.write(content);
             osw.flush();
         } catch (IOException e) {
