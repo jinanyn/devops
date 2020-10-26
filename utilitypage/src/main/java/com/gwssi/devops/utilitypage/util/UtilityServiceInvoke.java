@@ -106,10 +106,11 @@ public class UtilityServiceInvoke {
         }
         if(resultBui.length() > 0){
             String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+            String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(monitorKey);
             String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + bizFolder;
-            FileHelperUtil.appendContentToFile(targetPath + File.separator + bizFolder+".txt", resultBui.toString());
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + bizFolder+".txt", resultBui.toString(),desc);
             if(mailHelperBuilder != null && mailHelperBuilder.length > 0){
-                mailHelperBuilder[0].sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(monitorKey),resultBui.toString());
+                mailHelperBuilder[0].sendSimpleMessage(desc,resultBui.toString());
             }
         }
         return rtnList;
@@ -384,7 +385,7 @@ public class UtilityServiceInvoke {
         if(resultBui.length() >0){
             String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
             String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "checkShareDiskState";
-            FileHelperUtil.appendContentToFile(targetPath + File.separator + "checkShareDiskState", resultBui.toString(),"新型共享存储访问异常");
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + "checkShareDiskState.txt", resultBui.toString(),"新型共享存储访问异常");
         }
     }
 
@@ -398,7 +399,7 @@ public class UtilityServiceInvoke {
         try {
             List<String> rtnStrList = futureTask.get(15L, TimeUnit.SECONDS);
             //rtnStrList.forEach(v->log.info(v));
-            strBui.append("<state>正常</state>");
+            //strBui.append("<state>正常</state>");
             //log.info("共离存储检测正常ip="+ip);
         } catch (Exception e) {
             log.error("共离存储检测异常ip="+ip);
