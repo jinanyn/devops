@@ -405,6 +405,33 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
+    @Scheduled(cron = "0 12 4 * * ?")// 每天上午4:12触发
+    //@Scheduled(cron = "0 30 12 * * ?")// 每天上午12:30触发
+    public void linkmanInfoAllIsnull() {//联系人信息为空
+        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.LINKMAN_INFO_ALL_ISNULL, "linkmanInfoAllIsnull",mailHelperBuilder);
+        if(rtnDataList != null && rtnDataList.size() >0){
+            StringBuilder sqhBui = new StringBuilder();
+            boolean firstFlag = true;
+            for(RtnData rtnData : rtnDataList){
+                if(firstFlag){
+                    firstFlag = false;
+                }else{
+                    sqhBui.append(",");
+                }
+                sqhBui.append(rtnData.getRid());
+            }
+            UtilityServiceInvoke.commonBizHandleProcess(pathConfig,BusinessConstant.LINKMAN_INFO_ALL_ISNULL,sqhBui.toString(),"rid");
+        }else{
+        }
+    }
+    @Async
+    @Scheduled(cron = "0 34 5 * * ?")// 每天上午5:34触发
+    //@Scheduled(cron = "0 45 12 * * ?")// 每天上午1:05触发
+    public void versionUnmatchClassification() {//版本号与分类号长度不符
+        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.VERSION_UNMATCH_CLASSIFICATION, "versionUnmatchClassification",mailHelperBuilder);
+    }
+
+    @Async
     @Scheduled(cron = "0 38 3 * * ?")// 每天上午3:38触发
     //@Scheduled(cron = "0 45 12 * * ?")// 每天上午1:05触发
     public void noticeWithdrawMsbStateUnconsistent() {//通知书撤件后描述表状态不一致
