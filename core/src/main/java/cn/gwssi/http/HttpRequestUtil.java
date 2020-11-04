@@ -71,6 +71,24 @@ public class HttpRequestUtil {
         return httpClient;
     }
 
+    public static String noSessionRequest(String uri, Map<String, String> reqParam) throws IOException {
+        CloseableHttpClient httpClient = HttpClients.custom().setDefaultCookieStore(new BasicCookieStore())
+                .setRedirectStrategy(new LaxRedirectStrategy()).build();
+        HttpPost httpPost = new HttpPost(uri);
+        // 设置连接超时时间30秒
+        //设置读取超时时间480秒
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setSocketTimeout(480000).setConnectTimeout(30000).build();
+        httpPost.setConfig(requestConfig);
+        UrlEncodedFormEntity entity = new UrlEncodedFormEntity(getParam(reqParam), "UTF-8");
+        httpPost.setEntity(entity);
+        try(CloseableHttpResponse response = httpClient.execute(httpPost)){
+            HttpEntity httpEntity = response.getEntity();
+            return EntityUtils.toString(httpEntity, "UTF-8");
+        }
+
+    }
+
     public static String sessionRequest(CloseableHttpClient closeableHttpClient, String uri, Map<String, String> reqParam) throws IOException {
         HttpPost httpPost = new HttpPost(uri);
         // 设置连接超时时间30秒
