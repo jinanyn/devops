@@ -161,9 +161,59 @@ public class UtilityServiceInvoke {
             resultBui.append(bizXmlData);
         }
         if(resultBui.length() > 0){
+            String bizDesc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(monitorKey);
             String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
             String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + bizFolder;
-            FileHelperUtil.appendContentToFile(targetPath + File.separator + bizFolder+".txt", resultBui.toString());
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + bizFolder+".txt", resultBui.toString(),bizDesc);
+        }
+        return rtnList;
+    }
+
+    public static List<RtnData> commonBizMonitorProcess(PathConfig pathConfig, String monitorKey, String monitorVal, String placeholder,CloseableHttpClient httpClient) {
+        List<RtnData> rtnList = new ArrayList<>();
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap = new HashMap<String, String>();
+        paramMap.put("select-key:monitor_key", monitorKey);
+        paramMap.put("select-key:monitor_val", monitorVal);
+        paramMap.put("select-key:placeholder", placeholder);
+        log.info("执行监控数据:" + pathConfig.getMainAppMonitorUri() + ";参数:" + paramMap.toString());
+        String xmlRtnData;
+        try {
+            xmlRtnData = HttpRequestUtil.sessionRequest(httpClient, pathConfig.getMainAppMonitorUri(), paramMap);
+            //log.info(xmlRtnData);
+        } catch (IOException e) {
+            log.error("获取监控数据异常:" + pathConfig.getMainAppMonitorUri() + ";参数:" + paramMap.toString());
+            log.error(ExceptionUtil.getMessage(e));
+            return rtnList;
+        }
+        log.info("获取监控结果:"+xmlRtnData);
+        //XML转为JAVA对象
+        RtnDataList rtnDataList = (RtnDataList) XmlHelerBuilder.convertXmlToObject(RtnDataList.class, xmlRtnData);
+        if (rtnDataList == null) {
+            log.info("返回的xml解析完毕后结果为空");
+            return rtnList;
+        }
+        List<RtnData> bizDataList = rtnDataList.getBizDataList();
+        if (bizDataList == null) {
+            log.info("返回的xml解析完毕后业务数据为空");
+            return rtnList;
+        }
+        //log.info(rtnDataList.toString());
+        StringBuilder resultBui = new StringBuilder();
+        for (RtnData rtnData : bizDataList) {
+            String bizXmlData = XmlHelerBuilder.convertObjectToXml(rtnData);
+            //log.info("****************bizXmlData="+bizXmlData);
+            if (bizXmlData.indexOf("<rtnData/>") != -1) {//空白数据
+                continue;
+            }
+            int idx = bizXmlData.indexOf("<rtnData>");
+            //log.info("****************idx="+idx);
+            if (idx == -1) {
+                continue;
+            }
+            rtnList.add(rtnData);
+            bizXmlData = bizXmlData.substring(idx);
+            resultBui.append(bizXmlData);
         }
         return rtnList;
     }

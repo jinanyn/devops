@@ -44,6 +44,8 @@ public class BusinessConstant {
 
     public static final String BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW="100022";//在先申请该国优视撤未国优视撤
 
+    public static final String NOTICE_REJECT_WORKFLOW_XX_PHASE="100080";//发出驳回通知书后工作流还处于新型初审阶段
+
     public static final String LINKMAN_INFO_ALL_ISNULL="100081";//联系人信息为空
 
     public static final String VERSION_UNMATCH_CLASSIFICATION="100082";//版本号与分类号长度不符
@@ -138,6 +140,7 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100028","案件审查表的案件状态为“回案审查”，主表状态为“初审待答复”或者“新案审查”");
         MONITOR_BIZ_DESC_MAP.put("100029","案件审查表的案件状态为“回案审查”，主表状态为其他情况");
 
+        MONITOR_BIZ_DESC_MAP.put("100080","发出驳回通知书后工作流还处于新型初审阶段");
         MONITOR_BIZ_DESC_MAP.put("100081","联系人信息为空");
         MONITOR_BIZ_DESC_MAP.put("100082","版本号与分类号长度不符");
         MONITOR_BIZ_DESC_MAP.put("100083","通知书撤件后描述表状态不一致");
