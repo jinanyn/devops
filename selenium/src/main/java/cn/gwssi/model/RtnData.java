@@ -1,4 +1,4 @@
-package com.gwssi.devops.utilitypage.model;
+package cn.gwssi.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -90,6 +90,8 @@ public class RtnData {
     private String status;
     @XmlElement(name = "ANJIANSCCXD")
     private String anjiansccxd;
+    @XmlElement(name = "ZHONGZHIBZ")
+    private String zhongzhibz;
     @XmlElement(name = "STATE")
     private String state;
 }

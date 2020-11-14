@@ -401,6 +401,15 @@ public class Utilitycontroller {
             case "100022":
                 utilityTask.priorityApplyNationBestUnwithdraw();
                 break;
+            case "100080":
+                utilityTask.noticeRejectWorkflowXxPhase();
+                break;
+            case "100081":
+                utilityTask.linkmanInfoAllIsnull();
+                break;
+            case "100082":
+                utilityTask.versionUnmatchClassification();
+                break;
             case "100083":
                 utilityTask.noticeWithdrawMsbStateUnconsistent();
                 break;
