@@ -52,7 +52,7 @@ public class RtnData {
     private String zhongzhibj;//
     @XmlElement(name = "SUODINGBJ")
     private String suodingbj;//
-    @XmlElement(name = "xh")
+    @XmlElement(name = "XH")
     private String xh;//
     @XmlElement(name = "TONGZHISLX")
     private String tongzhislx;//
