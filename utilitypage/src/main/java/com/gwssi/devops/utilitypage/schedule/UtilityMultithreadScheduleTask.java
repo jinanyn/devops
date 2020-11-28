@@ -407,7 +407,17 @@ public class UtilityMultithreadScheduleTask {
         } else {
         }
     }
+    @Async
+    //@Scheduled(cron = "0 12 4 * * ?")// 每天上午4:12触发
+    //@Scheduled(cron = "0 30 12 * * ?")// 每天上午12:30触发
+    public void aaaaaa() {//申请文件表权项数,段数，图片个数与实际情况不符
+        //1.登录访问
+        //2.执行查询100079
+        //3.执行查询100079_1传参数fid,wenjianlxdm,shenqingh
+        //4.执行更新00079_1传参数rid,text
+        // UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.PRIORITY_WAIT_RESUME_TERM_ERROR, sqhBui.toString(), "qixianslh");
 
+    }
     @Async
     //@Scheduled(cron = "0 12 4 * * ?")// 每天上午4:12触发
     //@Scheduled(cron = "0 30 12 * * ?")// 每天上午12:30触发
