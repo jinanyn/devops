@@ -10,7 +10,7 @@ import com.gwssi.devops.utilitypage.model.RtnData;
 import com.gwssi.devops.utilitypage.util.BusinessConstant;
 import com.gwssi.devops.utilitypage.config.PathConfig;
 import com.gwssi.devops.utilitypage.util.UtilityServiceInvoke;
-
+import jdk.nashorn.internal.runtime.options.OptionTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -24,10 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -244,8 +241,8 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
-    @Scheduled(cron = "0 20 2 * * ?")// 每天上午2:20触发
-    //@Scheduled(cron = "0 40 12 * * ?")// 每天上午1:05触发
+    //@Scheduled(cron = "0 20 2 * * ?")// 每天上午2:20触发
+    @Scheduled(cron = "0 03 15 * * ?")// 每天下午15.03触发
     public void priorityApplyUnhangup() {//在先申请该挂起未挂起
         List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP, "priorityApplyUnhangup");
         if (rtnDataList != null && rtnDataList.size() > 0) {
@@ -267,7 +264,7 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
-    @Scheduled(cron = "0 25 2 * * ?")// 每天上午2:20触发
+    @Scheduled(cron = "0 25 2 * * ?")// 每天上午2:25触发
     //@Scheduled(cron = "0 27 12 * * ?")// 每天上午1:05触发
     public void priorityApplyNationBestUnwithdraw() {//在先申请该国优视撤未国优视撤
         List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW, "priorityApplyNationBestUnwithdraw", mailHelperBuilder);
@@ -407,6 +404,114 @@ public class UtilityMultithreadScheduleTask {
         } else {
         }
     }
+    /*
+     * 功能描述
+     * @author yuyang
+     * @date 2020-11-28 12:25:36
+     * @param ：[没有在先申请被挂起的案件    `]
+     * @return void
+     */
+    @Async
+//@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
+//@Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
+    public void meiYouZaiXianShenQingBeiGuaQi() {//没有在先申请被挂起的案件
+        try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
+            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_Mei_You_Zai_Xian_Shen_Qing__Hao_Bei_Gua_Qi, "meiYouZaiXianShenQingBeiGuaQiD", httpClient);
+            StringBuilder myzxBui = new StringBuilder();
+            rtnDataList.parallelStream().forEach(rtnData -> {
+                String shenqingh = rtnData.getShenqingh();//申请号
+                log.info(shenqingh + ";");
+                if (StringUtils.isNotEmpty(shenqingh)){
+                    myzxBui.append("insert into backup_data_user.GG_ZLX_ZHU (SHENQINGH, ZHUANLIMC, ZHUANLIYWMC, ZHUANLILX, PCTBJ, SHENQINFSBJ, DAIYIBJ, SHENQINGR, FENANTJR, GUOBIE, SHENQINGRSL, FAMINGRENSL, LIANXIRBJ, WAIGUANCPLB, FENLEIHBBH, ZHUFENLH, DAILIBJ, FENANBJ, WEISHENGWBCBJ, XULIEBBJ, TIQIANGKBJ, SHISHENQQBJ, YOUXIANQQTS, ZUIXIAOYXQR, BUSANGSXYXKXQSMBJ, BAOMIQQBJ, QIANZHANGHGBJ, TUPIANHGBJ, FEIYONGJHBJ, PCTFJBJ, MUANBJ, ZAIXIANSQBJ, QUANLIYQXS, BAOMITXBJ, GUAQIBJ, ZANTINGBJ, ZHONGZHIBJ, SUODINGBJ, JIAKUAIBJ, SHISHENQQHGR, SHISHENSXR, TIQIANGKR, FAMINGGBR, GONGKAIGGR, ZHUANLIH, ANJIANYWZT, CHONGFUSQHBZ, CHONGFUSQQBZ, YOUXIAOBJ, REGNAME, REGTIME, MODNAME, MODTIME, SHOULIZKR, TONGYDFMCZBJ, XIANGSSJBJ, CHENGTCPBJ, XIANGSSJXS, CHENGTCPXS, YICZYBJ, XIANGWSQBJ, XIANGWSQSPBJ, FEIZHENGCSQYSBJ, YXSCFS, ZJZDZSQSXR, SHENQINGRENFQZDXGQL, CAFBJ, YINANAJHSBJ, DIANZISQLX, DLJGNBBH, SHENGMINGWTSYZBJ, ZHAIYFTH, ZHAIYAOFTZD, DZZZJSQSXR, QIANZHANGNR, BUG_ID) select SHENQINGH, ZHUANLIMC, ZHUANLIYWMC, ZHUANLILX, PCTBJ, SHENQINFSBJ, DAIYIBJ, SHENQINGR, FENANTJR, GUOBIE, SHENQINGRSL, FAMINGRENSL, LIANXIRBJ, WAIGUANCPLB, FENLEIHBBH, ZHUFENLH, DAILIBJ, FENANBJ, WEISHENGWBCBJ, XULIEBBJ, TIQIANGKBJ, SHISHENQQBJ, YOUXIANQQTS, ZUIXIAOYXQR, BUSANGSXYXKXQSMBJ, BAOMIQQBJ, QIANZHANGHGBJ, TUPIANHGBJ, FEIYONGJHBJ, PCTFJBJ, MUANBJ, ZAIXIANSQBJ, QUANLIYQXS, BAOMITXBJ, GUAQIBJ, ZANTINGBJ, ZHONGZHIBJ, SUODINGBJ, JIAKUAIBJ, SHISHENQQHGR, SHISHENSXR, TIQIANGKR, FAMINGGBR, GONGKAIGGR, ZHUANLIH, ANJIANYWZT, CHONGFUSQHBZ, CHONGFUSQQBZ, YOUXIAOBJ, REGNAME, REGTIME, MODNAME, MODTIME, SHOULIZKR, TONGYDFMCZBJ, XIANGSSJBJ, CHENGTCPBJ, XIANGSSJXS, CHENGTCPXS, YICZYBJ, XIANGWSQBJ, XIANGWSQSPBJ, FEIZHENGCSQYSBJ, YXSCFS, ZJZDZSQSXR, SHENQINGRENFQZDXGQL, CAFBJ, YINANAJHSBJ, DIANZISQLX, DLJGNBBH, SHENGMINGWTSYZBJ, ZHAIYFTH, ZHAIYAOFTZD, DZZZJSQSXR, QIANZHANGNR, '在先申请该解挂未解挂案件 ' || sysdate from GG_ZLX_ZHU t where t.shenqingh = '");
+                    myzxBui.append(shenqingh).append("';").append(FileHelperUtil.LINE_SEPARATOR);
+                    myzxBui.append("update gg_zlx_zhu z set z.guaqibj='0' where shenqingh='").append(shenqingh).append("';");
+                    myzxBui.append(FileHelperUtil.LINE_SEPARATOR);
+                }
+            });
+            if (myzxBui.length() > 0) {
+                mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.VERSION_UNMATCH_CLASSIFICATION), myzxBui.toString());
+            }
+        } catch (IOException e) {
+            log.error(ExceptionUtil.getMessage(e));
+        }
+    }
+    /*
+     * 功能描述
+     * @author yuyang
+     * @date 2020-11-23 17:35:26
+     * @param ：[在先申请该解挂未解挂案件]
+     * @return void
+     */
+    @Async
+//@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
+@Scheduled(cron = "0 00 15 * * ?")// 每天上午1:53触发
+    public void zaiXianShenQingGaiJieGuaWeiJieGua() {//在先申请该解挂未解挂案件
+        try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
+            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.Zai_Xian_Shen_Qing_Gai_Jie_Gua_Wei_Jie_Gua, "zaiXianShenQingGaiJieGuaWeiJieGua", httpClient);
+            rtnDataList.parallelStream().forEach(rtnData -> {
+                String shenqingh = rtnData.getZaixiansqh();//申请号
+                log.info(shenqingh + ";");
+                UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.Zai_Xian_Shen_Qing_Gai_Jie_Gua_Wei_Jie_Gua, shenqingh, "shenqingh");
+            });
+        } catch (IOException e) {
+            log.error(ExceptionUtil.getMessage(e));
+        }
+    }
+    /*
+     * 功能描述
+     * @author yuyang
+     * @date 2020-11-22 16:42:56
+     * @param ：[添加在先申请该挂起未挂起案件/重复了]
+     * @return void
+    @Async
+//@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
+//@Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
+    public void zaiXianShenQingGaiGuaQiWeiGuaQi() {//在先申请该挂起未挂起案件
+        try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
+            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.Zai_Xian_Shen_Qing_Gai_Gua_Qi_Wei_Gua_Qi, "zaiXianShenQingGaiGuaQiWeiGuaQi", httpClient);
+            rtnDataList.parallelStream().forEach(rtnData -> {
+                String shenqingh = rtnData.getZaixiansqh();//申请号
+                log.info(shenqingh + ";");
+                UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.Zai_Xian_Shen_Qing_Gai_Gua_Qi_Wei_Gua_Qi, shenqingh, "shenqingh");
+            });
+        } catch (IOException e) {
+            log.error(ExceptionUtil.getMessage(e));
+        }
+    }
+ */
+    /*
+     * 功能描述
+     * @author yuyang
+     * @date 2020-11-18 17:01:08
+     * @param ：[添加申请文件表权项数,段数，图片个数与实际情况不符]
+     * @return void
+     */
+    @Async
+    //@Scheduled(cron = "0 12 4 * * ?")// 每天上午4:12触发
+  @Scheduled(cron = "0 05 15 * * ?")// 每天下午15.05触发
+    public void dmhWjQueShiXxWjSqwj() {//申请文件表权项数,段数，图片个数与实际情况不符
+        try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
+            StringBuffer strBui = new StringBuffer();
+            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.DMH_WJ_QUE_SHI_XX_WJ_SQWJ, "dmhWjQueShiXxWjSqwj", httpClient);
+            rtnDataList.parallelStream().forEach(rtnData -> {
+                String shenqingh = rtnData.getShenqingh();
+                String rid = rtnData.getRid();
+                String fid = rtnData.getXh();//fid
+                String wenjianlxdm = rtnData.getTongzhislx();//文件类型
+                log.info(shenqingh + ";" + fid + ";" + wenjianlxdm);
+                String paramVal = fid + "," + shenqingh + "," + wenjianlxdm;
+                List<RtnData> otherRtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.DMH_WJ_QUE_SHI_XX_WJ_SQWJ + "_1", paramVal, "fid,shenqingh,wenjianlxdm", httpClient);
+                otherRtnDataList.parallelStream().forEach(otherRtnData -> {
+                    String text = otherRtnData.getText();
+                    log.info("text=" + text);
+                    String jsonObj = "{is_exec:\"true\",text:\"`" + text + "`\",rid:\"" + rid + "\"}";
+                    UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.DMH_WJ_QUE_SHI_XX_WJ_SQWJ + "_1", jsonObj, "jsonObj");
+                });
+            });
+        } catch (IOException e) {
+            log.error(ExceptionUtil.getMessage(e));
+        }
+    }
     @Async
     //@Scheduled(cron = "0 12 4 * * ?")// 每天上午4:12触发
     //@Scheduled(cron = "0 30 12 * * ?")// 每天上午12:30触发
@@ -420,11 +525,17 @@ public class UtilityMultithreadScheduleTask {
     }
     @Async
     //@Scheduled(cron = "0 12 4 * * ?")// 每天上午4:12触发
-    //@Scheduled(cron = "0 30 12 * * ?")// 每天上午12:30触发
+    @Scheduled(cron = "0 06 15 * * ?")// 每天上午12:30触发
     public void noticeRejectWorkflowXxPhase() {//发出驳回通知书后工作流还处于新型初审阶段
         try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
             StringBuffer strBui = new StringBuffer();
             List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.NOTICE_REJECT_WORKFLOW_XX_PHASE, "noticeRejectWorkflowXxPhase", httpClient);
+//             案例修改，写死个数据直接让他往下走
+//            List<RtnData> rtnDataList = new ArrayList<>();
+//            RtnData rtnData1 = new RtnData();
+//            rtnData1.setShenqingh("2018205498182");
+//            rtnData1.setAnjianywzt("S050305");
+//            rtnDataList.add(rtnData1);
             rtnDataList.parallelStream().forEach(rtnData -> {
                 String shenqingh = rtnData.getShenqingh();
                 String anjianywzt = rtnData.getAnjianywzt();
@@ -512,7 +623,7 @@ public class UtilityMultithreadScheduleTask {
                                 //2015208499107,2015207874196情况特殊，wf_currentstep表存储的entry_id是wf_wfentry表name = '00'数据,需要删除后再执行插入
                                 sqlBui.append("insert into backup_data_user.WF_CURRENTSTEP (ID, ENTRY_ID, STEP_ID, ACTION_ID, OWNER, START_DATE, FINISH_DATE, DUE_DATE, STATUS, CALLER, PREVIOUS_ID, BUG_ID) select ID, ENTRY_ID, STEP_ID, ACTION_ID, OWNER, START_DATE, FINISH_DATE, DUE_DATE, STATUS, CALLER, PREVIOUS_ID, '发驳回后工作流仍在新型' || sysdate BUG_ID from WF_CURRENTSTEP t where t.entry_id in (select tt.id from wf_wfentry tt where tt.main_id ='" + shenqingh + "');");
                                 sqlBui.append(FileHelperUtil.LINE_SEPARATOR);
-                                sqlBui.append("delete from wf_currentstep s where s.entry_id in (select t.id from wf_wfentry t where t.main_id = '" + shenqingh + "';");
+                                sqlBui.append("delete from wf_currentstep s where s.entry_id in (select t.id from wf_wfentry t where t.main_id = '" + shenqingh + "');");
                                 sqlBui.append(FileHelperUtil.LINE_SEPARATOR);
 
                                 sqlBui.append("insert into wf_currentstep (ID, ENTRY_ID, STEP_ID, ACTION_ID, OWNER, START_DATE, FINISH_DATE, DUE_DATE, STATUS, CALLER, PREVIOUS_ID)values (SEQ_WF_CURRENTSTEPS.nextval, " + key + ", '1891', null, '自动', '14-11月-20 10.37.15.664000 上午', null, null, '1891S01', null, null);");
@@ -545,6 +656,7 @@ public class UtilityMultithreadScheduleTask {
                                 sqlBui.append(FileHelperUtil.LINE_SEPARATOR);
                                 //修改
                                 sqlBui.append("update wf_wfentry t set t.name = '18',t.state = '1',t.sub_workflow_id = '00SF18' where t.id = " + targetEntryId + ";");
+                                sqlBui.append(FileHelperUtil.LINE_SEPARATOR);
                             }
                         }
                     }
@@ -589,10 +701,44 @@ public class UtilityMultithreadScheduleTask {
     }
 
     @Async
-    @Scheduled(cron = "0 34 5 * * ?")// 每天上午5:34触发
-    //@Scheduled(cron = "0 45 12 * * ?")// 每天上午1:05触发
+   // @Scheduled(cron = "0 34 5 * * ?")// 每天上午5:34触发
+    @Scheduled(cron = "0 02 15 * * ?")// 每天上午1:05触发
     public void versionUnmatchClassification() {//版本号与分类号长度不符
-        UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.VERSION_UNMATCH_CLASSIFICATION, "versionUnmatchClassification", mailHelperBuilder);
+        //UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.VERSION_UNMATCH_CLASSIFICATION, "versionUnmatchClassification", mailHelperBuilder);
+        try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
+            StringBuffer mailBui = new StringBuffer();
+            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.VERSION_UNMATCH_CLASSIFICATION, "versionUnmatchClassification", httpClient);
+            rtnDataList.parallelStream().forEach(rtnData -> {
+                StringBuffer strBui = new StringBuffer();
+                String shenqingh = rtnData.getShenqingh();
+                String fenleihbbh = rtnData.getState();
+                String fujiaxxflh = rtnData.getText();
+                if (StringUtils.isNotEmpty(fujiaxxflh)) {
+                    //备份
+                    mailBui.append("insert into backup_data_user.gg_zlx_flh (UUID, SHENQINGH, FENLEIHBBH, FENLEIH, FJFENLH, FUJIAXXFLH, FENLHCSRQ, YOUXIAOBJ, SHENCHAYDM, BUMENDM, REGNAME, REGTIME, MODNAME, MODTIME, FUFENLH1, FUFENLH2, FUFENLH3, FENLEIBZ, LAIYUANZXTDM, bug_id) select UUID, SHENQINGH, FENLEIHBBH, FENLEIH, FJFENLH, FUJIAXXFLH, FENLHCSRQ, YOUXIAOBJ, SHENCHAYDM, BUMENDM, REGNAME, REGTIME, MODNAME, MODTIME, FUFENLH1, FUFENLH2, FUFENLH3, FENLEIBZ, LAIYUANZXTDM, '版本号不符'||sysdate BUG_ID from gg_zlx_flh t where t.shenqingh ='");
+                    mailBui.append(shenqingh).append("';").append(FileHelperUtil.LINE_SEPARATOR);
+                    //修改
+                    mailBui.append("update gg_zlx_flh t set t.fenleihbbh = '" + fenleihbbh + " 'where t.shenqingh ='" + shenqingh + "';");
+                    mailBui.append(FileHelperUtil.LINE_SEPARATOR);
+                } else {
+                    strBui.append(shenqingh + "," + fenleihbbh);
+                    //UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.VERSION_UNMATCH_CLASSIFICATION, strBui.toString(), "shenqingh,fenleihbbh");
+                    String jsonObj = "{is_exec:\"true\",shenqingh:\"" + shenqingh + "\",fenleihbbh:\"`" + fenleihbbh + "`\"}";
+                    UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.VERSION_UNMATCH_CLASSIFICATION, jsonObj, "jsonObj");
+                }
+
+            });
+            if (mailBui.length() > 0) {
+                mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.VERSION_UNMATCH_CLASSIFICATION), mailBui.toString());
+           /*     mailHelperBuilder.sendSimpleMessage(desc, "版本号与分类号长度不符");
+            String currDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
+            String targetPath = pathConfig.getShareDisk() + File.separator + currDate + File.separator + "versionUnmatchClassification";
+            FileHelperUtil.appendContentToFile(targetPath + File.separator + "versionUnmatchClassification.txt", sqhBui.toString(), desc);*/
+
+            }
+        } catch (IOException e) {
+            log.error(ExceptionUtil.getMessage(e));
+        }
     }
 
     @Async
