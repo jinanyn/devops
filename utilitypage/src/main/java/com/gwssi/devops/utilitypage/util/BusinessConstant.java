@@ -44,6 +44,12 @@ public class BusinessConstant {
 
     public static final String BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW="100022";//在先申请该国优视撤未国优视撤
 
+    public static final String BIZ_Mei_You_Zai_Xian_Shen_Qing__Hao_Bei_Gua_Qi="100077";//没有在先申请被挂起的案件
+
+    public static final String Zai_Xian_Shen_Qing_Gai_Jie_Gua_Wei_Jie_Gua="100078";//在先申请该挂解挂未解挂案件
+
+    public static final String DMH_WJ_QUE_SHI_XX_WJ_SQWJ="100079";//申请文件表权项数,段数，图片个数与实际情况不符
+
     public static final String NOTICE_REJECT_WORKFLOW_XX_PHASE="100080";//发出驳回通知书后工作流还处于新型初审阶段
 
     public static final String LINKMAN_INFO_ALL_ISNULL="100081";//联系人信息为空
@@ -99,12 +105,14 @@ public class BusinessConstant {
     public static final String BIZ_HASC_ZBZTCSDFXSC="100028";  //案件审查表的案件状态为“回案审查”，主表状态为“初审待答复”或者“新案审查”
     public static final String BIZ_HASC_ZBZTQT="100029";  //件审查表的案件状态为“回案审查”，主表状态为其他情况
 
+
     public static final Map<String,String> MENU_BIZ_MAP = new HashMap<>();
     public static final Map<String,String> SYSTEM_VARIABLE_MAP = new HashMap<>();
     public static final SortedMap<String,String> MONITOR_BIZ_DESC_MAP = new TreeMap<String,String>();
 
     static {
         MENU_BIZ_MAP.put("0201", "caseStateException");
+
         MENU_BIZ_MAP.put("0203", "midfileAssignLate");
         MENU_BIZ_MAP.put("0205", "warrantyEventException");
         MENU_BIZ_MAP.put("0206", "divisionEventException");
@@ -140,6 +148,9 @@ public class BusinessConstant {
         MONITOR_BIZ_DESC_MAP.put("100028","案件审查表的案件状态为“回案审查”，主表状态为“初审待答复”或者“新案审查”");
         MONITOR_BIZ_DESC_MAP.put("100029","案件审查表的案件状态为“回案审查”，主表状态为其他情况");
 
+        MONITOR_BIZ_DESC_MAP.put("100077","没有在先申请被挂起的案件");
+        MONITOR_BIZ_DESC_MAP.put("100078","在先申请该解挂未解挂案件");
+        MONITOR_BIZ_DESC_MAP.put("100079","申请文件表权项数,段数，图片个数与实际情况不符");
         MONITOR_BIZ_DESC_MAP.put("100080","发出驳回通知书后工作流还处于新型初审阶段");
         MONITOR_BIZ_DESC_MAP.put("100081","联系人信息为空");
         MONITOR_BIZ_DESC_MAP.put("100082","版本号与分类号长度不符");
