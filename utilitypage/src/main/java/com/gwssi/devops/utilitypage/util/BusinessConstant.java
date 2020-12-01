@@ -44,7 +44,7 @@ public class BusinessConstant {
 
     public static final String BIZ_PRIORITY_APPLY_NATION_BEST_UNWITHDRAW="100022";//在先申请该国优视撤未国优视撤
 
-    public static final String BIZ_Mei_You_Zai_Xian_Shen_Qing__Hao_Bei_Gua_Qi="100077";//没有在先申请被挂起的案件
+    public static final String BIZ_Mei_You_Zai_Xian_Shen_Qing_Hao_Bei_Gua_Qi="100077";//没有在先申请被挂起的案件
 
     public static final String Zai_Xian_Shen_Qing_Gai_Jie_Gua_Wei_Jie_Gua="100078";//在先申请该挂解挂未解挂案件
 

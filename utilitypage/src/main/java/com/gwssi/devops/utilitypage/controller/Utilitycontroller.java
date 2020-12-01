@@ -458,9 +458,9 @@ public class Utilitycontroller {
             case "100090":
                 utilityTask.comparareNoticeYesterdayCount();
                 break;
-            case "100089":
-                utilityTask.unhangupCaseAuthInvalidPriority();
-                break;
+//            case "100089":
+//                utilityTask.unhangupCaseAuthInvalidPriority();
+//                break;
             default:
                 break;
         }
