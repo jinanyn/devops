@@ -42,8 +42,8 @@ public class UtilityMultithreadScheduleTask {
     @Autowired
     private AppConfig appConfig;
 
-    //@Async
-    //@Scheduled(fixedDelay = 60000)
+    @Async
+    @Scheduled(fixedDelay = 60000)
     public void serverShareDiskStateMonitor() {//服务器共享存储访问正常
         if (!"prod".equals(appConfig.getRunMode())) {
             log.info("服务器共享存储检测生产环境才能使用");
