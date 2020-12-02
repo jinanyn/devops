@@ -42,8 +42,8 @@ public class UtilityMultithreadScheduleTask {
     @Autowired
     private AppConfig appConfig;
 
-    @Async
-    @Scheduled(fixedDelay = 60000)
+    //@Async
+    //@Scheduled(fixedDelay = 60000)
     public void serverShareDiskStateMonitor() {//服务器共享存储访问正常
         if (!"prod".equals(appConfig.getRunMode())) {
             log.info("服务器共享存储检测生产环境才能使用");
@@ -244,8 +244,9 @@ public class UtilityMultithreadScheduleTask {
     @Scheduled(cron = "0 20 2 * * ?")// 每天上午2:20触发
     //@Scheduled(cron = "0 03 15 * * ?")// 每天下午15.03触发
     public void priorityApplyUnhangup() {//在先申请该挂起未挂起
-        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP, "priorityApplyUnhangup");
-        if (rtnDataList != null && rtnDataList.size() > 0) {
+        try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
+            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP, "priorityApplyUnhangup", httpClient);
+            StringBuilder myzxBui = new StringBuilder();
             StringBuilder sqhBui = new StringBuilder();
             boolean firstFlag = true;
             for (RtnData rtnData : rtnDataList) {
@@ -254,12 +255,11 @@ public class UtilityMultithreadScheduleTask {
                 } else {
                     sqhBui.append(",");
                 }
-                sqhBui.append(rtnData.getShenqingh());
+                sqhBui.append(rtnData.getZaixiansqh());
             }
             UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP, sqhBui.toString(), "shenqingh");
-            //String desc = BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP);
-            //mailHelperBuilder.sendSimpleMessage(desc,"本次共处理"+sqhBui.toString()+",请核查是否正常!!!");
-        } else {
+        } catch (IOException e) {
+            log.error(ExceptionUtil.getMessage(e));
         }
     }
 
@@ -416,7 +416,7 @@ public class UtilityMultithreadScheduleTask {
 //@Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
     public void meiYouZaiXianShenQingBeiGuaQi() {//没有在先申请被挂起的案件
         try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
-            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_Mei_You_Zai_Xian_Shen_Qing_Hao_Bei_Gua_Qi, "meiYouZaiXianShenQingBeiGuaQiD", httpClient);
+            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_MEI_YOU_ZAI_XIAN_SHEN_QING_HAO_BEI_GUA_QI, "meiYouZaiXianShenQingBeiGuaQiD", httpClient);
             StringBuilder myzxBui = new StringBuilder();
             rtnDataList.parallelStream().forEach(rtnData -> {
                 String shenqingh = rtnData.getShenqingh();//申请号
@@ -429,7 +429,7 @@ public class UtilityMultithreadScheduleTask {
                 }
             });
             if (myzxBui.length() > 0) {
-                mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_Mei_You_Zai_Xian_Shen_Qing_Hao_Bei_Gua_Qi), myzxBui.toString());
+                mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.BIZ_MEI_YOU_ZAI_XIAN_SHEN_QING_HAO_BEI_GUA_QI), myzxBui.toString());
             }
         } catch (IOException e) {
             log.error(ExceptionUtil.getMessage(e));
@@ -440,20 +440,22 @@ public class UtilityMultithreadScheduleTask {
 //@Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
     public void zaiXianShenQingGaiJieGuaWeiJieGua() {//没有在先申请被挂起的案件
         try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
-            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.Zai_Xian_Shen_Qing_Gai_Jie_Gua_Wei_Jie_Gua, "zaiXianShenQingGaiJieGuaWeiJieGua", httpClient);
+            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.ZAI_XIAN_SHEN_QING_GAI_JIE_GUA_WEI_JIE_GUA, "zaiXianShenQingGaiJieGuaWeiJieGua", httpClient);
             StringBuilder gjgBui = new StringBuilder();
-            rtnDataList.parallelStream().forEach(rtnData -> {
+            rtnDataList.stream().forEach(rtnData -> {
                 String shenqingh = rtnData.getZaixiansqh();//申请号
                 log.info(shenqingh + ";");
                 if (StringUtils.isNotEmpty(shenqingh)){
-                    gjgBui.append("insert into backup_data_user.GG_ZLX_ZHU (SHENQINGH, ZHUANLIMC, ZHUANLIYWMC, ZHUANLILX, PCTBJ, SHENQINFSBJ, DAIYIBJ, SHENQINGR, FENANTJR, GUOBIE, SHENQINGRSL, FAMINGRENSL, LIANXIRBJ, WAIGUANCPLB, FENLEIHBBH, ZHUFENLH, DAILIBJ, FENANBJ, WEISHENGWBCBJ, XULIEBBJ, TIQIANGKBJ, SHISHENQQBJ, YOUXIANQQTS, ZUIXIAOYXQR, BUSANGSXYXKXQSMBJ, BAOMIQQBJ, QIANZHANGHGBJ, TUPIANHGBJ, FEIYONGJHBJ, PCTFJBJ, MUANBJ, ZAIXIANSQBJ, QUANLIYQXS, BAOMITXBJ, GUAQIBJ, ZANTINGBJ, ZHONGZHIBJ, SUODINGBJ, JIAKUAIBJ, SHISHENQQHGR, SHISHENSXR, TIQIANGKR, FAMINGGBR, GONGKAIGGR, ZHUANLIH, ANJIANYWZT, CHONGFUSQHBZ, CHONGFUSQQBZ, YOUXIAOBJ, REGNAME, REGTIME, MODNAME, MODTIME, SHOULIZKR, TONGYDFMCZBJ, XIANGSSJBJ, CHENGTCPBJ, XIANGSSJXS, CHENGTCPXS, YICZYBJ, XIANGWSQBJ, XIANGWSQSPBJ, FEIZHENGCSQYSBJ, YXSCFS, ZJZDZSQSXR, SHENQINGRENFQZDXGQL, CAFBJ, YINANAJHSBJ, DIANZISQLX, DLJGNBBH, SHENGMINGWTSYZBJ, ZHAIYFTH, ZHAIYAOFTZD, DZZZJSQSXR, QIANZHANGNR, BUG_ID) select SHENQINGH, ZHUANLIMC, ZHUANLIYWMC, ZHUANLILX, PCTBJ, SHENQINFSBJ, DAIYIBJ, SHENQINGR, FENANTJR, GUOBIE, SHENQINGRSL, FAMINGRENSL, LIANXIRBJ, WAIGUANCPLB, FENLEIHBBH, ZHUFENLH, DAILIBJ, FENANBJ, WEISHENGWBCBJ, XULIEBBJ, TIQIANGKBJ, SHISHENQQBJ, YOUXIANQQTS, ZUIXIAOYXQR, BUSANGSXYXKXQSMBJ, BAOMIQQBJ, QIANZHANGHGBJ, TUPIANHGBJ, FEIYONGJHBJ, PCTFJBJ, MUANBJ, ZAIXIANSQBJ, QUANLIYQXS, BAOMITXBJ, GUAQIBJ, ZANTINGBJ, ZHONGZHIBJ, SUODINGBJ, JIAKUAIBJ, SHISHENQQHGR, SHISHENSXR, TIQIANGKR, FAMINGGBR, GONGKAIGGR, ZHUANLIH, ANJIANYWZT, CHONGFUSQHBZ, CHONGFUSQQBZ, YOUXIAOBJ, REGNAME, REGTIME, MODNAME, MODTIME, SHOULIZKR, TONGYDFMCZBJ, XIANGSSJBJ, CHENGTCPBJ, XIANGSSJXS, CHENGTCPXS, YICZYBJ, XIANGWSQBJ, XIANGWSQSPBJ, FEIZHENGCSQYSBJ, YXSCFS, ZJZDZSQSXR, SHENQINGRENFQZDXGQL, CAFBJ, YINANAJHSBJ, DIANZISQLX, DLJGNBBH, SHENGMINGWTSYZBJ, ZHAIYFTH, ZHAIYAOFTZD, DZZZJSQSXR, QIANZHANGNR, '在先申请该解挂未解挂案件 ' || sysdate from GG_ZLX_ZHU t where t.shenqingh = '");
+                    if(gjgBui.length() >0){
+                        gjgBui.append(FileHelperUtil.LINE_SEPARATOR);
+                    }
+                    gjgBui.append("insert into backup_data_user.GG_ZLX_ZHU (SHENQINGH, ZHUANLIMC, ZHUANLIYWMC, ZHUANLILX, PCTBJ, SHENQINFSBJ, DAIYIBJ, SHENQINGR, FENANTJR, GUOBIE, SHENQINGRSL, FAMINGRENSL, LIANXIRBJ, WAIGUANCPLB, FENLEIHBBH, ZHUFENLH, DAILIBJ, FENANBJ, WEISHENGWBCBJ, XULIEBBJ, TIQIANGKBJ, SHISHENQQBJ, YOUXIANQQTS, ZUIXIAOYXQR, BUSANGSXYXKXQSMBJ, BAOMIQQBJ, QIANZHANGHGBJ, TUPIANHGBJ, FEIYONGJHBJ, PCTFJBJ, MUANBJ, ZAIXIANSQBJ, QUANLIYQXS, BAOMITXBJ, GUAQIBJ, ZANTINGBJ, ZHONGZHIBJ, SUODINGBJ, JIAKUAIBJ, SHISHENQQHGR, SHISHENSXR, TIQIANGKR, FAMINGGBR, GONGKAIGGR, ZHUANLIH, ANJIANYWZT, CHONGFUSQHBZ, CHONGFUSQQBZ, YOUXIAOBJ, REGNAME, REGTIME, MODNAME, MODTIME, SHOULIZKR, TONGYDFMCZBJ, XIANGSSJBJ, CHENGTCPBJ, XIANGSSJXS, CHENGTCPXS, YICZYBJ, XIANGWSQBJ, XIANGWSQSPBJ, FEIZHENGCSQYSBJ, YXSCFS, ZJZDZSQSXR, SHENQINGRENFQZDXGQL, CAFBJ, YINANAJHSBJ, DIANZISQLX, DLJGNBBH, SHENGMINGWTSYZBJ, ZHAIYFTH, ZHAIYAOFTZD, DZZZJSQSXR, QIANZHANGNR, BUG_ID) select SHENQINGH, ZHUANLIMC, ZHUANLIYWMC, ZHUANLILX, PCTBJ, SHENQINFSBJ, DAIYIBJ, SHENQINGR, FENANTJR, GUOBIE, SHENQINGRSL, FAMINGRENSL, LIANXIRBJ, WAIGUANCPLB, FENLEIHBBH, ZHUFENLH, DAILIBJ, FENANBJ, WEISHENGWBCBJ, XULIEBBJ, TIQIANGKBJ, SHISHENQQBJ, YOUXIANQQTS, ZUIXIAOYXQR, BUSANGSXYXKXQSMBJ, BAOMIQQBJ, QIANZHANGHGBJ, TUPIANHGBJ, FEIYONGJHBJ, PCTFJBJ, MUANBJ, ZAIXIANSQBJ, QUANLIYQXS, BAOMITXBJ, GUAQIBJ, ZANTINGBJ, ZHONGZHIBJ, SUODINGBJ, JIAKUAIBJ, SHISHENQQHGR, SHISHENSXR, TIQIANGKR, FAMINGGBR, GONGKAIGGR, ZHUANLIH, ANJIANYWZT, CHONGFUSQHBZ, CHONGFUSQQBZ, YOUXIAOBJ, REGNAME, REGTIME, MODNAME, MODTIME, SHOULIZKR, TONGYDFMCZBJ, XIANGSSJBJ, CHENGTCPBJ, XIANGSSJXS, CHENGTCPXS, YICZYBJ, XIANGWSQBJ, XIANGWSQSPBJ, FEIZHENGCSQYSBJ, YXSCFS, ZJZDZSQSXR, SHENQINGRENFQZDXGQL, CAFBJ, YINANAJHSBJ, DIANZISQLX, DLJGNBBH, SHENGMINGWTSYZBJ, ZHAIYFTH, ZHAIYAOFTZD, DZZZJSQSXR, QIANZHANGNR, '在先申请该解挂未解挂 ' || sysdate from GG_ZLX_ZHU t where t.shenqingh = '");
                     gjgBui.append(shenqingh).append("';").append(FileHelperUtil.LINE_SEPARATOR);
                     gjgBui.append("update gg_zlx_zhu t set t.guaqibj='0' where t.shenqingh='").append(shenqingh).append("';");
-                    gjgBui.append(FileHelperUtil.LINE_SEPARATOR);
                 }
             });
             if (gjgBui.length() > 0) {
-                mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.Zai_Xian_Shen_Qing_Gai_Jie_Gua_Wei_Jie_Gua), gjgBui.toString());
+                mailHelperBuilder.sendSimpleMessage(BusinessConstant.MONITOR_BIZ_DESC_MAP.get(BusinessConstant.ZAI_XIAN_SHEN_QING_GAI_JIE_GUA_WEI_JIE_GUA), gjgBui.toString());
             }
         } catch (IOException e) {
             log.error(ExceptionUtil.getMessage(e));
