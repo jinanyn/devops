@@ -244,9 +244,8 @@ public class UtilityMultithreadScheduleTask {
     @Scheduled(cron = "0 20 2 * * ?")// 每天上午2:20触发
     //@Scheduled(cron = "0 03 15 * * ?")// 每天下午15.03触发
     public void priorityApplyUnhangup() {//在先申请该挂起未挂起
-        try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
-            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP, "priorityApplyUnhangup", httpClient);
-            StringBuilder myzxBui = new StringBuilder();
+        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP, "priorityApplyUnhangup", mailHelperBuilder);
+        if (rtnDataList != null && rtnDataList.size() > 0) {
             StringBuilder sqhBui = new StringBuilder();
             boolean firstFlag = true;
             for (RtnData rtnData : rtnDataList) {
@@ -258,8 +257,6 @@ public class UtilityMultithreadScheduleTask {
                 sqhBui.append(rtnData.getZaixiansqh());
             }
             UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.BIZ_PRIORITY_APPLY_UNHANGUP, sqhBui.toString(), "shenqingh");
-        } catch (IOException e) {
-            log.error(ExceptionUtil.getMessage(e));
         }
     }
 
