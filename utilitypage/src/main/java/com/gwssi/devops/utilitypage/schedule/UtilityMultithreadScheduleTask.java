@@ -432,6 +432,7 @@ public class UtilityMultithreadScheduleTask {
             log.error(ExceptionUtil.getMessage(e));
         }
     }
+
     @Async
 @Scheduled(cron = "0 21 3 * * ?")// 每天上午3.21触发
 //@Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
