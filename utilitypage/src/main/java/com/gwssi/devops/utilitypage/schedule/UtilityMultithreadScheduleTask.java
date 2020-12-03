@@ -411,12 +411,12 @@ public class UtilityMultithreadScheduleTask {
     @Async
 @Scheduled(cron = "0 11 2 * * ?")// 每天上午2:11触发
 //@Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
-    public void meiYouZaiXianShenQingBeiGuaQi() {//没有在先申请被挂起的案件
+    public void meiYouZaiXianShenQingBeiGuaQi() {//未要求优先权被挂起的案件
         try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
             List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.BIZ_MEI_YOU_ZAI_XIAN_SHEN_QING_HAO_BEI_GUA_QI, "meiYouZaiXianShenQingBeiGuaQiD", httpClient);
             StringBuilder myzxBui = new StringBuilder();
             rtnDataList.parallelStream().forEach(rtnData -> {
-                String shenqingh = rtnData.getShenqingh();//申请号
+                String shenqingh = rtnData.getZaixiansqh();//申请号
                 log.info(shenqingh + ";");
                 if (StringUtils.isNotEmpty(shenqingh)){
                     myzxBui.append("insert into backup_data_user.GG_ZLX_ZHU (SHENQINGH, ZHUANLIMC, ZHUANLIYWMC, ZHUANLILX, PCTBJ, SHENQINFSBJ, DAIYIBJ, SHENQINGR, FENANTJR, GUOBIE, SHENQINGRSL, FAMINGRENSL, LIANXIRBJ, WAIGUANCPLB, FENLEIHBBH, ZHUFENLH, DAILIBJ, FENANBJ, WEISHENGWBCBJ, XULIEBBJ, TIQIANGKBJ, SHISHENQQBJ, YOUXIANQQTS, ZUIXIAOYXQR, BUSANGSXYXKXQSMBJ, BAOMIQQBJ, QIANZHANGHGBJ, TUPIANHGBJ, FEIYONGJHBJ, PCTFJBJ, MUANBJ, ZAIXIANSQBJ, QUANLIYQXS, BAOMITXBJ, GUAQIBJ, ZANTINGBJ, ZHONGZHIBJ, SUODINGBJ, JIAKUAIBJ, SHISHENQQHGR, SHISHENSXR, TIQIANGKR, FAMINGGBR, GONGKAIGGR, ZHUANLIH, ANJIANYWZT, CHONGFUSQHBZ, CHONGFUSQQBZ, YOUXIAOBJ, REGNAME, REGTIME, MODNAME, MODTIME, SHOULIZKR, TONGYDFMCZBJ, XIANGSSJBJ, CHENGTCPBJ, XIANGSSJXS, CHENGTCPXS, YICZYBJ, XIANGWSQBJ, XIANGWSQSPBJ, FEIZHENGCSQYSBJ, YXSCFS, ZJZDZSQSXR, SHENQINGRENFQZDXGQL, CAFBJ, YINANAJHSBJ, DIANZISQLX, DLJGNBBH, SHENGMINGWTSYZBJ, ZHAIYFTH, ZHAIYAOFTZD, DZZZJSQSXR, QIANZHANGNR, BUG_ID) select SHENQINGH, ZHUANLIMC, ZHUANLIYWMC, ZHUANLILX, PCTBJ, SHENQINFSBJ, DAIYIBJ, SHENQINGR, FENANTJR, GUOBIE, SHENQINGRSL, FAMINGRENSL, LIANXIRBJ, WAIGUANCPLB, FENLEIHBBH, ZHUFENLH, DAILIBJ, FENANBJ, WEISHENGWBCBJ, XULIEBBJ, TIQIANGKBJ, SHISHENQQBJ, YOUXIANQQTS, ZUIXIAOYXQR, BUSANGSXYXKXQSMBJ, BAOMIQQBJ, QIANZHANGHGBJ, TUPIANHGBJ, FEIYONGJHBJ, PCTFJBJ, MUANBJ, ZAIXIANSQBJ, QUANLIYQXS, BAOMITXBJ, GUAQIBJ, ZANTINGBJ, ZHONGZHIBJ, SUODINGBJ, JIAKUAIBJ, SHISHENQQHGR, SHISHENSXR, TIQIANGKR, FAMINGGBR, GONGKAIGGR, ZHUANLIH, ANJIANYWZT, CHONGFUSQHBZ, CHONGFUSQQBZ, YOUXIAOBJ, REGNAME, REGTIME, MODNAME, MODTIME, SHOULIZKR, TONGYDFMCZBJ, XIANGSSJBJ, CHENGTCPBJ, XIANGSSJXS, CHENGTCPXS, YICZYBJ, XIANGWSQBJ, XIANGWSQSPBJ, FEIZHENGCSQYSBJ, YXSCFS, ZJZDZSQSXR, SHENQINGRENFQZDXGQL, CAFBJ, YINANAJHSBJ, DIANZISQLX, DLJGNBBH, SHENGMINGWTSYZBJ, ZHAIYFTH, ZHAIYAOFTZD, DZZZJSQSXR, QIANZHANGNR, '没有在先申请被挂起 ' || sysdate from GG_ZLX_ZHU t where t.shenqingh = '");
@@ -435,7 +435,7 @@ public class UtilityMultithreadScheduleTask {
     @Async
 @Scheduled(cron = "0 21 3 * * ?")// 每天上午3.21触发
 //@Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
-    public void zaiXianShenQingGaiJieGuaWeiJieGua() {//没有在先申请被挂起的案件
+    public void zaiXianShenQingGaiJieGuaWeiJieGua() {//在先申请该挂解挂未解挂案件
         try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
             List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.ZAI_XIAN_SHEN_QING_GAI_JIE_GUA_WEI_JIE_GUA, "zaiXianShenQingGaiJieGuaWeiJieGua", httpClient);
             StringBuilder gjgBui = new StringBuilder();
