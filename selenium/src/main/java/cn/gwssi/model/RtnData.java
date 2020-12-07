@@ -80,7 +80,7 @@ public class RtnData {
     private String pphid;
     @XmlElement(name = "QIXIANSLH")
     private String qixianslh;
-    @XmlElement(name = "note")
+    @XmlElement(name = "NOTE")
     private String note;
     @XmlElement(name = "TEXT")
     private String text;
