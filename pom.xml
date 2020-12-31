@@ -15,6 +15,8 @@
         <module>dubboService</module>
         <module>selenium</module>
         <module>patentXmlAnalysis</module>
+        <module>dataStats</module>
+        <module>dataStats</module>
     </modules>
 
     <build>
