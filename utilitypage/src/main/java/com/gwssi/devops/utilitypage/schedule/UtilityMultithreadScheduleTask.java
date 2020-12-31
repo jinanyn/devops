@@ -385,27 +385,22 @@ public class UtilityMultithreadScheduleTask {
     //@Scheduled(cron = "0 15 0 * * ?")// 每天上午0:15触发
     @Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
     public void priorityWaitResumeTermError() {//视为未要求,优先权等恢复期限建立错误
-        List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.PRIORITY_WAIT_RESUME_TERM_ERROR, "priorityWaitResumeTermError", mailHelperBuilder);
-        if (rtnDataList != null && rtnDataList.size() > 0) {
-            StringBuilder sqhBui = new StringBuilder();
-            boolean firstFlag = true;
-            for (RtnData rtnData : rtnDataList) {
-                if (firstFlag) {
-                    firstFlag = false;
-                } else {
-                    sqhBui.append(",");
-                }
-                sqhBui.append(rtnData.getQixianslh());
-            }
-            UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.PRIORITY_WAIT_RESUME_TERM_ERROR, sqhBui.toString(), "qixianslh");
-        } else {
+        try (CloseableHttpClient httpClient = UtilityServiceInvoke.loginUtilityApplication(pathConfig)) {
+            List<RtnData> rtnDataList = UtilityServiceInvoke.commonBizMonitorProcess(pathConfig, BusinessConstant.PRIORITY_WAIT_RESUME_TERM_ERROR, "priorityWaitResumeTermError", httpClient);
+            rtnDataList.stream().forEach(rtnData -> {
+                String qixianslh = rtnData.getQixianslh();//申请号
+                log.info(qixianslh + ";");
+                UtilityServiceInvoke.commonBizHandleProcess(pathConfig, BusinessConstant.PRIORITY_WAIT_RESUME_TERM_ERROR, qixianslh, "qixianslh");
+            });
+        } catch (IOException e) {
+            log.error(ExceptionUtil.getMessage(e));
         }
     }
     /*
      * 功能描述
      * @author yuyang
      * @date 2020-11-28 12:25:36
-     * @param ：[没有在先申请被挂起的案件    `]
+     * @param ：[未要求优先权被挂起的案件    `]
      * @return void
      */
     @Async
@@ -432,6 +427,7 @@ public class UtilityMultithreadScheduleTask {
             log.error(ExceptionUtil.getMessage(e));
         }
     }
+
     @Async
 @Scheduled(cron = "0 21 3 * * ?")// 每天上午3.21触发
 //@Scheduled(cron = "1 53 0 * * ?")// 每天上午1:53触发
